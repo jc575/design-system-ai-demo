@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Contribution checklist" />
+
+# How a component gets in
+
+A contribution model only works if it is lightweight and clear. This is the version this prototype follows, adapted from a model used on a real enterprise design system.
+
+## The path
+
+1. **Pick** a component from the backlog.
+2. **Build** it against `CLAUDE.md`. The assistant can draft, a person decides.
+3. **Present** it to peers.
+4. **Pressure test** it: break it, resize it, theme it, tab through it.
+5. **Publish** it.
+
+## The checklist
+
+- Prop names match Figma
+- No hard coded values
+- Contrast script passes
+- Axe script reports no violations
+- Keyboard only walkthrough done
+- Plain language in labels and messages
+- The process log records what the assistant got wrong
+
+## Why a checklist and not a gate
+
+People take ownership when the bar is visible and fair. A checklist makes the bar visible. Peers pressure testing makes it fair.

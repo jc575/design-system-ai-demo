@@ -1,0 +1,29 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Foundations/Figma to code parity" />
+
+# Figma to code parity
+
+The rule is simple: **a property in Figma has a twin in code, with the same name.**
+
+## The mapping
+
+- **Boolean property in Figma** becomes a **boolean prop**. Used when there are two options. Examples: `destructive`, `loading`, `error`, `showIcon`.
+- **Variant property in Figma** becomes a **named union prop**. Used when there are more than two options. Examples: `emphasis`, `size`, `severity`.
+- **Text property in Figma** becomes a **string prop**. Examples: `label`, `helperText`, `errorMessage`.
+- **Instance swap in Figma** becomes a **slot**. Examples: `iconStart`, `iconEnd`. Never one variant per icon.
+- **Variables in Figma** map to **semantic tokens** in code. Same names, same values, one source of truth.
+
+## Why this matters
+
+- A designer can read the Storybook controls and know exactly what the Figma component offers.
+- An engineer can open the Figma component and know exactly what the code accepts.
+- Review is faster, because a mismatch is visible at a glance.
+
+## The rule for changes
+
+If a prop name changes in one place, it changes in the other in the same pull request.
+
+## Honest limit
+
+This prototype has no Figma file attached. The mapping is the contract. Verifying it automatically (for example with Code Connect) is the next step, not something this demo claims.

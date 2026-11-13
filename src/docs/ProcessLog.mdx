@@ -1,0 +1,37 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Process/Process log" />
+
+# Process log
+
+How this prototype was built, and what the checks found. Nothing here is tidied up after the fact.
+
+## The loop
+
+1. **Rules first.** `CLAUDE.md` holds the system's decisions: prop rules, token layers, accessibility floor, review checklist.
+2. **The assistant drafts** tokens, components, stories and docs against those rules.
+3. **Scripts check the work.** `npm run contrast` computes WCAG ratios for 16 token pairs in both themes. `npm run axe` runs axe-core on every story in both themes.
+4. **A person reviews** with the checklist. The assistant does not approve its own work.
+
+## What the checks found
+
+Five things went wrong on the way. All five were caught, and all five are fixed.
+
+1. **The contrast script reported "all pass" without reading the dark theme.** The first run printed identical numbers for light and dark. That was the tell. The script's CSS parser was matching the wrong blocks, then treated comments as part of selectors. Fixed, rerun, and all 32 checks (16 pairs, 2 themes) now pass on real dark values.
+2. **TypeScript could not find the CSS imports.** The assistant did not declare module types for the component stylesheets. One line in `vite-env.d.ts` fixed it.
+3. **The docs page claimed the toolbar theme would change the swatches. It does not.** Docs pages ignore the toolbar. Caught by looking at a screenshot in dark mode, not by a script. The page now shows both themes side by side.
+4. **A clean scan is not proof by itself.** Axe reported zero violations on the first run, so the scanner was tested with three known defects (low contrast, a missing image description, an unlabeled input). It caught all three, then the real stories were scanned again.
+5. **Token names in the dark docs panel were unreadable.** Storybook's docs styles put a pale background behind `code`, so light text sat on a light pill. Axe only scans stories, not docs pages, so it could not catch this. A screenshot did. Lesson: automated checks have a coverage boundary, and a human still has to look at everything the scripts do not reach.
+
+## What a person still has to do
+
+- Keyboard only walkthrough of every component.
+- Screen reader pass (axe cannot judge whether a label makes sense).
+- Plain language review of every label and message.
+- Confirm prop names against the real Figma file.
+
+## Honest limits
+
+- Three components, not forty. No tables, navigation, or data visualization.
+- No Figma file is attached. The parity mapping is a contract, not an automated check.
+- Automated tools find roughly a third to half of accessibility problems. Zero violations is a floor, not a finish line.

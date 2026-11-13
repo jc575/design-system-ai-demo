@@ -1,0 +1,13 @@
+/* Canvas and doc helpers. Not part of the system. */
+html, body { background: var(--color-surface-page); }
+body { margin: 0; }
+.ds-canvas {
+  font-family: var(--font-body);
+  color: var(--color-text-primary);
+  background: var(--color-surface-page);
+  padding: var(--space-lg);
+  min-width: 320px;
+}
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

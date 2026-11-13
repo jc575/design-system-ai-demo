@@ -1,0 +1,91 @@
+/*
+  LAYER 3: COMPONENT TOKENS
+  Each component names its own decisions (--button-*) and points them at semantic tokens.
+  Variants are data attributes so the names match the Figma properties one to one.
+*/
+.ds-button {
+  --button-bg: var(--color-action-primary-bg);
+  --button-bg-hover: var(--color-action-primary-bg-hover);
+  --button-bg-active: var(--color-action-primary-bg-active);
+  --button-fg: var(--color-text-on-action);
+  --button-border: transparent;
+  --button-radius: var(--radius-control);
+  --button-focus: var(--color-border-focus);
+  --button-pad-y: var(--space-sm);
+  --button-pad-x: var(--space-md);
+  --button-font-size: var(--ref-font-size-14);
+  --button-gap: var(--space-sm);
+  --button-min-height: 2.5rem;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--button-gap);
+  min-height: var(--button-min-height);
+  padding: var(--button-pad-y) var(--button-pad-x);
+  border: 1px solid var(--button-border);
+  border-radius: var(--button-radius);
+  background: var(--button-bg);
+  color: var(--button-fg);
+  font: var(--ref-font-weight-semibold) var(--button-font-size) / 1.25 var(--font-body);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+.ds-button:hover:not(:disabled):not([data-loading]) { background: var(--button-bg-hover); }
+.ds-button:active:not(:disabled):not([data-loading]) { background: var(--button-bg-active); }
+.ds-button:focus-visible { outline: 2px solid var(--button-focus); outline-offset: 2px; }
+
+/* emphasis */
+.ds-button[data-emphasis='secondary'] {
+  --button-bg: var(--color-surface-raised);
+  --button-bg-hover: var(--color-action-secondary-hover);
+  --button-bg-active: var(--color-action-secondary-active);
+  --button-fg: var(--color-text-link);
+  --button-border: var(--color-border-strong);
+}
+.ds-button[data-emphasis='tertiary'] {
+  --button-bg: transparent;
+  --button-bg-hover: var(--color-action-secondary-hover);
+  --button-bg-active: var(--color-action-secondary-active);
+  --button-fg: var(--color-text-link);
+}
+
+/* destructive (boolean) */
+.ds-button[data-destructive][data-emphasis='primary'] {
+  --button-bg: var(--color-danger-bg);
+  --button-bg-hover: var(--color-danger-bg-hover);
+  --button-bg-active: var(--color-danger-bg-active);
+}
+.ds-button[data-destructive][data-emphasis='secondary'],
+.ds-button[data-destructive][data-emphasis='tertiary'] {
+  --button-fg: var(--color-danger-text);
+  --button-bg-hover: var(--color-danger-surface-hover);
+  --button-bg-active: var(--color-danger-surface-hover);
+}
+.ds-button[data-destructive][data-emphasis='secondary'] { --button-border: var(--color-danger-border); }
+
+/* size */
+.ds-button[data-size='sm'] { --button-min-height: 2rem; --button-pad-x: var(--space-sm); --button-font-size: var(--ref-font-size-12); }
+.ds-button[data-size='lg'] { --button-min-height: 3rem; --button-pad-x: var(--space-lg); --button-font-size: var(--ref-font-size-16); }
+
+/* disabled */
+.ds-button:disabled {
+  background: var(--color-action-disabled-bg);
+  color: var(--color-text-disabled);
+  border-color: transparent;
+  cursor: not-allowed;
+}
+.ds-button[data-loading] { cursor: progress; }
+
+.ds-button__spinner {
+  width: 1em; height: 1em;
+  border: 2px solid currentColor; border-right-color: transparent;
+  border-radius: 50%;
+  animation: ds-spin 700ms linear infinite;
+}
+@keyframes ds-spin { to { transform: rotate(360deg); } }
+
+.ds-visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}

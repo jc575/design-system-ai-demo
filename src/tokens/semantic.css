@@ -1,0 +1,111 @@
+/*
+  LAYER 2: SEMANTIC TOKENS
+  Meaning, not value. This is the layer that changes per theme.
+  Names: --color-<role>-<variant>, --space-<size>, --radius-<size>
+  Components read from here (through their own component tokens).
+*/
+:root,
+[data-theme='light'] {
+  --color-surface-page: var(--ref-slate-25);
+  --color-surface-raised: var(--ref-slate-0);
+  --color-surface-sunken: var(--ref-slate-50);
+
+  --color-text-primary: var(--ref-slate-900);
+  --color-text-secondary: var(--ref-slate-600);
+  --color-text-disabled: var(--ref-slate-500);
+  --color-text-on-action: var(--ref-slate-0);
+  --color-text-link: var(--ref-blue-700);
+
+  --color-border-subtle: var(--ref-slate-100);
+  --color-border-strong: var(--ref-slate-500);
+  --color-border-focus: var(--ref-blue-700);
+
+  --color-action-primary-bg: var(--ref-blue-700);
+  --color-action-primary-bg-hover: var(--ref-blue-800);
+  --color-action-primary-bg-active: var(--ref-blue-900);
+  --color-action-secondary-hover: var(--ref-blue-50);
+  --color-action-secondary-active: var(--ref-blue-100);
+  --color-action-disabled-bg: var(--ref-slate-100);
+
+  --color-danger-bg: var(--ref-red-700);
+  --color-danger-bg-hover: var(--ref-red-800);
+  --color-danger-bg-active: var(--ref-red-900);
+  --color-danger-text: var(--ref-red-700);
+  --color-danger-border: var(--ref-red-700);
+  --color-danger-surface-hover: var(--ref-red-50);
+
+  --color-severity-critical-bg: var(--ref-red-50);
+  --color-severity-critical-fg: var(--ref-red-800);
+  --color-severity-critical-border: var(--ref-red-300);
+  --color-severity-high-bg: var(--ref-orange-50);
+  --color-severity-high-fg: var(--ref-orange-800);
+  --color-severity-high-border: var(--ref-orange-300);
+  --color-severity-medium-bg: var(--ref-amber-50);
+  --color-severity-medium-fg: var(--ref-amber-800);
+  --color-severity-medium-border: var(--ref-amber-300);
+  --color-severity-low-bg: var(--ref-blue-50);
+  --color-severity-low-fg: var(--ref-blue-800);
+  --color-severity-low-border: var(--ref-blue-300);
+  --color-severity-info-bg: var(--ref-slate-50);
+  --color-severity-info-fg: var(--ref-slate-700);
+  --color-severity-info-border: var(--ref-slate-200);
+}
+
+[data-theme='dark'] {
+  --color-surface-page: var(--ref-slate-950);
+  --color-surface-raised: var(--ref-slate-850);
+  --color-surface-sunken: var(--ref-slate-900);
+
+  --color-text-primary: var(--ref-slate-50);
+  --color-text-secondary: var(--ref-slate-300);
+  --color-text-disabled: var(--ref-slate-500);
+  --color-text-on-action: var(--ref-slate-950);
+  --color-text-link: var(--ref-blue-300);
+
+  --color-border-subtle: var(--ref-slate-800);
+  --color-border-strong: var(--ref-slate-300);
+  --color-border-focus: var(--ref-blue-300);
+
+  --color-action-primary-bg: var(--ref-blue-400);
+  --color-action-primary-bg-hover: var(--ref-blue-300);
+  --color-action-primary-bg-active: var(--ref-blue-200);
+  --color-action-secondary-hover: var(--ref-slate-800);
+  --color-action-secondary-active: var(--ref-slate-700);
+  --color-action-disabled-bg: var(--ref-slate-800);
+
+  --color-danger-bg: var(--ref-red-400);
+  --color-danger-bg-hover: var(--ref-red-300);
+  --color-danger-bg-active: var(--ref-red-300);
+  --color-danger-text: var(--ref-red-300);
+  --color-danger-border: var(--ref-red-400);
+  --color-danger-surface-hover: var(--ref-red-950);
+
+  --color-severity-critical-bg: var(--ref-red-950);
+  --color-severity-critical-fg: var(--ref-red-300);
+  --color-severity-critical-border: var(--ref-red-900);
+  --color-severity-high-bg: var(--ref-orange-950);
+  --color-severity-high-fg: var(--ref-orange-300);
+  --color-severity-high-border: var(--ref-orange-800);
+  --color-severity-medium-bg: var(--ref-amber-950);
+  --color-severity-medium-fg: var(--ref-amber-300);
+  --color-severity-medium-border: var(--ref-amber-800);
+  --color-severity-low-bg: var(--ref-blue-950);
+  --color-severity-low-fg: var(--ref-blue-300);
+  --color-severity-low-border: var(--ref-blue-800);
+  --color-severity-info-bg: var(--ref-slate-800);
+  --color-severity-info-fg: var(--ref-slate-200);
+  --color-severity-info-border: var(--ref-slate-600);
+}
+
+/* Theme independent semantic tokens */
+:root {
+  --space-xs: var(--ref-space-1);
+  --space-sm: var(--ref-space-2);
+  --space-md: var(--ref-space-4);
+  --space-lg: var(--ref-space-6);
+  --space-xl: var(--ref-space-8);
+  --radius-control: var(--ref-radius-md);
+  --radius-badge: var(--ref-radius-pill);
+  --font-body: var(--ref-font-sans);
+  --font-code: var(--ref-font-mono);
+}

@@ -1,0 +1,30 @@
+import { Meta } from '@storybook/blocks';
+import { TokenSwatches } from './TokenSwatches';
+
+<Meta title="Foundations/Token layers" />
+
+# Token layers
+
+Three layers. Each one has one job. Change flows in one direction.
+
+## 1. Primitives
+
+Raw values with no meaning, such as `--ref-blue-700`. Components never use them directly.
+
+## 2. Semantic
+
+Meaning, not value, such as `--color-action-primary-bg`. **This is the only layer that changes per theme.** Both themes are shown side by side below.
+
+## 3. Component
+
+Each component names its own decisions, such as `--button-bg`, and points them at semantic tokens. If a team needs a different button, they change one component token, not the whole system.
+
+## Why three layers
+
+- **Theming is cheap.** Dark mode is a new set of semantic values, not a rewrite.
+- **Rebrands are cheap.** Change primitives and everything follows.
+- **Components stay honest.** No hard coded values, so nothing can drift.
+
+## Semantic tokens, light and dark
+
+<TokenSwatches />

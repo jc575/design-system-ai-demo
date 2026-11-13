@@ -1,0 +1,28 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# A design system that teaches the next designer
+
+This is a small prototype. It exists to show a method, not to claim scale.
+
+**The idea:** AI writes better components when it reads your system's rules first. So the rules live in the repo, in a file called `CLAUDE.md`, and every component here was generated against it and then reviewed by a person.
+
+## What is in here
+
+- **Three token layers.** Primitive, semantic, component. Change flows one way.
+- **Three components.** Button, TextField, StatusBadge. Each is built to the rules file.
+- **Light and dark themes.** Use the Theme control in the toolbar.
+- **Figma to code parity.** Prop names match Figma property names one to one.
+- **A process log.** What the assistant produced, what the checks found, what a human changed.
+
+## What this is not
+
+It is not a production system. It has three components, not forty. It does not cover data visualization, tables, or navigation yet. Scale, adoption and governance across teams are shown in the case study, not here.
+
+## How to read it
+
+1. Start with **Foundations, Token layers**.
+2. Then **Foundations, Figma to code parity**.
+3. Open any component and try the controls. Switch the theme.
+4. Finish with **Process, Process log**.

@@ -1,0 +1,33 @@
+{
+  "name": "design-system-ai-demo",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A small, rules-driven design system prototype: three token layers, three components, Storybook docs.",
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build -o storybook-static",
+    "contrast": "node scripts/contrast.mjs",
+    "axe": "node scripts/axe.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "^8.6.19",
+    "@storybook/addon-essentials": "^8.6.19",
+    "@storybook/addon-interactions": "^8.6.19",
+    "@storybook/blocks": "^8.6.19",
+    "@storybook/react": "^8.6.19",
+    "@storybook/react-vite": "^8.6.19",
+    "@storybook/test": "^8.6.19",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react": "^4.7.0",
+    "axe-core": "^4.14.0",
+    "storybook": "^8.6.19",
+    "typescript": "^7.0.2",
+    "vite": "^5.4.21"
+  }
+}
