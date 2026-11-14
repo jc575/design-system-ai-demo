@@ -1,11 +1,11 @@
 import { Meta } from '@storybook/blocks';
-import { Doc, Callout, BothThemes, SemanticTable } from './blocks';
+import { Doc, Callout, BothThemes } from './blocks';
 
-<Meta title="Foundations/Semantic color" />
+<Meta title="Foundations/Semantic/How semantic tokens work" />
 
-# Semantic color
+# How semantic tokens work
 
-These are the tokens designers and developers actually use. Each one says what a color is **for**. The value behind it changes between light and dark. The meaning does not.
+**Layer 2 of 3.** These are the tokens designers and developers actually use. Each one says what a value is **for**. The value behind it changes between light and dark. The meaning does not.
 
 <Callout title="Read the name like a sentence">
 
@@ -13,37 +13,16 @@ These are the tokens designers and developers actually use. Each one says what a
 
 </Callout>
 
-## The four properties
+## Where each kind lives
 
-Every color token starts by saying what part of the UI it paints:
+Color is split by the part of the screen it paints, so you can find a token by asking "what am I coloring?"
 
-- **bg** is a background or fill
-- **text** is text
-- **border** is a border, outline or focus ring
-- **icon** is an icon
+- **bg** is a background or fill: [Background](?path=/docs/foundations-semantic-background--docs)
+- **text** is text: [Text](?path=/docs/foundations-semantic-text--docs)
+- **border** is a border, outline or focus ring: [Border and focus](?path=/docs/foundations-semantic-border-and-focus--docs)
+- **icon** is an icon: [Icon](?path=/docs/foundations-semantic-icon--docs)
 
-## bg: backgrounds and fills
-
-<SemanticTable property="bg" />
-
-## text
-
-<SemanticTable property="text" />
-
-## border
-
-<SemanticTable property="border" />
-
-## icon
-
-<SemanticTable property="icon" />
-
-## Layering surfaces
-
-Four surface levels, from the back to the front: **page, sunken, raised, overlay.**
-
-- In **light** mode, raised and overlay are white and the page is a very light gray, so cards lift off the page.
-- In **dark** mode, lightness carries elevation: page (darkest), raised, then overlay (lightest). Shadows are barely visible on dark surfaces, so we do not rely on them alone. See Elevation.
+The rest are not color: [Typography](?path=/docs/foundations-semantic-typography--docs), [Space](?path=/docs/foundations-semantic-space--docs), [Radius and border width](?path=/docs/foundations-semantic-radius-and-border-width--docs), [Elevation](?path=/docs/foundations-semantic-elevation--docs) and [Motion](?path=/docs/foundations-semantic-motion--docs).
 
 ## Pairings are promises
 

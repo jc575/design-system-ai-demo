@@ -1,0 +1,31 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, SpaceWords } from './blocks';
+
+<Meta title="Foundations/Semantic/Space" />
+
+# Space
+
+**Layer 2 of 3.** Seven words, `xs` to `3xl`, that cover almost every gap in a layout.
+
+<SpaceWords />
+
+## Why some primitives have no word
+
+Primitives are a big shelf. Semantic tokens are the small set we **allow** people to use. Having fewer choices is the point: it is why two designers building two screens end up with the same spacing.
+
+If you reach for something with no word, ask whether it is really a one-off, or whether the system is missing a word. Do not just use the primitive.
+
+## How to choose
+
+<Doc>
+
+| You are spacing... | Use |
+| --- | --- |
+| Icon and its label, or tight pairs | `--space-xs` (4px) or `--space-sm` (8px) |
+| Inside a control, between related items | `--space-sm` to `--space-md` |
+| Between form fields, inside cards | `--space-md` (16px) to `--space-lg` (24px) |
+| Between sections of a page | `--space-xl` (32px) and up |
+
+</Doc>
+
+Group related things closer than unrelated things. That one habit does more for readability than any specific number. The grid itself is on [Primitives, Space](?path=/docs/foundations-primitives-space--docs).

@@ -1,0 +1,19 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, TypePrimitives } from './blocks';
+
+<Meta title="Foundations/Primitives/Typography" />
+
+# Typography primitives
+
+**Layer 1 of 3.** These are the raw type values: families, a size scale, weights and line heights. They have no opinion about where they are used. You will almost never use them directly. The semantic layer wraps them into roles (see [Semantic, Typography](?path=/docs/foundations-semantic-typography--docs)).
+
+<TypePrimitives />
+
+## Decisions worth knowing
+
+- **Sizes are in rem.** The number in the token name (`font-size-16`) is the pixel size at a 16px root. Rem means people who raise their browser's text size get larger text. Pixel sizes would ignore them (WCAG 1.4.4 Resize Text).
+- **Nothing is smaller than 12px.**
+- **Line height gets looser as text gets smaller and longer.** Display is tight (1.15). Body is 1.5. Lead paragraphs are 1.65.
+- **The font is Inter (variable).** One file, every weight, free to use. The stack falls back to system fonts, so nothing breaks if it fails to load.
+
+Next: [Semantic, Typography](?path=/docs/foundations-semantic-typography--docs).

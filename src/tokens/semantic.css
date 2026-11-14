@@ -20,7 +20,7 @@
   /* ---------- BACKGROUND ---------- */
   --color-bg-page: var(--ref-slate-50);
   --color-bg-raised: var(--ref-slate-0);
-  --color-bg-sunken: var(--ref-slate-100);
+  --color-bg-inset: var(--ref-slate-100);
   --color-bg-overlay: var(--ref-slate-0);
   --color-bg-disabled: var(--ref-slate-200);
 
@@ -86,7 +86,7 @@
 [data-theme='dark'] {
   --color-bg-page: var(--ref-slate-950);
   --color-bg-raised: var(--ref-slate-900);
-  --color-bg-sunken: var(--ref-slate-1000);
+  --color-bg-inset: var(--ref-slate-1000);
   --color-bg-overlay: var(--ref-slate-800);
   --color-bg-disabled: var(--ref-slate-800);
 

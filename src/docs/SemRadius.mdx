@@ -1,0 +1,22 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, RadiusScale } from './blocks';
+
+<Meta title="Foundations/Semantic/Radius and border width" />
+
+# Radius and border width
+
+**Layer 2 of 3.** Radius is named for **what is being rounded**, not for how round it is.
+
+<RadiusScale />
+
+- **Control** (6px): things you click or type into.
+- **Surface** (12px): things that hold other things.
+- **Pill**: fully round, for badges and tags.
+
+Nested rounding rule: an inner radius should be the outer radius minus the gap between them. A card with 12px radius and 8px padding has inner elements at 4px. We do not enforce this in code yet. It is a review check.
+
+## Border width
+
+Two widths, both tokens: `--border-width-default` (1px) and `--border-width-emphasis` (2px, used for error borders). Focus rings use `--focus-ring-width` and `--focus-ring-offset`. Border colors are on [Border and focus](?path=/docs/foundations-semantic-border-and-focus--docs).
+
+The raw sizes are on [Primitives, Radius and stroke](?path=/docs/foundations-primitives-radius-and-stroke--docs).

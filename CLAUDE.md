@@ -38,6 +38,8 @@ Other families: `--space-<xs..3xl>`, `--radius-<control|surface|pill>`, `--type-
 - Icons: use the `Icon` component. Beside a label use `tone="inherit"`. Decorative icons have no `label`. Icons that stand alone need a `label`.
 - Spacing: semantic words only (`--space-md`). A size with no word needs a proposal.
 - Elevation: use the level that matches the job. Never rely on a shadow alone to mark a boundary.
+- Surfaces: `page`, `inset` (set into the page, like a code block), `raised`, `overlay`.
+- Action groups (form footers, dialogs): right aligned, left to right tertiary, secondary, primary. The primary is always rightmost. Keep the code order the same as the visual order, and stack full width in the same order on phones. Centered content such as an empty state is the exception.
 
 ### Before adding a token
 
@@ -60,7 +62,7 @@ Other families: `--space-<xs..3xl>`, `--radius-<control|surface|pill>`, `--type-
 
 - One story per meaningful state, plus a `Playground` story with controls.
 - `argTypes` with a description for every prop, written in plain language.
-- Tagged `autodocs`.
+- A `<Component>.mdx` page next to the component, with guidance (when to use, do and don't), a generated Tokens used table, props and every state.
 - Works in light and dark themes. Verify both.
 - Run the accessibility addon and the scripted axe check before asking for review.
 

@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, SemanticTable } from './blocks';
+
+<Meta title="Foundations/Semantic/Background" />
+
+# Background
+
+**Layer 2 of 3.** Every token that paints a surface or a fill. Names start with `--color-bg-`.
+
+<SemanticTable property="bg" />
+
+## Layering surfaces
+
+Four surface levels, from the back to the front: **page, inset, raised, overlay.**
+
+- **page** is the canvas behind everything.
+- **inset** is an area set into the page, like a code block or a table header. (Atlassian calls this level "sunken". We say inset because it describes what you see. See ADR-011.)
+- **raised** is cards and panels that sit above the page.
+- **overlay** is menus, popovers and dialogs.
+
+In **light** mode, raised and overlay are white and the page is a very light gray, so cards lift off the page. In **dark** mode, lightness carries elevation: page (darkest), raised, then overlay (lightest). Shadows are barely visible on dark surfaces, so we do not rely on them alone. See [Elevation](?path=/docs/foundations-semantic-elevation--docs).

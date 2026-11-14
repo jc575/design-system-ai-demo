@@ -185,6 +185,61 @@ To change a decision, add a new entry that supersedes the old one. Do not edit h
 
 ---
 
+## ADR-011: Name the recessed surface "inset", not "sunken"
+
+**Status:** Accepted. Direction from Jeremy: plain language, and an industry standard.
+
+**Context:** The system needs a name for a surface set into the page, like a code block or a table header. The first draft called it `sunken`. Atlassian uses that word for its lowest elevation: "a backdrop (or well) where other content sits." A new reader asked what "sunken" meant and had no good answer.
+
+**Options considered:**
+- `sunken`: matches Atlassian, but it is a depth metaphor and reads oddly out of context.
+- `muted`: Primer uses "muted" as the name for a secondary, less prominent variant. It describes how loud something is, not where it sits.
+- `subtle`: already our word for lower emphasis, so it would mean two things.
+- `well` or `recessed`: accurate, less common.
+- `inset`: describes what you see, an area set into the page.
+
+**Decision:** `--color-bg-inset`. Primer also lists an `inset` background token in its naming guidance, though I could not find its definition, so treat that as supporting evidence, not proof.
+
+**Trade-offs:** It is not Atlassian's word, so anyone mapping from their docs needs a one line translation (their sunken is our inset). The value did not change, only the name.
+
+**Revisit when:** New contributors still ask what inset means, or we adopt a third party kit that uses sunken.
+
+---
+
+## ADR-012: Foundations are organized by layer first, then by kind
+
+**Status:** Accepted. Direction from Jeremy.
+
+**Context:** One page called "Semantic color" held background, text, border and icon tokens, while the typography, space and elevation pages each mixed raw scales with their semantic words. Readers could not tell which layer they were on, or where to look.
+
+**Options considered:** One page per topic with both layers on it, one page per layer, or one folder per layer with a page per kind.
+
+**Decision:** Foundations has a Start here page that maps everything, a Primitives folder (Color, Typography, Space, Radius and stroke, Shadow) and a Semantic folder (How semantic tokens work, Background, Text, Border and focus, Icon, Typography, Space, Radius and border width, Elevation, Motion). Component tokens live on each component page. Every page says which layer it is and links to the other layer.
+
+**Trade-offs:** More, smaller pages. Someone who wants "everything about space" visits two pages. Cross links and the Find it fast table on Start here make up for it.
+
+**Revisit when:** Pages are too thin to justify their own entry, or people still cannot find things.
+
+---
+
+## ADR-013: Action groups are right aligned, with the primary last
+
+**Status:** Accepted. Direction from Jeremy.
+
+**Context:** Form footers and dialogs need one rule for where buttons go and in what order.
+
+**Options considered:** Primary on the left (first), primary on the right (last), or a split layout with the cancel action far left and the rest right.
+
+**Decision:** Right aligned. Left to right: tertiary, secondary, primary. The primary is always the rightmost button. Empty states are centered content, so the invitation (the primary) comes first there.
+
+**Why:** The group ends on the main action, in the same place on every form and dialog, so people learn it once. The order in the page code is the same as the visual order, so keyboard and screen reader order matches what people see (WCAG 2.4.3 Focus Order).
+
+**Trade-offs:** On a phone the group stacks full width in the same order, which puts the primary at the bottom. Many mobile guides put it on top, but reversing the visual order would break focus order unless the code order changes too. Some systems put the primary first on full page forms. This is our choice, not a standard.
+
+**Revisit when:** We build a button group component, or usability evidence shows people miss a bottom stacked primary on phones.
+
+---
+
 ## What we did not decide yet
 
 - Multi-brand theming (a fourth layer or a theme axis separate from light and dark).

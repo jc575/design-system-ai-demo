@@ -40,19 +40,20 @@ A button says **"do this."** The question is never "which button looks nice?" It
 
 ### A form footer
 
-<div className="dx"><div className="dx-demo">
-<Button label="Cancel" emphasis="secondary" />
+<div className="dx"><div className="dx-demo"><div className="dx-actions">
+<Button label="Cancel" emphasis="tertiary" />
+<Button label="Save draft" emphasis="secondary" />
 <Button label="Save policy" emphasis="primary" />
-</div></div>
+</div></div></div>
 
-One primary, one secondary. The primary is the main path. Cancel is a real choice, so it gets a border, but it does not outshine Save.
+Right aligned, and read left to right from least to most important: tertiary, secondary, then the primary at the far right. With only two actions, Cancel is the secondary and sits next to the primary. With three, Cancel drops to tertiary on the far left. On a phone the group stacks full width in the same order, so the primary is last and closest to the thumb. See the Patterns page, Form footer.
 
 ### A destructive confirmation dialog
 
-<div className="dx"><div className="dx-demo" style={{ justifyContent: 'flex-end' }}>
+<div className="dx"><div className="dx-demo"><div className="dx-actions">
 <Button label="Cancel" emphasis="secondary" />
 <Button label="Delete rule" emphasis="primary" destructive iconStart={<Icon name="trash" size="sm" />} />
-</div></div>
+</div></div></div>
 
 The dialog already told someone what will be deleted. Now the button repeats the action in plain words. "Delete rule" beats "OK" or "Yes" because it still makes sense if someone only reads the buttons.
 
@@ -77,9 +78,11 @@ An empty page has one job. One big primary, one quiet helper.
 ## Do and don't
 
 <div className="dx-pair">
-<DoDont ok title="One primary per view" why="Carbon's rule, and ours. People should never wonder which action is the main one.">
+<DoDont ok title="One primary per view, at the far right" why="Carbon's rule on one primary, and ours on position. People should never wonder which action is the main one, and the main one is always where the group ends.">
+<div className="dx-actions">
 <Button label="Cancel" emphasis="secondary" />
 <Button label="Save policy" />
+</div>
 </DoDont>
 <DoDont ok={false} title="Two primaries side by side" why="Two loud choices cancel each other out. Decide which one matters more and demote the other.">
 <Button label="Save draft" />
@@ -127,7 +130,7 @@ An empty page has one job. One big primary, one quiet helper.
 6. **Do not mix sizes in a group.** Use medium by default, small in dense tables, large for touch-first or empty-state moments.
 7. **Loading keeps the label and the width.** The button announces "Loading" to screen readers. Do not swap the label for a spinner alone.
 8. **Disabled is a last resort.** A disabled button cannot be focused and cannot explain itself. Prefer leaving it enabled and showing a clear error on click. (This is our rule, not a standard. It trades a click for clarity.)
-9. **Order is a convention. Pick one and keep it.** Carbon puts the primary on the left in full-page layouts and on the bottom right in dialogs. We follow that, and what matters most is that it is the same across the product.
+9. **Action groups are right aligned and read from least to most important, left to right: tertiary, secondary, primary.** The primary is always the rightmost button. The same order applies in form footers and dialogs. The one exception is centered content such as an empty state, where the invitation (the primary) comes first. This is our rule, chosen on purpose and written down in the Decision log (ADR-013).
 
 ## Tokens used
 

@@ -164,7 +164,7 @@ const hexOf = (ref: string) => {
 const ROLE_NOTES: Record<string, string> = {
   page: 'The canvas behind everything',
   raised: 'Cards and panels that sit above the page',
-  sunken: 'Wells and inset areas, like code blocks',
+  inset: 'An area set into the page, like a code block or table header',
   overlay: 'Menus, popovers and dialogs',
   disabled: 'Behind disabled controls',
   action: 'Solid fill of a primary action',
@@ -383,6 +383,82 @@ export const ElevationLevels = ({ theme }: { theme: Theme }) => (
       ))}
     </div>
   </ThemePanel>
+);
+
+
+/* ---------- PRIMITIVE SCALES (type, radius, stroke, shadow) ---------- */
+const FONT_SIZES = [12, 14, 16, 18, 20, 24, 30, 36, 48];
+const FONT_WEIGHTS: [string, number][] = [['regular', 400], ['medium', 500], ['semibold', 600], ['bold', 700]];
+const LINE_HEIGHTS: [string, string][] = [['tight', '1.15'], ['snug', '1.3'], ['normal', '1.5'], ['relaxed', '1.65']];
+export const TypePrimitives = () => (
+  <div className="dx">
+    <h3 className="dx-h">Font sizes</h3>
+    <div className="dx-scroll" tabIndex={0} role="region" aria-label="Font size primitives, scrollable">
+      <table className="dx-table">
+        <thead><tr><th>Primitive</th><th>Size</th><th>Sample</th></tr></thead>
+        <tbody>
+          {FONT_SIZES.map((n) => (
+            <tr key={n}><td><code className="dx-code">--ref-font-size-{n}</code></td><td>{n}px</td><td><span style={{ fontFamily: 'var(--ref-font-family-sans)', fontSize: `var(--ref-font-size-${n})`, lineHeight: 1.2 }}>Clear words, calm screens</span></td></tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h3 className="dx-h" style={{ marginTop: 'var(--space-lg)' }}>Weights and line heights</h3>
+    <div className="dx-grid-2">
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--space-xs)' }}>
+        {FONT_WEIGHTS.map(([n, w]) => (
+          <li key={n} style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'baseline' }}><code className="dx-code">--ref-font-weight-{n}</code><span style={{ fontFamily: 'var(--ref-font-family-sans)', fontWeight: w }}>{w} Sample</span></li>
+        ))}
+      </ul>
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--space-xs)' }}>
+        {LINE_HEIGHTS.map(([n, v]) => (
+          <li key={n} style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'baseline' }}><code className="dx-code">--ref-line-height-{n}</code><span>{v}</span></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+);
+const RADII = ['0', '2', '4', '6', '8', '12', '16', 'full'];
+export const RadiusPrimitives = () => (
+  <div className="dx dx-demo" style={{ gap: 'var(--space-lg)' }}>
+    {RADII.map((r) => (
+      <div key={r} style={{ display: 'grid', gap: 'var(--space-xs)', justifyItems: 'start' }}>
+        <div style={{ width: '5rem', height: '3rem', background: 'var(--color-bg-raised)', border: 'var(--border-width-emphasis) solid var(--color-border-strong)', borderRadius: `var(--ref-radius-${r})` }} />
+        <code className="dx-code">--ref-radius-{r}</code>
+        <span style={{ font: 'var(--type-caption)', color: 'var(--color-text-secondary)' }}>{r === 'full' ? 'fully round' : `${r}px`}</span>
+      </div>
+    ))}
+  </div>
+);
+export const ShadowPrimitives = ({ theme }: { theme: Theme }) => {
+  const kind = theme === 'light' ? 'soft' : 'deep';
+  return (
+    <ThemePanel theme={theme} title={`${kind} shadows, made for the ${theme} theme`}>
+      <div style={{ display: 'grid', gap: 'var(--space-lg)', padding: 'var(--space-md)' }}>
+        {[1, 2, 3, 4].map((n) => (
+          <div key={n} style={{ boxShadow: `var(--ref-shadow-${kind}-${n})`, background: 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-md)' }}>
+            <code className="dx-code">--ref-shadow-{kind}-{n}</code>
+          </div>
+        ))}
+      </div>
+    </ThemePanel>
+  );
+};
+export const SpaceWords = () => (
+  <div className="dx dx-scroll" tabIndex={0} role="region" aria-label="Space words, scrollable">
+    <table className="dx-table">
+      <thead><tr><th>Semantic token</th><th>Size</th><th>Points at</th></tr></thead>
+      <tbody>
+        {SPACE_SEM.map(([w, n]) => (
+          <tr key={w}>
+            <td><code className="dx-code">--space-{w}</code></td>
+            <td style={{ width: '50%' }}><div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}><div className="dx-bar" style={{ width: `var(--space-${w})`, minWidth: 2 }} /><span>{n * 4}px</span></div></td>
+            <td><code className="dx-code">--ref-space-{n}</code></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 );
 
 /* ---------- DO / DON'T ---------- */

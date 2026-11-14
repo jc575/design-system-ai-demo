@@ -1,0 +1,90 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout } from './blocks';
+
+<Meta title="Foundations/Start here" />
+
+# Start here: how Foundations is organized
+
+If you only read one page in this section, read this one. It tells you what is where, and why.
+
+## The story in 30 seconds
+
+We start with **raw values** (a blue, a size, a shadow). We give those values **meaning** ("this blue is for the main action"). Then each component makes its own **decisions** using those meanings. Change flows one way: **primitive, then semantic, then component.**
+
+<Doc>
+
+| Layer | Job | Prefix | Example | Changes per theme? |
+| --- | --- | --- | --- | --- |
+| **1. Primitive** | Holds a raw value. No opinion about where it is used. | `--ref-` | `--ref-blue-700` | No |
+| **2. Semantic** | Says what a value is FOR. | `--color-`, `--space-`, `--type-`, `--radius-`, `--elevation-` | `--color-bg-action` | **Yes**. This is the only layer that changes between light and dark |
+| **3. Component** | One component names its own decisions. | `--button-`, `--field-`, `--badge-` | `--button-bg-hover` | No. It inherits from semantic |
+
+</Doc>
+
+## The map
+
+**Primitives** are the shelf of raw values. You rarely use them directly.
+- [Color](?path=/docs/foundations-primitives-color--docs): the full wheel, every hue and step.
+- [Typography](?path=/docs/foundations-primitives-typography--docs): font families, sizes, weights, line heights.
+- [Space](?path=/docs/foundations-primitives-space--docs): the 4px grid.
+- [Radius and stroke](?path=/docs/foundations-primitives-radius-and-stroke--docs): corner sizes and line thicknesses.
+- [Shadow](?path=/docs/foundations-primitives-shadow--docs): soft shadows for light, deep shadows for dark.
+
+**Semantic** tokens are what designers and developers actually use. Each says what something is for.
+- [How semantic tokens work](?path=/docs/foundations-semantic-how-semantic-tokens-work--docs): how to read a name, pairings, the state ladder.
+- Color, one page per part of the screen: [Background](?path=/docs/foundations-semantic-background--docs), [Text](?path=/docs/foundations-semantic-text--docs), [Border and focus](?path=/docs/foundations-semantic-border-and-focus--docs), [Icon](?path=/docs/foundations-semantic-icon--docs).
+- [Typography](?path=/docs/foundations-semantic-typography--docs): roles like body and heading.
+- [Space](?path=/docs/foundations-semantic-space--docs): xs to 3xl.
+- [Radius and border width](?path=/docs/foundations-semantic-radius-and-border-width--docs): named for what is being rounded.
+- [Elevation](?path=/docs/foundations-semantic-elevation--docs): five levels, named by job.
+- [Motion](?path=/docs/foundations-semantic-motion--docs): two durations.
+
+**Component tokens** are not on this shelf. They live on each component page, under **Tokens used**, because they belong to that component.
+
+Two more pages sit beside these: [Iconography](?path=/docs/foundations-iconography--docs) (the icon set) and [Figma to code parity](?path=/docs/foundations-figma-to-code-parity--docs).
+
+## Find it fast
+
+<Doc>
+
+| I want to... | Go to |
+| --- | --- |
+| Choose a color for text, a background or a border | Semantic, then Text, Background or Border and focus |
+| Know what `--ref-blue-700` actually is | Primitives, Color |
+| Space things out | Semantic, Space |
+| Style a heading or a paragraph | Semantic, Typography |
+| Round a corner | Semantic, Radius and border width |
+| Add a shadow or layer something above something else | Semantic, Elevation |
+| See which tokens a button uses | Components, Button, Tokens used |
+| Add a new token or component | Method, Scaling and contribution |
+
+</Doc>
+
+## Follow one token all the way down
+
+You are styling the hover state of a primary button. Here is the whole chain, in the light theme:
+
+1. The component says: `--button-bg-hover: var(--color-bg-action-hover);`
+2. The semantic layer says: `--color-bg-action-hover: var(--ref-blue-800);`
+3. The primitive layer says: `--ref-blue-800: #004184;`
+
+In the dark theme, step 2 points somewhere else (`--ref-blue-300`). Step 1 and the component's CSS do not change at all. **That is the entire trick.** Dark mode, a rebrand and a new product theme are all changes to the middle layer.
+
+## Why three layers and not two
+
+- **Theming is cheap.** Dark mode is a second set of semantic values, not a rewrite of every component.
+- **Rebrands are cheap.** Change the primitives, regenerate, and every semantic token and component follows.
+- **Components stay honest.** A component cannot contain a hex code or a primitive, because the lint fails the build.
+- **Teams can customize safely.** A product team can override one component token (`--button-radius`) without touching the system.
+
+The full reasoning, including what we considered and rejected, is in **Method, Decision log**.
+
+## The same ladder as atomic design, without the jargon
+
+Small raw values build meaningful tokens. Meaningful tokens build components. Components combine into patterns. That is the sidebar order: **Foundations, Components, Patterns.** We skip the words atom and molecule because with four components they would add vocabulary, not clarity.
+
+<Callout title="A note on the word ref">
+
+"ref" is short for **reference**: the layer everything else refers back to. Material Design uses the same word. If it feels cryptic, you are not wrong. New people trip on it. We kept it on purpose and wrote down why, and what would make us change it, in the Decision log (ADR-003).
+
+</Callout>

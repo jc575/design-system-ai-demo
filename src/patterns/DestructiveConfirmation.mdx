@@ -30,17 +30,22 @@ How to ask "are you sure?" without training people to click through it.
 4. **The confirm button repeats the action.** "Delete rule," not "OK" or "Yes." It is the one place a destructive primary belongs.
 5. **Cancel is secondary, and it is the default focus.** On open, focus lands on the safe choice, so pressing Enter by reflex does not delete anything. (Check this in your implementation. Our Button does not manage dialog focus.)
 6. **Escape closes the dialog and does nothing.**
+7. **The buttons are right aligned with the primary last**, same as every other action group. See Form footer.
 
 ## Do and don't
 
 <div className="dx-pair">
 <DoDont ok title="Name it, say the consequence, repeat the action" why="The dialog still makes sense if someone only reads the buttons.">
+<div className="dx-actions">
 <Button label="Cancel" emphasis="secondary" />
 <Button label="Delete rule" destructive />
+</div>
 </DoDont>
 <DoDont ok={false} title="Generic question, generic buttons" why="'Are you sure?' with Yes and No makes people read the whole dialog to learn what Yes does.">
+<div className="dx-actions">
 <Button label="No" emphasis="secondary" />
 <Button label="Yes" destructive />
+</div>
 </DoDont>
 </div>
 

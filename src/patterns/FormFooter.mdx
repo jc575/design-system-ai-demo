@@ -8,32 +8,40 @@ import { Button } from '../components/Button/Button';
 
 The row of buttons at the end of a form. It looks trivial and is where most forms go wrong.
 
-<div className="dx"><div className="dx-demo">
-<Button label="Cancel" emphasis="secondary" />
+<div className="dx"><div className="dx-demo"><div className="dx-actions">
+<Button label="Cancel" emphasis="tertiary" />
+<Button label="Save draft" emphasis="secondary" />
 <Button label="Save policy" emphasis="primary" />
-</div></div>
+</div></div></div>
 
-**Components used:** Button (primary, secondary). **Tokens:** inherited from Button. See its page for the full list.
+**Components used:** Button (tertiary, secondary, primary). **Tokens:** inherited from Button. See its page for the full list.
 
 ## The rules
 
-1. **One primary, and it names the outcome.** "Save policy," not "Submit."
-2. **Cancel is secondary, next to the primary.** It is a real choice, so it gets a border, but it does not outshine Save.
-3. **Same size, same row.** Do not mix sizes in a group.
-4. **Primary first or last? Pick one and keep it the same everywhere.** Carbon puts the primary on the left in full-page forms and on the right in dialogs, and we follow that.
-5. **Do not disable Save to hide a problem.** Leave it enabled and show a clear error on the field that needs fixing. A disabled button cannot be focused or explain itself. This is our rule, not a standard.
-6. **Saving shows progress.** Use the Button `loading` state. The label and width stay the same, and screen readers hear "Loading."
+1. **Right aligned, least to most important.** Left to right: tertiary, secondary, primary. The primary is always the rightmost button.
+2. **One primary, and it names the outcome.** "Save policy," not "Submit."
+3. **Use as many as the form needs, and no more.** Two actions: Cancel is secondary, right beside the primary. Three: Cancel drops to tertiary on the far left, and the alternative (Save draft) becomes the secondary in the middle.
+4. **Same size, same row.** Do not mix sizes in a group.
+5. **On a phone, stack full width in the same order.** The primary ends up last, closest to the thumb, and keyboard and screen reader order still matches what people see.
+6. **Do not disable Save to hide a problem.** Leave it enabled and show a clear error on the field that needs fixing. A disabled button cannot be focused or explain itself. This is our rule, not a standard.
+7. **Saving shows progress.** Use the Button `loading` state. The label and width stay the same, and screen readers hear "Loading."
 
 ## Do and don't
 
 <div className="dx-pair">
-<DoDont ok title="One primary, one way out" why="People can tell the main path at a glance.">
-<Button label="Cancel" emphasis="secondary" />
+<DoDont ok title="Right aligned, primary last" why="The group ends on the main action, and the order never changes from form to form.">
+<div className="dx-actions">
+<Button label="Cancel" emphasis="tertiary" />
+<Button label="Save draft" emphasis="secondary" />
 <Button label="Save policy" />
+</div>
 </DoDont>
-<DoDont ok={false} title="Two primaries, vague labels" why="'Save' and 'Submit' next to each other make people stop and read. Decide which one matters.">
-<Button label="Submit" />
-<Button label="Save" />
+<DoDont ok={false} title="Primary first, or two primaries" why="Moving the primary around makes people re-learn each screen. Two loud buttons make them stop and read.">
+<div className="dx-actions">
+<Button label="Save policy" />
+<Button label="Save draft" />
+<Button label="Cancel" emphasis="tertiary" />
+</div>
 </DoDont>
 </div>
 

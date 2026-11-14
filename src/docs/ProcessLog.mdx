@@ -87,13 +87,15 @@ This page is about how the work was run, not just what came out. The short versi
 - Plain language, keyboard use and screen reader sense. Axe cannot judge them.
 - Whether Patterns earns its place at four components, or should wait until a fifth shows up.
 
-## Hands-on edits by Jeremy
+## Hands-on decisions by Jeremy (Nov 14)
 
-*Three edits made directly in the codebase, with what he changed and why. To be filled in by Jeremy so this reads in his voice.*
+Three changes came straight from Jeremy reading the Storybook as a newcomer would. They are design decisions and requirements he wrote. The assistant made the code changes, and the same checks (lint, contrast, build, axe) confirmed them. Each one is recorded as an ADR in the Decision log.
 
-1. **Edit one:** FILL IN
-2. **Edit two:** FILL IN
-3. **Edit three:** FILL IN
+1. **Rename `sunken`.** He did not know what the word meant and asked for plain language that follows an industry standard. The assistant compared Atlassian (sunken) and Primer (muted, inset), and the token is now `--color-bg-inset` (ADR-011). Signal: a reviewer who does not know a term is a real user of the system.
+2. **Reorganize Foundations by layer.** One "Semantic color" page held background, text, border and icon, and other pages mixed raw scales with semantic words. He asked for Primitives and Semantic folders, one page per kind, and a storyline for how people read and find things. It is now a Start here page, five Primitives pages and ten Semantic pages (ADR-012). Signal: information architecture, applied to the system's own docs.
+3. **Set the action order.** He chose right aligned groups, tertiary then secondary then primary, with the primary at the far right. The assistant applied it to the Button page, Form footer and the dialog pattern, and wrote down the phone and focus order trade-off (ADR-013). Signal: an interaction rule decided by a person, then enforced everywhere it appears.
+
+An earlier draft of the Button rules said Carbon puts the primary on the left in full page forms. That was not verified, so the claim was removed and replaced with Jeremy's rule, stated as ours.
 
 ## Honest limits
 

@@ -4,7 +4,7 @@ const TEXT = 4.5;
 const UI = 3;
 const P = [];
 const on = (fg, bgs, min, what) => bgs.forEach((bg) => P.push([`--color-${fg}`, `--color-bg-${bg}`, min, `${what} on ${bg}`]));
-const surfaces = ['page', 'raised', 'sunken', 'overlay'];
+const surfaces = ['page', 'raised', 'inset', 'overlay'];
 
 on('text-primary', surfaces, TEXT, 'Body text');
 on('text-secondary', surfaces, TEXT, 'Secondary text');

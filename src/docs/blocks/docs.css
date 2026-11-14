@@ -4,8 +4,8 @@
 .dx-panel { background: var(--color-bg-page); color: var(--color-text-primary); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: var(--space-md) var(--space-lg); }
 .dx-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: var(--space-md); }
 .dx-h { margin: 0 0 var(--space-sm); font: var(--type-label-md); color: var(--color-text-secondary); text-transform: none; }
-.dx-code { font: var(--type-code); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: 0 var(--space-xs); border-radius: var(--radius-control); }
-.dx-callout { border-left: var(--space-xs) solid var(--color-border-focus); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: var(--space-md) var(--space-lg); border-radius: 0 var(--radius-control) var(--radius-control) 0; margin: var(--space-md) 0; }
+.dx-code { font: var(--type-code); background: var(--color-bg-inset); color: var(--color-text-primary); padding: 0 var(--space-xs); border-radius: var(--radius-control); }
+.dx-callout { border-left: var(--space-xs) solid var(--color-border-focus); background: var(--color-bg-inset); color: var(--color-text-primary); padding: var(--space-md) var(--space-lg); border-radius: 0 var(--radius-control) var(--radius-control) 0; margin: var(--space-md) 0; }
 .dx-callout > strong:first-child { display: block; font: var(--type-label-md); margin-bottom: var(--space-xs); }
 .dx-callout p { margin: 0 0 var(--space-sm); font: var(--type-body-sm); }
 .dx-callout p:last-child { margin-bottom: 0; }
@@ -38,7 +38,7 @@
 .dx-fields label { font: var(--type-label-md); display: grid; gap: var(--space-xs); }
 .dx-fields select, .dx-fields input { font: var(--type-body-md); padding: var(--space-xs) var(--space-sm); border: var(--border-width-default) solid var(--color-border-strong); border-radius: var(--radius-control); background: var(--color-bg-raised); color: var(--color-text-primary); }
 .dx-fields select:focus-visible, .dx-fields input:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
-.dx-pre, pre.dx-pre { font: var(--type-code); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: var(--space-md); border-radius: var(--radius-control); overflow-x: auto; }
+.dx-pre, pre.dx-pre { font: var(--type-code); background: var(--color-bg-inset); color: var(--color-text-primary); padding: var(--space-md); border-radius: var(--radius-control); overflow-x: auto; }
 .dx-code { white-space: nowrap; }
 
 /* Token-styled radio and checkbox used by the interactive docs blocks */
@@ -53,3 +53,7 @@
 .dx-choice input:focus-visible + .dx-choice__mark { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
 .dx-fields label.dx-choice { display: flex; gap: var(--space-sm); font: var(--type-body-sm); }
 .dx-fields .dx-choice input { padding: 0; border: 0; background: transparent; }
+
+/* Action groups: right aligned, least to most important, primary last. Same DOM order at every width. */
+.dx-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); justify-content: flex-end; width: 100%; }
+@media (max-width: 30rem) { .dx-actions { flex-direction: column; align-items: stretch; } .dx-actions > * { width: 100%; } }

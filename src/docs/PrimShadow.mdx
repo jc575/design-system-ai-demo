@@ -1,0 +1,15 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, ShadowPrimitives } from './blocks';
+
+<Meta title="Foundations/Primitives/Shadow" />
+
+# Shadow primitives
+
+**Layer 1 of 3.** Four steps each of **soft** shadows and **deep** shadows. They are named by how they **look**, not by which theme uses them. The theme decides which family to point at.
+
+<div className="dx-grid-2">
+<ShadowPrimitives theme="light" />
+<ShadowPrimitives theme="dark" />
+</div>
+
+Why two families? Shadows are almost invisible on dark surfaces, so dark mode needs stronger ones. How these become levels people use is in [Semantic, Elevation](?path=/docs/foundations-semantic-elevation--docs).

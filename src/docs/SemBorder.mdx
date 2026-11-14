@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, SemanticTable } from './blocks';
+
+<Meta title="Foundations/Semantic/Border and focus" />
+
+# Border and focus
+
+**Layer 2 of 3.** Every token that colors a border, outline or focus ring. Names start with `--color-border-`.
+
+<SemanticTable property="border" />
+
+## Rules
+
+- **Focus rings** use `--color-border-focus`, which must reach 3:1 against the surface behind it. The contrast script checks it against page, raised and overlay in both themes. Ring size is `--focus-ring-width` and `--focus-ring-offset`.
+- The border of an input or control uses `--color-border-strong` (3:1).
+- The soft divider `--color-border-subtle` is for decoration only, and is not allowed on anything people must find.
+
+How thick a border is lives in [Radius and border width](?path=/docs/foundations-semantic-radius-and-border-width--docs).

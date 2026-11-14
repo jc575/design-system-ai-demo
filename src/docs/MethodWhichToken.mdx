@@ -8,7 +8,7 @@ import { Doc, Callout, Steps } from './blocks';
 Follow these steps in order. Stop at the first one that answers your question.
 
 <Steps items={[
-  ['Does a semantic token already say what I need?', 'Search the Semantic color page, or type the property in your editor (--color-bg-, --color-text-). Choose by the job, not by how the value looks right now. A token that happens to look like what you want, but means something else, will break in the other theme.'],
+  ['Does a semantic token already say what I need?', 'Search Foundations, Semantic (Background, Text, Border and focus, Icon), or type the property in your editor (--color-bg-, --color-text-). Choose by the job, not by how the value looks right now. A token that happens to look like what you want, but means something else, will break in the other theme.'],
   ['Is the job new, and will at least three components need it?', 'Propose a new semantic token. It needs a name from the grammar, a light value and a dark value, a registered contrast pair, and a one-line description of its job. Open it as a pull request.'],
   ['Is it only this component?', 'Create a component token (--button-something) inside that component\'s CSS and point it at the closest semantic token. If a second and third component later want the same thing, promote it to semantic. Start local, promote when it earns it.'],
   ['Is there truly no primitive for the value?', 'Almost never. Colors come from the generator, not from a hex code you pick. Spacing and type come from their scales. If the scale genuinely lacks a step, that is a system decision, so open a proposal rather than adding a one-off.'],
