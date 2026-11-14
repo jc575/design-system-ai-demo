@@ -1,0 +1,196 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout } from './blocks';
+
+<Meta title="Method/Decision log" />
+
+# Decision log
+
+The point of this page is to show the **thinking**, including what we did not pick. Each decision has the same shape: context, options, decision, trade-offs, and what would make us revisit it. When a new person asks "why is it like this?", the answer should be here.
+
+<Callout title="How to use this log">
+
+To change a decision, add a new entry that supersedes the old one. Do not edit history. Mark the old entry "Superseded by ADR-0XX".
+
+</Callout>
+
+---
+
+## ADR-001: Three layers, not two
+
+**Status:** Accepted
+
+**Context:** We need dark mode now and probably a rebrand or a second product theme later.
+
+**Options considered**
+1. *One layer.* Components use raw values. Simple, and every theme change touches every component.
+2. *Two layers.* Primitives and component tokens. Dark mode means rewriting each component's mapping.
+3. *Three layers.* Primitives, semantic, component.
+
+**Decision:** Three layers. Only the semantic layer changes per theme.
+
+**Trade-offs:** More names to maintain, and a new person has to learn the layers. We pay for that with the lint and these docs.
+
+**Revisit when:** The system is permanently one theme and one product. Then the semantic layer is overhead.
+
+---
+
+## ADR-002: Numbers for primitives, words for semantic
+
+**Status:** Accepted
+
+**Context:** People mixed up layers. `blue-700` and `action` looked equally valid in the same file.
+
+**Options considered**
+1. *Numbers everywhere,* like many palette-only systems. Compact, but the name says nothing about its job.
+2. *Words everywhere.* Readable, but "blue-dark" and "blue-darker" do not scale to eleven steps.
+3. *Mixed by layer.*
+
+**Decision:** Mixed by layer. Raw values are numbers because the number is the position on a scale. Semantic tokens are words because they describe a job.
+
+**Why it works:** You can tell a token's layer from its name. A reviewer can spot a primitive used where a semantic one belongs without opening the file.
+
+**Revisit when:** We add a second kind of primitive that has no meaningful number.
+
+---
+
+## ADR-003: Keep `ref` as the primitive prefix
+
+**Status:** Accepted, with an open revisit trigger
+
+**Context:** New readers do not know what "ref" means.
+
+**Options considered**
+1. *`ref`* (the word Material Design uses for the same layer). Short, a known convention.
+2. *`primitive`.* Self-explaining, longer (`--primitive-blue-700`).
+3. *`palette`.* Friendly for color, wrong for space and type.
+4. *No prefix* (`--blue-700`). Shortest, but collides visually with semantic tokens and hides the layer.
+
+**Decision:** Keep `ref`. We explain it in the glossary, in the lint error messages and on the naming page.
+
+**Trade-offs:** It is the least friendly word in the system. We accept that because the rename is mechanical: one find and replace plus a regenerate, with the lint confirming nothing was missed.
+
+**Revisit when:** Three or more new contributors misread the prefix in their first week. Then rename to `primitive`.
+
+---
+
+## ADR-004: Property first for color tokens
+
+**Status:** Accepted. Supersedes the version 0 naming.
+
+**Context:** We audited our own first draft and found two orders in one file: `--color-action-primary-bg` (property last) and `--color-text-primary` (property first).
+
+**Options considered**
+1. *Role first:* `--color-action-bg`. Groups by meaning.
+2. *Property first:* `--color-bg-action`. Groups by what you are painting.
+
+**Decision:** Property first. When writing CSS you know what you are painting before you know the role. Autocomplete on `--color-bg-` lists every background. Atlassian's token names put the property before the role for the same reason.
+
+**Trade-offs:** All version 0 names changed. The old to new map is on the naming page, and the lint blocks the old shape.
+
+**Also decided:** we write `bg` where Atlassian writes `background`. It is shorter in CSS and Figma, at the cost of one abbreviation to learn.
+
+**Revisit when:** The abbreviation confuses people, or we generate names from a spec that prefers full words.
+
+---
+
+## ADR-005: Generate color ramps from contrast targets
+
+**Status:** Accepted
+
+**Context:** We wanted a full wheel (twelve hues) where any designer can combine steps without checking contrast pair by pair.
+
+**Options considered**
+1. *Pick by eye,* as many palettes do. Beautiful, and every pairing has to be checked by hand.
+2. *Copy a published palette.* Fast, but not ours, and the contrast behavior varies by hue.
+3. *Same lightness value in a perceptual color space.* Close, but not exact for the contrast formula.
+4. *Same luminance per step, solved per hue.* Exact for WCAG, so a step number predicts contrast.
+
+**Decision:** Option 4. Each step is defined by its contrast against white. The generator finds the most colorful color at that brightness for each hue.
+
+**Result:** Any two steps 500 or more apart meet 4.5:1, and 400 or more apart meet 3:1. A script verifies it for every hue. Worst case today: 4.66:1 and 3.20:1.
+
+**Trade-offs:** Yellow and amber look olive and dark in the mid steps. High-chroma colors are limited by the screen's color range at some steps. And a generated palette is less hand-crafted than an art-directed one.
+
+**Revisit when:** A brand needs specific colors. Then add them as a documented exception ramp, run through the same checks.
+
+---
+
+## ADR-006: Whole-step state ladder
+
+**Status:** Accepted
+
+**Context:** Hover and pressed colors need a rule, or they get picked by eye per component.
+
+**Decision:** Each interactive state moves one whole step along the same ramp: 700, 800 (hover), 900 (pressed) in light mode and 400, 300, 200 in dark.
+
+**Why:** Carbon's color guidance moves states in fractional steps (hover is half a step). Our ramp has eleven steps instead of ten and no half steps, so a whole step is the simplest rule that stays on the scale. (Source: Carbon color overview. See Research and sources.)
+
+**Revisit when:** Hover and pressed feel too similar in user testing.
+
+---
+
+## ADR-007: Components start local, then get promoted
+
+**Status:** Accepted
+
+**Context:** Teams over-globalize. A one-off value becomes a semantic token, then twelve tokens mean almost the same thing.
+
+**Decision:** A new decision starts as a **component token**. It is promoted to semantic only when roughly three components need the same thing.
+
+**Source:** Nathan Curtis, "Naming Tokens in Design Systems," recommends starting within a component and promoting once about three components share a need.
+
+**Trade-offs:** For a while, two components may hold the same value in two tokens. We accept that duplication over a premature global name.
+
+**Revisit when:** Promotions become a bottleneck. Then lower the bar or add a fast lane.
+
+---
+
+## ADR-008: Words for space, but not every size gets a word
+
+**Status:** Accepted
+
+**Options considered:** Expose the full numeric space scale to everyone, or expose a small set of named sizes.
+
+**Decision:** Eleven primitives, seven words (`xs` to `3xl`). Fewer choices produce more consistent layouts.
+
+**Trade-offs:** Someone will eventually want 12px or 20px. They have to ask. That friction is the feature.
+
+**Revisit when:** The same missing size is requested by three different teams.
+
+---
+
+## ADR-009: Shadows named by look, themes choose which
+
+**Status:** Accepted
+
+**Context:** Shadows need different strength in light and dark.
+
+**Decision:** Primitives are named `soft` and `deep` (what they look like), not "light" and "dark" (the theme). The semantic elevation tokens decide which a theme uses. In dark mode, surface lightness also carries elevation, because shadows are hard to see on dark.
+
+**Why it matters:** A primitive that knows about themes is a primitive that has a job, which makes it semantic by another name.
+
+---
+
+## ADR-010: No color token without evidence
+
+**Status:** Accepted
+
+**Context:** Accessibility checks that depend on memory do not survive growth.
+
+**Decision:** Every color token must appear in a registered contrast pair or carry a written exemption (disabled states, decorative dividers, badge edges). The lint fails otherwise.
+
+**Trade-offs:** Adding a token takes five extra minutes.
+
+**Revisit when:** The registry becomes too big to review. Then group pairs by component.
+
+---
+
+## What we did not decide yet
+
+- Multi-brand theming (a fourth layer or a theme axis separate from light and dark).
+- Token delivery format (a spec-based JSON, a build tool, per-platform output).
+- Motion beyond two durations.
+- Density modes (compact and comfortable).
+- Versioned releases of the token package.
+
+Naming them is part of the method. A system that pretends to be finished is harder to trust than one that shows its edges.

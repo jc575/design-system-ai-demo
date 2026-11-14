@@ -1,0 +1,113 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, TokenAnatomy } from './blocks';
+
+<Meta title="Method/How naming works" />
+
+# How naming works
+
+A token name is a tiny sentence. If you can say it out loud and it makes sense, you can find it, review it and remember it. If you cannot, it will drift.
+
+## Layer 1: primitives, named by value
+
+A primitive says what the value *is* and where it sits on a scale. It never says where it is used.
+
+<TokenAnatomy parts={[['ref', 'Layer prefix. "ref" is short for reference.'], ['blue', 'Family: which scale.'], ['700', 'Step: where on the scale.']]} />
+
+Other primitives follow the same shape: `--ref-space-4` (4 × 4px), `--ref-radius-12` (12px), `--ref-font-size-16`, `--ref-shadow-soft-2`. Numbers show up because the number **is** the value or its position. Words show up where there is no number to give (`--ref-font-weight-semibold`).
+
+### What is "ref", exactly?
+
+It stands for **reference**. These are the tokens everything else *refers* to. Material Design uses the same word for the same layer. We kept it because it is short, it is a known convention, and it makes the layer instantly recognizable in code.
+
+We also know it is the least friendly word in the system. The Decision log (ADR-003) lists the alternatives, why we did not pick them, and the exact trigger that would make us rename it. Renaming is mechanical, so we can afford to be wrong.
+
+## Layer 2: semantic tokens, named by job
+
+<TokenAnatomy parts={[['color', 'Category: what kind of decision.'], ['bg', 'Property: what part of the UI it paints.'], ['action', 'Role: what it is for.'], ['hover', 'State: when it applies.']]} />
+
+That is `--color-bg-action-hover`. Read left to right it goes from general to specific, like an address.
+
+### The slots
+
+<Doc>
+
+| Slot | The question it answers | Allowed values | Required? |
+| --- | --- | --- | --- |
+| **Category** | What kind of decision is this? | `color`, `space`, `radius`, `type`, `elevation`, `icon-size`, `border-width`, `focus-ring`, `motion` | Yes |
+| **Property** (color only) | What am I painting? | `bg`, `text`, `border`, `icon` | Yes, for color |
+| **Role** | What is it for? | Words: `page`, `raised`, `action`, `danger`, `primary`, `secondary`, `link`, `severity-critical` ... | Yes |
+| **Emphasis** | How loud is it? | `subtle`. Leave it out for the default, strong version | No |
+| **State** | When does it apply? | `hover`, `active` | No |
+
+</Doc>
+
+### More examples, read aloud
+
+<TokenAnatomy parts={[['color', 'Category'], ['text', 'Property'], ['on-action', 'Role: text that sits ON the action fill'], ]} />
+
+`on-` means "the content that sits on top of this fill." That makes it obvious which contrast pair to register: `text-on-action` against `bg-action`.
+
+<TokenAnatomy parts={[['color', 'Category'], ['bg', 'Property'], ['action', 'Role'], ['subtle', 'Emphasis: the quiet version'], ['hover', 'State']]} />
+
+Other families are shorter because they have fewer questions to answer:
+
+<Doc>
+
+| Token | Reads as |
+| --- | --- |
+| `--space-md` | space, medium |
+| `--radius-control` | radius, for controls |
+| `--type-label-md` | type, label role, medium size |
+| `--elevation-overlay` | elevation, the overlay level |
+
+</Doc>
+
+### Why property comes before role
+
+When you are writing CSS you always know what you are painting before you know the role. You are writing `background:`. So you type `--color-bg-` and your editor lists *every background token*. The same works in Figma's variable picker.
+
+We learned this the hard way. Version 0 of this system had `--color-action-primary-bg` next to `--color-text-primary`. Property was last in one and first in the other. Nobody did it on purpose. It just drifted. The lint now blocks it.
+
+## Layer 3: component tokens, named by part
+
+<TokenAnatomy parts={[['button', 'Component'], ['bg', 'Property'], ['hover', 'State']]} />
+
+`--button-bg-hover: var(--color-bg-action-hover);`
+
+A component token names *one part of one component*. It always points at a semantic token, never at a primitive or a raw value. Components can also hold their own measurements (`--button-min-height: 2.5rem`), because no one else needs to share them.
+
+**Why have this layer at all?** Because it gives every component one place where its decisions are visible and overridable. A product team that wants rounder buttons overrides `--button-radius` on their own scope. They never touch the system.
+
+## Rules that stop names from drifting
+
+The lint (`npm run lint:tokens`) enforces every one of these:
+
+1. Primitives hold raw values only. No aliases.
+2. Semantic names contain **words, not numbers**.
+3. Color tokens are **property first** (`bg`, `text`, `border`, `icon`).
+4. Semantic colors point at **exactly one primitive**.
+5. Every color and shadow token exists in **both themes**.
+6. Every color token has a registered contrast pair or a written exemption.
+7. Components never reference a primitive or contain a raw color.
+8. Component tokens start with the component's own prefix.
+
+## What changed from version 0
+
+Our first draft got the right idea with inconsistent names. This is the old to new map, so you can recognize old code:
+
+<Doc>
+
+| Version 0 | Version 1 | Why |
+| --- | --- | --- |
+| `--color-surface-page` | `--color-bg-page` | Property first, shorter |
+| `--color-action-primary-bg` | `--color-bg-action` | Property first. "primary" was redundant, action is the role |
+| `--color-action-primary-bg-hover` | `--color-bg-action-hover` | Same |
+| `--color-action-secondary-hover` | `--color-bg-action-subtle-hover` | It is a background. "subtle" says how loud |
+| `--color-danger-surface-hover` | `--color-bg-danger-subtle-hover` | Same pattern as action |
+| `--color-danger-text` | `--color-text-danger` | Property first |
+| `--color-severity-critical-fg` | `--color-text-severity-critical` | "fg" was a fourth word for text |
+| `--color-severity-critical-bg` | `--color-bg-severity-critical` | Property first |
+| `--radius-badge` | `--radius-pill` | Named for the shape, not for one component |
+| `--ref-font-size-14` used inside Button | `--type-label-md` | Components must not use primitives. v0 broke its own rule |
+
+</Doc>

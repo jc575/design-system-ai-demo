@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, ColorWheel, RampTable, ContrastExplorer } from './blocks';
+
+<Meta title="Foundations/Color" />
+
+# Color primitives
+
+Twelve hues around the wheel, plus a neutral (slate). Every one has the same eleven steps: **50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950.** The neutral also has 0 (white) and 1000 (near black) because surfaces need both ends.
+
+<ColorWheel />
+
+Hover a wedge to see its token name. Rings run from the lightest step on the rim (50) to the darkest in the center (950).
+
+## The idea that makes this scale
+
+Most palettes are picked by eye. That is fine until someone asks, "Is blue 600 on blue 100 accessible? What about green 600 on green 100?" You have to check every pair by hand, forever.
+
+We did it the other way around. **Each step is defined by its contrast against white, not by how it looks.** So step 600 has the same brightness on every hue. Because of that, contrast between any two steps depends only on the *numbers*, not the hue.
+
+<Doc>
+
+| If two steps are... | Then their contrast is at least | Good for |
+| --- | --- | --- |
+| **500 or more apart** (like 100 and 600) | **4.5 : 1** | Normal body text (WCAG 1.4.3 AA) |
+| **400 or more apart** (like 100 and 500) | **3 : 1** | Large text, icons, input borders, focus rings (WCAG 1.4.3 and 1.4.11) |
+
+</Doc>
+
+A script checks this for every hue and every pair on every build. Try it yourself:
+
+<ContrastExplorer />
+
+<Callout title="The honest trade-off">
+
+Equal brightness across hues means yellow and amber look darker and more olive in the middle steps than you might expect. A bright, sunny yellow is physically brighter than a bright blue, so it cannot share a step number with it. We chose the contrast guarantee over the sunny yellow. If a brand ever needs a true yellow, it gets a documented exception, not a quiet edit.
+
+</Callout>
+
+## All primitives
+
+<RampTable />
+
+## How the palette is made
+
+Nobody edits these hex codes by hand. The file is **generated**:
+
+1. `scripts/generate-ramps.mjs` holds two small tables: the contrast target for each step, and the hue angle for each family.
+2. For each hue and step it finds the most colorful color that hits that exact brightness and still fits in the screen's color range (sRGB).
+3. It writes `primitives.color.css`, then checks the 500 and 400 rules for every pair.
+
+To change the palette: edit the tables, run `npm run generate:ramps`, and the lint and contrast checks tell you what moved.
+
+## Rules for using primitives
+
+- **Components never use a primitive.** They use semantic tokens. The lint fails if they do.
+- **Need a color that is not here?** Do not add a hex code. Open a proposal. New hues come from the generator so they inherit the contrast promise.
+- **Neutral is slate**, a very slightly cool gray. Warm neutrals would be a second neutral family, and that is a decision, not a tweak.

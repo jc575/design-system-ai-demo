@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, BothThemes, SemanticTable } from './blocks';
+
+<Meta title="Foundations/Semantic color" />
+
+# Semantic color
+
+These are the tokens designers and developers actually use. Each one says what a color is **for**. The value behind it changes between light and dark. The meaning does not.
+
+<Callout title="Read the name like a sentence">
+
+`--color-bg-action-hover` reads: color, background, action, hover. A hover background for an action. If a name sounds odd when you say it out loud, it is probably wrong. Full grammar in Method, How naming works.
+
+</Callout>
+
+## The four properties
+
+Every color token starts by saying what part of the UI it paints:
+
+- **bg** is a background or fill
+- **text** is text
+- **border** is a border, outline or focus ring
+- **icon** is an icon
+
+## bg: backgrounds and fills
+
+<SemanticTable property="bg" />
+
+## text
+
+<SemanticTable property="text" />
+
+## border
+
+<SemanticTable property="border" />
+
+## icon
+
+<SemanticTable property="icon" />
+
+## Layering surfaces
+
+Four surface levels, from the back to the front: **page, sunken, raised, overlay.**
+
+- In **light** mode, raised and overlay are white and the page is a very light gray, so cards lift off the page.
+- In **dark** mode, lightness carries elevation: page (darkest), raised, then overlay (lightest). Shadows are barely visible on dark surfaces, so we do not rely on them alone. See Elevation.
+
+## Pairings are promises
+
+Every text, icon and border token has a registered pairing in `scripts/contrast-pairs.mjs`, for example "text-link on bg-action-subtle-hover must be 4.5:1". `npm run contrast` checks all of them in both themes.
+
+If you add a color token with no pairing and no written exemption, `npm run lint:tokens` fails. We call it **no token without evidence**.
+
+Three kinds of token have a written exemption instead of a pair: disabled states (WCAG exempts them), decorative dividers, and the soft border on a badge that already has a word and an icon.
+
+## The state ladder
+
+Interactive states move **one whole step** along the ramp. In light mode, an action goes 700, then 800 (hover), then 900 (pressed). In dark mode it goes the other way, 400, 300, 200, because lighter is "more" on a dark surface.
+
+That is why hover and pressed tokens never need to be invented by eye. They are the next steps on the same ramp.
+
+## Light and dark side by side
+
+<BothThemes>
+<div style={{ display: 'grid', gap: 'var(--space-sm)' }}>
+<div style={{ background: 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-md)' }}>
+<div style={{ font: 'var(--type-label-md)' }}>Raised card</div>
+<div style={{ font: 'var(--type-body-sm)', color: 'var(--color-text-secondary)' }}>Secondary text on a raised surface</div>
+</div>
+<div style={{ background: 'var(--color-bg-action)', color: 'var(--color-text-on-action)', padding: 'var(--space-sm) var(--space-md)', borderRadius: 'var(--radius-control)', font: 'var(--type-label-md)' }}>Action fill with on-action text</div>
+<div style={{ background: 'var(--color-bg-severity-critical)', color: 'var(--color-text-severity-critical)', border: 'var(--border-width-default) solid var(--color-border-severity-critical)', padding: 'var(--space-sm) var(--space-md)', borderRadius: 'var(--radius-control)', font: 'var(--type-label-md)' }}>Critical severity (always with a word and an icon)</div>
+</div>
+</BothThemes>

@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout } from './blocks';
+
+<Meta title="Method/Research and sources" />
+
+# Research and sources
+
+Nothing here was invented in a vacuum. This page lists what we read, what we took from it, and where we deliberately did something different. Where a claim comes from a source, it is marked.
+
+<Callout title="How these were checked">
+
+The pages for Nathan Curtis, Atlassian, Carbon (themes, color, button) and Material Web were read directly while writing this system, and the claims below match what those pages say. The WCAG and OKLab links are standard references and were not re-fetched, so check them before quoting a success criterion number in an interview.
+
+</Callout>
+
+## What we borrowed
+
+<Doc>
+
+| Source | What it says | What we did with it |
+| --- | --- | --- |
+| [Nathan Curtis, Naming Tokens in Design Systems](https://nathanacurtis.substack.com/p/naming-tokens-in-design-systems-9e86c7444676) | Names are built from levels: base (category, concept, property), modifier (variant, state, scale, mode), object (component, element) and namespace. Start tokens inside a component and promote them to global once about three components need them. Themes and modes are different ideas. | The slots in our naming grammar. ADR-007 (start local, promote at three). The theme versus mode split in the glossary |
+| [Atlassian, Design tokens explained](https://atlassian.design/foundations/tokens/design-tokens/) | A name has a foundation (color, space), a property (the UI element it applies to, like border or background) and an optional modifier (role, emphasis, state). Choose tokens by meaning, not by value. | Property before role (ADR-004). The advice in Which token do I use |
+| [Carbon, Themes](https://carbondesignsystem.com/elements/themes/overview/) | Tokens are role-based and the role never changes between themes. Only the value changes. Tokens can point at palette tokens. | The principle that only the semantic layer changes per theme, and that component code never changes |
+| [Carbon, Color](https://carbondesignsystem.com/elements/color/overview/) | Each hue has numbered grades from light to dark. Interaction states move along the grades. Small text needs 4.5:1, large text and graphics 3:1, and a table says how many grades apart two colors need to be. | The idea that step distance predicts contrast, which we made exact (ADR-005), and the state ladder (ADR-006) |
+| [Carbon, Button usage](https://carbondesignsystem.com/components/button/usage) | One primary button per page (modals and side panels are exceptions). Secondary pairs with a primary. Tertiary and ghost are for lower emphasis. Danger is for destructive actions. Labels are verb plus noun in sentence case. Navigation uses links, not buttons. | The Button usage guidance. Each rule we borrowed is marked as such |
+| [Material Web, Theming](https://material-web.dev/theming/material-theming) | Three tiers: reference, system and component tokens. Overriding a token at a scope changes everything that depends on it. Component tokens can point at system tokens. | The three-layer model (ADR-001), the word "ref" (ADR-003), and the override-at-scope escape hatch |
+| [W3C, WCAG 2.2 Contrast (Minimum)](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html), [Non-text Contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html), [Resize Text](https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html) | 4.5:1 for normal text, 3:1 for large text and for the parts of controls people need to see, and text must be resizable. | Every contrast minimum, and rem-based type |
+| [Björn Ottosson, A perceptual color space (OKLab)](https://bottosson.github.io/posts/oklab/) | A color space designed so hue and chroma behave more evenly than in HSL. | The generator uses OKLCH hue angles to space the twelve hues around the wheel |
+
+</Doc>
+
+## Where we differ, on purpose
+
+<Doc>
+
+| Topic | What others do | What we do | Why |
+| --- | --- | --- | --- |
+| State steps | Carbon moves hover by half a step | Whole steps | Our ramp has eleven steps. A whole step is the simplest rule that stays on the scale |
+| Palette | Hand-picked, with guidance about which grades pair | Generated from contrast targets | Makes the pairing rule exact and checkable (ADR-005) |
+| Property word | Atlassian writes "background" | We write `bg` | Shorter in CSS and Figma. One abbreviation to learn |
+| Component tokens | Material's have no prefix | Ours start with the component name | Easier to lint and to tell apart from semantic tokens |
+| Elevation | Often shadow only | Shadow plus surface lightness in dark mode | Shadows are hard to see on dark surfaces |
+| Evidence | Contrast usually documented, sometimes tested | Every color token needs a registered pair, enforced by a lint | The docs cannot go stale if the build fails when they do |
+
+</Doc>
+
+## What we are not claiming
+
+- This is a small prototype. It has not been tested with users or adopted by teams.
+- We have not compared against every design system. These are the ones we read closely.
+- The decision log records *our* reasoning. A different team with different constraints could reasonably decide differently, and several of these decisions list exactly when they should.

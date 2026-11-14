@@ -1,60 +1,15 @@
 /*
-  LAYER 1: PRIMITIVES (reference tokens)
-  Raw values only. No meaning. Components never use these directly.
-  Names: --ref-<family>-<step>
+  LAYER 1: PRIMITIVES (non-color)
+  Raw values. No meaning. Components never read these.
+  Colour primitives live in primitives.color.css (generated, see scripts/generate-ramps.mjs).
+
+  Naming rule for this layer:  --ref-<family>-<number or word that describes the VALUE>
+  Numbers are used when the number IS the value or the position on a scale.
+  "ref" = reference. These are the tokens everything else refers to.
 */
 :root {
-  /* Slate */
-  --ref-slate-0: #ffffff;
-  --ref-slate-25: #f8fafc;
-  --ref-slate-50: #f1f5f9;
-  --ref-slate-100: #e2e8f0;
-  --ref-slate-200: #cbd5e1;
-  --ref-slate-300: #94a3b8;
-  --ref-slate-500: #64748b;
-  --ref-slate-600: #475569;
-  --ref-slate-700: #334155;
-  --ref-slate-800: #1e293b;
-  --ref-slate-850: #111b2e;
-  --ref-slate-900: #0f172a;
-  --ref-slate-950: #0b1220;
-
-  /* Blue */
-  --ref-blue-50: #eff6ff;
-  --ref-blue-100: #dbeafe;
-  --ref-blue-200: #bfdbfe;
-  --ref-blue-300: #93c5fd;
-  --ref-blue-400: #60a5fa;
-  --ref-blue-600: #2563eb;
-  --ref-blue-700: #1d4ed8;
-  --ref-blue-800: #1e40af;
-  --ref-blue-900: #1e3a8a;
-
-  /* Red */
-  --ref-red-50: #fef2f2;
-  --ref-red-300: #fca5a5;
-  --ref-red-400: #f87171;
-  --ref-red-700: #b91c1c;
-  --ref-red-800: #991b1b;
-  --ref-red-900: #7f1d1d;
-  --ref-red-950: #2b1215;
-
-  /* Orange */
-  --ref-orange-50: #fff7ed;
-  --ref-orange-300: #fdba74;
-  --ref-orange-800: #9a3412;
-  --ref-orange-950: #2a1810;
-
-  /* Amber */
-  --ref-amber-50: #fffbeb;
-  --ref-amber-300: #fcd34d;
-  --ref-amber-800: #92400e;
-  --ref-amber-950: #2a2008;
-
-  /* Blue, deep (dark theme surfaces) */
-  --ref-blue-950: #0f1e3d;
-
-  /* Space (4px grid) */
+  /* SPACE. The number is a multiplier of the 4px base. space-4 = 4 x 4px = 16px. */
+  --ref-space-0: 0;
   --ref-space-1: 0.25rem;
   --ref-space-2: 0.5rem;
   --ref-space-3: 0.75rem;
@@ -62,21 +17,63 @@
   --ref-space-5: 1.25rem;
   --ref-space-6: 1.5rem;
   --ref-space-8: 2rem;
+  --ref-space-10: 2.5rem;
+  --ref-space-12: 3rem;
+  --ref-space-16: 4rem;
 
-  /* Radius */
-  --ref-radius-sm: 4px;
-  --ref-radius-md: 6px;
-  --ref-radius-lg: 10px;
-  --ref-radius-pill: 999px;
+  /* RADIUS. The number is the pixel value. */
+  --ref-radius-0: 0;
+  --ref-radius-2: 2px;
+  --ref-radius-4: 4px;
+  --ref-radius-6: 6px;
+  --ref-radius-8: 8px;
+  --ref-radius-12: 12px;
+  --ref-radius-16: 16px;
+  --ref-radius-full: 999px;
 
-  /* Type */
-  --ref-font-sans: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --ref-font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  /* BORDER AND STROKE WIDTH. The number is the pixel value. */
+  --ref-stroke-1: 1px;
+  --ref-stroke-2: 2px;
+
+  /* TYPE. Family names, a size scale (number = pixels at a 16px root, written in rem so user font settings still work), weights, line heights. */
+  --ref-font-family-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --ref-font-family-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   --ref-font-size-12: 0.75rem;
   --ref-font-size-14: 0.875rem;
   --ref-font-size-16: 1rem;
   --ref-font-size-18: 1.125rem;
+  --ref-font-size-20: 1.25rem;
+  --ref-font-size-24: 1.5rem;
+  --ref-font-size-30: 1.875rem;
+  --ref-font-size-36: 2.25rem;
+  --ref-font-size-48: 3rem;
   --ref-font-weight-regular: 400;
   --ref-font-weight-medium: 500;
   --ref-font-weight-semibold: 600;
+  --ref-font-weight-bold: 700;
+  --ref-line-height-tight: 1.15;
+  --ref-line-height-snug: 1.3;
+  --ref-line-height-normal: 1.5;
+  --ref-line-height-relaxed: 1.65;
+
+  /* ICON SIZE. The number is the pixel value of the square the icon sits in. */
+  --ref-icon-size-16: 1rem;
+  --ref-icon-size-20: 1.25rem;
+  --ref-icon-size-24: 1.5rem;
+  --ref-icon-size-32: 2rem;
+
+  /* SHADOW. Named by how they LOOK, not by theme. "soft" suits light surfaces, "deep" suits dark ones.
+     The number is the distance from the surface (1 = closest). */
+  --ref-shadow-soft-1: 0 1px 2px 0 rgb(7 10 15 / 0.1), 0 1px 1px 0 rgb(7 10 15 / 0.06);
+  --ref-shadow-soft-2: 0 2px 4px -1px rgb(7 10 15 / 0.1), 0 4px 8px -2px rgb(7 10 15 / 0.08);
+  --ref-shadow-soft-3: 0 8px 16px -4px rgb(7 10 15 / 0.14), 0 4px 6px -2px rgb(7 10 15 / 0.06);
+  --ref-shadow-soft-4: 0 24px 48px -12px rgb(7 10 15 / 0.28), 0 8px 16px -8px rgb(7 10 15 / 0.12);
+  --ref-shadow-deep-1: 0 1px 2px 0 rgb(0 0 0 / 0.4), 0 1px 1px 0 rgb(0 0 0 / 0.3);
+  --ref-shadow-deep-2: 0 2px 4px -1px rgb(0 0 0 / 0.45), 0 4px 8px -2px rgb(0 0 0 / 0.35);
+  --ref-shadow-deep-3: 0 8px 16px -4px rgb(0 0 0 / 0.55), 0 4px 6px -2px rgb(0 0 0 / 0.35);
+  --ref-shadow-deep-4: 0 24px 48px -12px rgb(0 0 0 / 0.7), 0 8px 16px -8px rgb(0 0 0 / 0.5);
+
+  /* MOTION. The number is milliseconds. */
+  --ref-duration-120: 120ms;
+  --ref-duration-700: 700ms;
 }

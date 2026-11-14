@@ -1,0 +1,61 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, Steps } from './blocks';
+
+<Meta title="Method/Start here" />
+
+# Start here: how this system thinks
+
+A design system is a set of decisions. Most of them are invisible: you see a blue button and never see the ten choices behind it. This section makes those choices visible, so a new designer or developer can **learn the reasoning**, and then extend it without asking permission for every small thing.
+
+## Pick your path
+
+<Doc>
+
+| You are... | Read these, in order | You will be able to |
+| --- | --- | --- |
+| **A new designer** | This page, How naming works, Foundations (Color, Typography), Guidance, Scaling and contribution | Pick the right token and component, and propose a new one with the right evidence |
+| **A new developer** | This page, Token layers, How naming works, Which token do I use, Scaling and contribution | Build a component that passes the checks on the first try |
+| **Someone reviewing a PR** | Decision log, Which token do I use | Say "no" with a reason, or "yes" with confidence |
+| **Someone evaluating the system** | Decision log, Research and sources | See what we chose, what we rejected, and what would change our minds |
+
+</Doc>
+
+## Three questions every token answers
+
+Before any token exists, someone should be able to answer these:
+
+<Steps items={[
+  ['What is it?', 'A raw value (primitive), a meaning (semantic), or one component\'s decision (component). The layer decides the name.'],
+  ['What is it for?', 'The job in plain words: a page background, secondary text, a focus ring. If you cannot say the job in one short phrase, the token is probably two tokens.'],
+  ['How do we know it works?', 'Contrast pairing registered, dark value defined, name passes the lint. A token without evidence does not merge.']
+]} />
+
+## A glossary in plain words
+
+<Doc>
+
+| Word | Meaning |
+| --- | --- |
+| **Token** | A named design decision stored as a variable, such as a color or a space. The name is the contract. The value can change. |
+| **Primitive** (prefix `ref`) | A raw value on a scale. Blue 700. 16 pixels. Knows nothing about where it will be used. |
+| **Semantic token** | A primitive given a job. "The background of the main action." This is the layer that changes between light and dark. |
+| **Component token** | One component's own decisions, such as `--button-bg-hover`. Points at a semantic token. |
+| **Alias** | A token whose value is another token. Semantic and component tokens are aliases. |
+| **Theme / mode** | A mode is light or dark. A theme is a brand look. They are separate ideas. This prototype has two modes and one theme. |
+| **Ramp / step** | A color family from light to dark, in numbered steps (50 to 950). |
+| **Role** | What a token is *for*, such as page, raised, action, danger. |
+| **Contrast pair** | A text or icon token plus the background it sits on, with a minimum ratio it has to meet. |
+
+</Doc>
+
+## One rule to remember
+
+<Callout title="Numbers are primitives. Words are semantic.">
+
+If a token name has a number in it (`blue-700`, `space-4`), it is a raw value on a scale. If it has words (`bg-action`, `space-md`), it has a job. You can tell which layer a token lives in just by looking at it, which makes pull requests much faster to review.
+
+</Callout>
+
+## What this system is not
+
+It is a small prototype built to show a way of thinking. It has three components, one theme, and no data visualization. What it *does* have is the part that is hard to retrofit later: layers, names, evidence and a path for other people to contribute.

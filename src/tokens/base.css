@@ -1,13 +1,19 @@
 /* Canvas and doc helpers. Not part of the system. */
-html, body { background: var(--color-surface-page); }
+html, body { background: var(--color-bg-page); }
 body { margin: 0; }
 .ds-canvas {
-  font-family: var(--font-body);
+  font: var(--type-body-md);
   color: var(--color-text-primary);
-  background: var(--color-surface-page);
+  background: var(--color-bg-page);
   padding: var(--space-lg);
-  min-width: 320px;
+  min-width: 20rem;
 }
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
 }
+
+/* Docs pages: Storybook's default link blue fails contrast on white, so use the system's link token. */
+.sbdocs a.sbdocs-a { color: var(--color-text-link); text-decoration: underline; }
+
+/* Docs pages: wide markdown tables scroll sideways instead of breaking the page on a phone. */
+.sbdocs-content table:not(.dx-table) { display: block; overflow-x: auto; max-width: 100%; }

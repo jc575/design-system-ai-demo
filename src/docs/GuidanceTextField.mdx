@@ -1,0 +1,63 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, DoDont } from './blocks';
+import { TextField } from '../components/TextField/TextField';
+
+<Meta title="Guidance/TextField usage" />
+
+# TextField usage
+
+A text field is where someone tells you something. Most problems with forms are really problems with *labels and error messages*, not with the box.
+
+## When to use it
+
+- **Use a TextField** for short, free-text answers: a name, an email, a search term.
+- **Not for** choosing from a fixed list (use a select or radio group), yes or no (use a checkbox or switch), or long writing (use a text area).
+
+## The four parts
+
+1. **Label.** Always visible, always above the field. It is never the placeholder.
+2. **Helper text.** What to enter or the format, before they make a mistake.
+3. **Field.** Sized to the expected answer.
+4. **Error message.** Only after something is wrong. Says what happened and how to fix it.
+
+## Do and don't
+
+<div className="dx-pair">
+<DoDont ok title="A visible label" why="Placeholders disappear as soon as someone types, and fail contrast more often than real text. People forget what the field was for.">
+<TextField label="Policy name" helperText="Use a name your team will recognize." />
+</DoDont>
+<DoDont ok={false} title="Placeholder as the label" why="Once someone types, the question vanishes. Screen readers may not announce it reliably either.">
+<div style={{ width: '20rem' }}><input aria-label="Policy name" placeholder="Policy name" style={{ width: '100%', padding: 'var(--space-sm) var(--space-md)', font: 'var(--type-body-md)', border: 'var(--border-width-default) solid var(--color-border-strong)', borderRadius: 'var(--radius-control)', background: 'var(--color-bg-raised)', color: 'var(--color-text-primary)' }} /></div>
+</DoDont>
+</div>
+
+<div className="dx-pair">
+<DoDont ok title="An error that fixes itself" why="It says what went wrong and what to do. It has an icon and words, so it does not depend on color alone.">
+<TextField label="Policy name" required error errorMessage="Enter a policy name. It can use letters, numbers and spaces." />
+</DoDont>
+<DoDont ok={false} title="A red border and 'Invalid input'" why="Color alone fails people who cannot see the difference, and 'Invalid' does not say what to change.">
+<TextField label="Policy name" required error errorMessage="Invalid input" />
+</DoDont>
+</div>
+
+## Writing error messages
+
+Use this shape: **what happened, then how to fix it, in plain words.**
+
+<Doc>
+
+| Instead of | Write |
+| --- | --- |
+| Invalid email | Enter an email like name@company.com |
+| Field required | Enter a policy name |
+| Error 422 | That name is already used. Try adding the team name |
+
+</Doc>
+
+## Accessibility notes
+
+- The label is tied to the input, so tapping it focuses the field and screen readers announce it.
+- "Required" is written in text, "(required)", and not only an asterisk.
+- Helper and error text are linked with `aria-describedby`. Errors are announced when they appear.
+- Input text is 16px, so mobile Safari does not zoom in.
+- The border meets 3:1 against the surface (`--color-border-strong`). Error state uses a thicker border, a different color and an icon with words.

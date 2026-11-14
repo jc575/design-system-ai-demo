@@ -12,6 +12,7 @@ await new Promise((r) => setTimeout(r, 1200));
 const base = `http://127.0.0.1:${PORT}`;
 const index = await (await fetch(`${base}/index.json`)).json();
 const stories = Object.values(index.entries).filter((e) => e.type === 'story');
+const docs = Object.values(index.entries).filter((e) => e.type === 'docs');
 const axeSource = readFileSync(new URL('../node_modules/axe-core/axe.min.js', import.meta.url), 'utf8');
 
 const browser = await chromium.launch();
@@ -32,10 +33,27 @@ for (const theme of ['light', 'dark']) {
     report.push({ story: s.id, theme, violations: result });
   }
 }
+// Docs pages: scan only the system's own doc blocks (.dx), not Storybook's chrome.
+let docRuns = 0;
+for (const d of docs) {
+  await page.goto(`${base}/iframe.html?id=${d.id}&viewMode=docs`);
+  await page.waitForSelector('#storybook-docs *', { timeout: 15000 });
+  await page.waitForTimeout(500);
+  const has = await page.evaluate(() => document.querySelectorAll('.sbdocs-content').length);
+  if (!has) continue;
+  await page.evaluate(axeSource);
+  const result = await page.evaluate(async () => {
+    const r = await window.axe.run({ include: [['.sbdocs-content']], exclude: [['.docblock-argstable']] }, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'] } });
+    return r.violations.map((v) => ({ id: v.id, impact: v.impact, help: v.help, nodes: v.nodes.length, sample: v.nodes[0]?.html?.slice(0, 140) }));
+  });
+  docRuns++;
+  violations += result.length;
+  report.push({ story: d.id + ' (docs blocks)', theme: 'light', violations: result });
+}
 await browser.close();
 server.kill();
 writeFileSync('axe-report.json', JSON.stringify(report, null, 2));
 const bad = report.filter((r) => r.violations.length);
-console.log(`Scanned ${stories.length} stories x 2 themes = ${report.length} runs. Violations: ${violations}`);
+console.log(`Scanned ${stories.length} stories x 2 themes + ${docRuns} docs pages (whole docs content). Violations: ${violations}`);
 for (const r of bad) console.log(r.theme, r.story, JSON.stringify(r.violations));
 process.exit(violations ? 1 : 0);

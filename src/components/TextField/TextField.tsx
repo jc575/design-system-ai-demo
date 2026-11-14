@@ -1,5 +1,6 @@
 import React, { useId } from 'react';
 import './TextField.css';
+import { Icon } from '../Icon/Icon';
 
 export interface TextFieldProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
@@ -57,7 +58,7 @@ export const TextField = ({
       )}
       {error && errorMessage && (
         <p className="ds-textfield__error" id={errId} role="alert">
-          <span className="ds-textfield__error-mark" aria-hidden="true">!</span>
+          <Icon name="circle-alert" size="sm" />
           {errorMessage}
         </p>
       )}

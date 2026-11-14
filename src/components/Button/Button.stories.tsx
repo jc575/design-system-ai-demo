@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
-import { IconPlus, IconTrash } from '../icons';
+import { Icon } from '../Icon/Icon';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -28,9 +28,9 @@ type Story = StoryObj<typeof Button>;
 export const Playground: Story = {};
 export const Secondary: Story = { args: { emphasis: 'secondary' } };
 export const Tertiary: Story = { args: { emphasis: 'tertiary' } };
-export const Destructive: Story = { args: { label: 'Delete rule', destructive: true, iconStart: <IconTrash /> } };
-export const DestructiveSecondary: Story = { args: { label: 'Delete rule', destructive: true, emphasis: 'secondary', iconStart: <IconTrash /> } };
-export const WithIcon: Story = { args: { label: 'Add rule', iconStart: <IconPlus /> } };
+export const Destructive: Story = { args: { label: 'Delete rule', destructive: true, iconStart: <Icon name="trash" size="sm" /> } };
+export const DestructiveSecondary: Story = { args: { label: 'Delete rule', destructive: true, emphasis: 'secondary', iconStart: <Icon name="trash" size="sm" /> } };
+export const WithIcon: Story = { args: { label: 'Add rule', iconStart: <Icon name="plus" size="sm" /> } };
 export const Loading: Story = { args: { label: 'Saving', loading: true } };
 export const Disabled: Story = { args: { disabled: true } };
 export const Sizes: Story = {

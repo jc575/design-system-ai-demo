@@ -1,0 +1,57 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, DoDont } from './blocks';
+import { StatusBadge } from '../components/StatusBadge/StatusBadge';
+
+<Meta title="Guidance/StatusBadge usage" />
+
+# StatusBadge usage
+
+A status badge labels the state of **one thing**: a finding, a rule, an alert. It is a label, not a message. If you need someone to read a sentence or take an action, use something louder.
+
+## The five severities
+
+<div className="dx"><div className="dx-demo" style={{ gap: 'var(--space-md)' }}>
+<StatusBadge severity="critical" />
+<StatusBadge severity="high" />
+<StatusBadge severity="medium" />
+<StatusBadge severity="low" />
+<StatusBadge severity="info" />
+</div></div>
+
+<Doc>
+
+| Severity | Shape | Means | Example |
+| --- | --- | --- | --- |
+| **Critical** | Octagon | Needs action now. Harm is happening or imminent | Active credential leak |
+| **High** | Triangle | Needs action soon | Unpatched high-risk vulnerability |
+| **Medium** | Diamond | Plan to fix | Weak configuration |
+| **Low** | Circle with arrow down | Low priority | Missing optional header |
+| **Info** | Circle with i | For awareness. No action implied | Scan completed |
+
+</Doc>
+
+## Rules
+
+1. **Never color alone.** Every level has a word and its own icon *shape*. A person who cannot tell red from orange still reads "Critical" with an octagon.
+2. **Keep the word short.** One or two words. If you need more, you need a different component.
+3. **Do not invent a sixth level.** More levels mean more distinctions people cannot hold in their head. If the five do not fit, the model needs a conversation.
+4. **Use the same meaning everywhere.** Critical means the same thing on a table, a card and a chart legend.
+5. **The badge is not a button.** It is not clickable. If it filters or opens something, the clickable thing is a button that contains the badge.
+
+## Do and don't
+
+<div className="dx-pair">
+<DoDont ok title="Word plus shape plus color" why="Three signals. Any one of them can fail and the meaning still gets through.">
+<StatusBadge severity="critical" />
+<StatusBadge severity="high" />
+</DoDont>
+<DoDont ok={false} title="A dot of color alone" why="Roughly one in twelve men and one in two hundred women have some color vision difference, and color alone also fails in grayscale and on poor screens.">
+<span style={{ width: '0.75rem', height: '0.75rem', borderRadius: 'var(--radius-pill)', background: 'var(--color-bg-danger)', display: 'inline-block' }} aria-hidden="true" />
+</DoDont>
+</div>
+
+## Accessibility notes
+
+- Text on each badge background meets 4.5:1 in both themes (registered pairs, checked by `npm run contrast`).
+- Icons are decorative because the word is always present.
+- Custom labels (`label="Needs review"`) change the word, not the shape or the color.

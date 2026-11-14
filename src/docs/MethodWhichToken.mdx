@@ -1,0 +1,54 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, Steps } from './blocks';
+
+<Meta title="Method/Which token do I use" />
+
+# Which token do I use?
+
+Follow these steps in order. Stop at the first one that answers your question.
+
+<Steps items={[
+  ['Does a semantic token already say what I need?', 'Search the Semantic color page, or type the property in your editor (--color-bg-, --color-text-). Choose by the job, not by how the value looks right now. A token that happens to look like what you want, but means something else, will break in the other theme.'],
+  ['Is the job new, and will at least three components need it?', 'Propose a new semantic token. It needs a name from the grammar, a light value and a dark value, a registered contrast pair, and a one-line description of its job. Open it as a pull request.'],
+  ['Is it only this component?', 'Create a component token (--button-something) inside that component\'s CSS and point it at the closest semantic token. If a second and third component later want the same thing, promote it to semantic. Start local, promote when it earns it.'],
+  ['Is there truly no primitive for the value?', 'Almost never. Colors come from the generator, not from a hex code you pick. Spacing and type come from their scales. If the scale genuinely lacks a step, that is a system decision, so open a proposal rather than adding a one-off.'],
+  ['Still stuck?', 'Do not hard code it. Leave a comment in the PR saying what you are trying to express. The conversation is the contribution.']
+]} />
+
+## Worked examples
+
+### "I need a warning banner."
+
+1. Is there a background that means a warning? Yes: `--color-bg-severity-medium` and its text token `--color-text-severity-medium`.
+2. Border? `--color-border-severity-medium`.
+3. Icon? Severity uses a shape per level. Use `diamond-alert` from the Icon set.
+4. Result: no new tokens. A banner is a new *component*, but it is built from existing semantic tokens. Its own tokens (`--banner-bg`, `--banner-fg`) point at them.
+
+### "I am building a tooltip."
+
+1. Surface: a tooltip floats above everything, so `--color-bg-overlay` and `--elevation-overlay`.
+2. Text: `--color-text-primary`.
+3. Radius: `--radius-control`.
+4. Spacing: `--space-xs` and `--space-sm`.
+5. Type: `--type-caption`.
+6. Result: zero new tokens, and it still works in dark mode on day one.
+
+### "Marketing wants a teal button just for the landing page."
+
+1. Is there a semantic role for a teal action? No.
+2. Will three components need it? No, it is one page.
+3. So it is not a semantic token. It is a **campaign override**: the landing page sets `--button-bg: var(--ref-teal-700)` on its own scope.
+4. Components may not use a primitive, but a *page* overriding a component token on its own scope is the supported escape hatch. It is visible, scoped and reviewable.
+5. Contrast: `ref-teal-700` with white text is 7:1 by the 500-apart rule, so it is safe.
+
+### "I need a new disabled input style."
+
+Do not make a new token. `--color-bg-disabled`, `--color-text-disabled` and `--color-border-subtle` already exist and TextField already uses them.
+
+## What the checks do for you
+
+- **`npm run lint:tokens`** catches a misnamed token, a raw hex in a component, a primitive used in a component, or a token missing its dark value.
+- **`npm run contrast`** tells you if your new pairing is below its minimum, in both themes.
+- **`npm run axe`** scans every story in both themes for accessibility problems.
+
+Passing all three is the floor, not the finish. A person still reviews the rest.

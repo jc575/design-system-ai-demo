@@ -1,0 +1,65 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, IconGallery, IconSizes, DoDont } from './blocks';
+import { Icon } from '../components/Icon/Icon';
+import { Button } from '../components/Button/Button';
+
+<Meta title="Foundations/Iconography" />
+
+# Iconography
+
+Every icon is drawn on the same 24 by 24 grid with the same stroke, rounded ends and rounded corners, so they feel like one family. They render as inline SVG, which means they take their color from text and need no extra files.
+
+<IconGallery />
+
+## Sizes
+
+Four sizes, each tied to a semantic token. Pick the size from the text it sits next to.
+
+<IconSizes />
+
+<Doc>
+
+| Token | Size | Pair it with |
+| --- | --- | --- |
+| `--icon-size-sm` | 16px | 12 to 14px text: badges, small buttons, form messages |
+| `--icon-size-md` | 20px | 16px text: default buttons, list items |
+| `--icon-size-lg` | 24px | 18px text and up, standalone icons |
+| `--icon-size-xl` | 32px | Empty states and feature moments |
+
+</Doc>
+
+## Color
+
+The `tone` prop decides where an icon gets its color:
+
+- **inherit** (default) follows the text next to it. This is right whenever an icon sits beside a label, because the text color has already been contrast checked against its background.
+- **primary, secondary, disabled, danger** use the icon color tokens (`--color-icon-primary` and so on). Use these for icons on their own.
+
+Icons that carry meaning need 3:1 contrast against their background (WCAG 1.4.11). The icon tokens are registered pairings, so the contrast script covers them.
+
+## Accessibility rules
+
+- **Decorative by default.** With no `label`, the icon is hidden from screen readers. That is correct when a word sits next to it.
+- **If the icon is the only content, it needs a name.** An icon-only button needs an accessible name and a visible tooltip. In v1 our Button always has a visible label, on purpose.
+- **Never color alone.** Severity uses a different *shape* per level (octagon, triangle, diamond, circle, info), not just a different color.
+
+<div className="dx" style={{ display: 'grid', gap: 'var(--space-md)' }}>
+<div className="dx-pair">
+<DoDont ok title="Icon beside a label" why="The word does the work. The icon helps people scan.">
+<Button label="Add rule" size="md" iconStart={<Icon name="plus" size="sm" />} />
+</DoDont>
+<DoDont ok={false} title="Icon only, no name" why="Screen reader users hear 'button' and nothing else. Sighted users have to guess.">
+<span style={{ display: 'inline-flex', padding: 'var(--space-sm)', border: 'var(--border-width-default) dashed var(--color-border-strong)', borderRadius: 'var(--radius-control)' }}><Icon name="trash" size="md" tone="primary" /></span>
+</DoDont>
+</div>
+</div>
+
+## Adding an icon
+
+1. Draw it on the 24 grid with the same stroke and round ends.
+2. Add one line to `src/components/Icon/paths.ts`.
+3. It appears in this gallery and in the `name` control automatically.
+
+## Honest limits
+
+Nineteen icons is a starter set, not a library. A real product would source a full set (Carbon, Lucide, Phosphor) or commission one, then wrap it in this same `Icon` component so the API does not change.

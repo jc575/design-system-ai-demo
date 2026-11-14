@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { within, userEvent, expect } from '@storybook/test';
 import { TextField } from './TextField';
-import { IconSearch } from '../icons';
+import { Icon } from '../Icon/Icon';
 
 const meta: Meta<typeof TextField> = {
   title: 'Components/TextField',
@@ -23,7 +23,7 @@ type Story = StoryObj<typeof TextField>;
 
 export const Playground: Story = { args: { placeholder: 'Block risky downloads' } };
 export const Required: Story = { args: { required: true } };
-export const WithIcon: Story = { args: { label: 'Search policies', helperText: undefined, iconStart: <IconSearch />, placeholder: 'Search by name' } };
+export const WithIcon: Story = { args: { label: 'Search policies', helperText: undefined, iconStart: <Icon name="search" size="sm" tone="secondary" />, placeholder: 'Search by name' } };
 export const ErrorState: Story = {
   args: { required: true, error: true, errorMessage: 'Enter a policy name. It can use letters, numbers and spaces.' },
 };

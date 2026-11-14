@@ -1,0 +1,166 @@
+/*
+  GENERATED FILE. Do not edit by hand. Run: npm run generate:ramps
+  Source of truth: scripts/generate-ramps.mjs (STEP_CONTRAST, HUES).
+  Rule: the same step number has the same luminance on every hue.
+  So any two steps 500 or more apart meet 4.5:1, and any two steps 400 or more apart meet 3:1.
+*/
+:root {
+  /* red */
+  --ref-red-50: #fff6f5;
+  --ref-red-100: #fff2f1;
+  --ref-red-200: #ffdbd8;
+  --ref-red-300: #ffb4ad;
+  --ref-red-400: #ff827b;
+  --ref-red-500: #e45d58;
+  --ref-red-600: #c43f3d;
+  --ref-red-700: #aa2428;
+  --ref-red-800: #870d17;
+  --ref-red-900: #5e050c;
+  --ref-red-950: #3b0305;
+  /* orange */
+  --ref-orange-50: #fff7f2;
+  --ref-orange-100: #fff3eb;
+  --ref-orange-200: #ffddc7;
+  --ref-orange-300: #ffb786;
+  --ref-orange-400: #fb8a29;
+  --ref-orange-500: #d46d00;
+  --ref-orange-600: #ac5700;
+  --ref-orange-700: #8c4600;
+  --ref-orange-800: #6a3400;
+  --ref-orange-900: #492100;
+  --ref-orange-950: #2d1200;
+  /* amber */
+  --ref-amber-50: #fff7eb;
+  --ref-amber-100: #fff4e2;
+  --ref-amber-200: #ffdfab;
+  --ref-amber-300: #f9bc4a;
+  --ref-amber-400: #da9c00;
+  --ref-amber-500: #b48000;
+  --ref-amber-600: #916600;
+  --ref-amber-700: #765300;
+  --ref-amber-800: #593d00;
+  --ref-amber-900: #3c2800;
+  --ref-amber-950: #251700;
+  /* yellow */
+  --ref-yellow-50: #fbfadd;
+  --ref-yellow-100: #faf8c5;
+  --ref-yellow-200: #ece793;
+  --ref-yellow-300: #d4ca4d;
+  --ref-yellow-400: #b5aa00;
+  --ref-yellow-500: #958c00;
+  --ref-yellow-600: #787000;
+  --ref-yellow-700: #615b00;
+  --ref-yellow-800: #494400;
+  --ref-yellow-900: #302d00;
+  --ref-yellow-950: #1d1a00;
+  /* lime */
+  --ref-lime-50: #effde3;
+  --ref-lime-100: #e5fdcf;
+  --ref-lime-200: #caefa4;
+  --ref-lime-300: #a4d56d;
+  --ref-lime-400: #7fb733;
+  --ref-lime-500: #639800;
+  --ref-lime-600: #4f7a00;
+  --ref-lime-700: #3f6300;
+  --ref-lime-800: #2e4a00;
+  --ref-lime-900: #1d3100;
+  --ref-lime-950: #0f1d00;
+  /* green */
+  --ref-green-50: #e4ffec;
+  --ref-green-100: #d6ffe3;
+  --ref-green-200: #a6f5c1;
+  --ref-green-300: #6add98;
+  --ref-green-400: #1abf70;
+  --ref-green-500: #009d5a;
+  --ref-green-600: #007f47;
+  --ref-green-700: #006739;
+  --ref-green-800: #004d29;
+  --ref-green-900: #00341a;
+  --ref-green-950: #001f0d;
+  /* teal */
+  --ref-teal-50: #dffffa;
+  --ref-teal-100: #cefff7;
+  --ref-teal-200: #86f6e8;
+  --ref-teal-300: #00decd;
+  --ref-teal-400: #00bbad;
+  --ref-teal-500: #009a8e;
+  --ref-teal-600: #007c72;
+  --ref-teal-700: #00655c;
+  --ref-teal-800: #004b45;
+  --ref-teal-900: #00322e;
+  --ref-teal-950: #001e1b;
+  /* cyan */
+  --ref-cyan-50: #ecfbff;
+  --ref-cyan-100: #e3f9ff;
+  --ref-cyan-200: #abeeff;
+  --ref-cyan-300: #00d9fc;
+  --ref-cyan-400: #00b7d5;
+  --ref-cyan-500: #0096af;
+  --ref-cyan-600: #00798d;
+  --ref-cyan-700: #006273;
+  --ref-cyan-800: #004957;
+  --ref-cyan-900: #00313b;
+  --ref-cyan-950: #001d24;
+  /* blue */
+  --ref-blue-50: #f4f9ff;
+  --ref-blue-100: #eff6ff;
+  --ref-blue-200: #d1e5ff;
+  --ref-blue-300: #a0caff;
+  --ref-blue-400: #66aaff;
+  --ref-blue-500: #368aed;
+  --ref-blue-600: #116dce;
+  --ref-blue-700: #0058ad;
+  --ref-blue-800: #004184;
+  --ref-blue-900: #002b5b;
+  --ref-blue-950: #00193a;
+  /* indigo */
+  --ref-indigo-50: #f7f8ff;
+  --ref-indigo-100: #f3f5ff;
+  --ref-indigo-200: #dee2ff;
+  --ref-indigo-300: #bdc2ff;
+  --ref-indigo-400: #999fff;
+  --ref-indigo-500: #7b7cf0;
+  --ref-indigo-600: #6260d1;
+  --ref-indigo-700: #4f4ab9;
+  --ref-indigo-800: #3b3494;
+  --ref-indigo-900: #262168;
+  --ref-indigo-950: #161341;
+  /* violet */
+  --ref-violet-50: #faf7ff;
+  --ref-violet-100: #f8f3ff;
+  --ref-violet-200: #ecdeff;
+  --ref-violet-300: #d9b9ff;
+  --ref-violet-400: #c58fff;
+  --ref-violet-500: #a76fe0;
+  --ref-violet-600: #8b53c2;
+  --ref-violet-700: #763caa;
+  --ref-violet-800: #5b2887;
+  --ref-violet-900: #3e185e;
+  --ref-violet-950: #250d3b;
+  /* pink */
+  --ref-pink-50: #fff6fa;
+  --ref-pink-100: #fff2f7;
+  --ref-pink-200: #ffd9ea;
+  --ref-pink-300: #ffafd4;
+  --ref-pink-400: #fb7cbd;
+  --ref-pink-500: #d95d9e;
+  --ref-pink-600: #b94082;
+  --ref-pink-700: #a0276d;
+  --ref-pink-800: #7e1253;
+  --ref-pink-900: #570838;
+  --ref-pink-950: #360422;
+  /* slate */
+  --ref-slate-0: #ffffff;
+  --ref-slate-50: #f5f9fe;
+  --ref-slate-100: #f2f5fb;
+  --ref-slate-200: #e0e4e9;
+  --ref-slate-300: #c3c7cc;
+  --ref-slate-400: #a4a8ac;
+  --ref-slate-500: #86898e;
+  --ref-slate-600: #6b6e73;
+  --ref-slate-700: #56595e;
+  --ref-slate-800: #404347;
+  --ref-slate-900: #292c30;
+  --ref-slate-950: #171a1d;
+  --ref-slate-1000: #080a0d;
+}

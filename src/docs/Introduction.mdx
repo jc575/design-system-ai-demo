@@ -4,25 +4,39 @@ import { Meta } from '@storybook/blocks';
 
 # A design system that teaches the next designer
 
-This is a small prototype. It exists to show a method, not to claim scale.
+This is a small prototype. It exists to show a **method**, not to claim scale.
 
-**The idea:** AI writes better components when it reads your system's rules first. So the rules live in the repo, in a file called `CLAUDE.md`, and every component here was generated against it and then reviewed by a person.
+**The idea:** a system scales when people can understand the reasoning, not just copy the output. So this one shows its thinking: why the tokens are named the way they are, what we considered and rejected, how to choose the right one, and how a new person adds to it without asking permission.
+
+It also shows a second idea: **AI writes better components when it reads your system's rules first.** The rules live in the repo, in a file called `CLAUDE.md`. Every component was generated against it and then reviewed by a person. Scripts check the parts a person should not have to.
 
 ## What is in here
 
-- **Three token layers.** Primitive, semantic, component. Change flows one way.
-- **Three components.** Button, TextField, StatusBadge. Each is built to the rules file.
-- **Light and dark themes.** Use the Theme control in the toolbar.
-- **Figma to code parity.** Prop names match Figma property names one to one.
-- **A process log.** What the assistant produced, what the checks found, what a human changed.
+- **Method.** How naming works, how to choose a token, the decision log, how to contribute, and the sources behind it.
+- **Foundations.** Color (a full twelve-hue wheel with a contrast promise), semantic color, typography, iconography, space and radius, elevation, borders and motion.
+- **Components.** Button, TextField, StatusBadge, Icon. Prop names match Figma property names one to one.
+- **Guidance.** When to use which button, with a decision matrix and a "which button?" picker. Plus field and badge guidance.
+- **Process.** What the assistant produced, what the checks found, and what a human changed.
+- **Light and dark.** Use the Theme control in the toolbar on any component.
+
+## Four checks run on every change
+
+| Command | What it protects |
+| --- | --- |
+| `npm run lint:tokens` | Names follow the grammar. Components never use primitives or raw colors. Dark values exist. Every color has evidence. |
+| `npm run contrast` | Every registered text, icon and border pairing meets WCAG, in both themes |
+| `npm run axe` | Every story passes axe-core in both themes |
+| `npm run generate:ramps` | The color palette is rebuilt from its contrast targets and re-verified |
 
 ## What this is not
 
-It is not a production system. It has three components, not forty. It does not cover data visualization, tables, or navigation yet. Scale, adoption and governance across teams are shown in the case study, not here.
+It is not a production system. It has four components, one brand and two modes. It does not cover data visualization, tables or navigation yet. Scale, adoption and governance across teams are shown in the case study, not here. The Decision log has a list of what is intentionally undecided.
 
 ## How to read it
 
-1. Start with **Foundations, Token layers**.
-2. Then **Foundations, Figma to code parity**.
-3. Open any component and try the controls. Switch the theme.
-4. Finish with **Process, Process log**.
+1. **Method, Start here** for the map and the glossary.
+2. **Method, How naming works** for the part people usually find confusing.
+3. **Foundations, Color** for the wheel and the contrast promise.
+4. Open any component, try the controls, switch the theme.
+5. **Guidance, Button usage** for how decisions get made.
+6. **Process, Process log** for what went wrong along the way.

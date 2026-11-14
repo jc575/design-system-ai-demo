@@ -1,0 +1,45 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, TypeSpecimen } from './blocks';
+
+<Meta title="Foundations/Typography" />
+
+# Typography
+
+One font family, a short scale, and **roles instead of raw sizes.** You never pick "16px semibold." You pick `--type-label-lg`.
+
+## How it is built
+
+<Doc>
+
+| Layer | What it holds | Example |
+| --- | --- | --- |
+| Primitive | Families, a size scale, weights, line heights | `--ref-font-size-16`, `--ref-font-weight-semibold`, `--ref-line-height-normal` |
+| Semantic | **One composite token per role** (weight, size / line height, family together) | `--type-body-md` |
+| Component | Which role a component uses | `--button-type: var(--type-label-md)` |
+
+</Doc>
+
+Using a role is one line of CSS:
+
+<pre className="dx dx-pre">{`.my-heading { font: var(--type-heading-md); }`}</pre>
+
+Because the whole role is one token, a weight and a size can never drift apart.
+
+## The type roles
+
+<TypeSpecimen />
+
+## Decisions worth knowing
+
+- **Sizes are in rem.** The number in the token name (`font-size-16`) is the pixel size at a 16px root. Rem means people who raise their browser's text size get larger text. Pixel sizes would ignore them (WCAG 1.4.4 Resize Text).
+- **Form input text is 16px (`body-md`).** Below 16px, iOS Safari zooms the page when someone taps into the field.
+- **Nothing is smaller than 12px**, and 12px (`caption`, `label-sm`) is for short, supporting text only.
+- **Line height gets looser as text gets smaller and longer.** Display is tight (1.15). Body is 1.5. Lead paragraphs are 1.65.
+- **Roles, not sizes, are what get reviewed.** A PR that introduces a new size has to argue for a new role.
+- **The font is Inter (variable).** One file, every weight, free to use. The stack falls back to system fonts, so nothing breaks if it fails to load.
+
+<Callout title="Not yet covered">
+
+Responsive type (fluid sizes by viewport), a data-table numeric style (tabular figures) and a long-form reading style are not in v1. They are the first things a real product would add.
+
+</Callout>

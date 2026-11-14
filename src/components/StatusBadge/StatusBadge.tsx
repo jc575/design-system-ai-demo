@@ -1,6 +1,7 @@
 import React from 'react';
 import './StatusBadge.css';
-import { IconOctagonAlert, IconTriangleAlert, IconDiamond, IconCircleDown, IconInfo } from '../icons';
+import { Icon } from '../Icon/Icon';
+import type { IconName } from '../Icon/paths';
 
 export type Severity = 'critical' | 'high' | 'medium' | 'low' | 'info';
 
@@ -13,12 +14,12 @@ export interface StatusBadgeProps {
   label?: string;
 }
 
-const ICONS: Record<Severity, React.ReactNode> = {
-  critical: <IconOctagonAlert />,
-  high: <IconTriangleAlert />,
-  medium: <IconDiamond />,
-  low: <IconCircleDown />,
-  info: <IconInfo />,
+const ICONS: Record<Severity, IconName> = {
+  critical: 'octagon-alert',
+  high: 'triangle-alert',
+  medium: 'diamond-alert',
+  low: 'circle-down',
+  info: 'info',
 };
 
 const DEFAULT_LABEL: Record<Severity, string> = {
@@ -31,7 +32,7 @@ const DEFAULT_LABEL: Record<Severity, string> = {
 
 export const StatusBadge = ({ severity, showIcon = true, label }: StatusBadgeProps) => (
   <span className="ds-badge" data-severity={severity}>
-    {showIcon && ICONS[severity]}
+    {showIcon && <Icon name={ICONS[severity]} size="sm" />}
     <span className="ds-badge__label">{label ?? DEFAULT_LABEL[severity]}</span>
   </span>
 );

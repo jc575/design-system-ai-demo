@@ -1,0 +1,17 @@
+/* COMPONENT TOKENS for Icon. Size and colour come from semantic tokens. Stroke is in viewBox units so it scales with the icon. */
+.ds-icon {
+  --icon-size: var(--icon-size-md);
+  --icon-color: currentColor;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  flex: none;
+  color: var(--icon-color);
+  stroke-width: 1.75;
+}
+.ds-icon[data-size='sm'] { --icon-size: var(--icon-size-sm); }
+.ds-icon[data-size='lg'] { --icon-size: var(--icon-size-lg); }
+.ds-icon[data-size='xl'] { --icon-size: var(--icon-size-xl); }
+.ds-icon[data-tone='primary'] { --icon-color: var(--color-icon-primary); }
+.ds-icon[data-tone='secondary'] { --icon-color: var(--color-icon-secondary); }
+.ds-icon[data-tone='disabled'] { --icon-color: var(--color-icon-disabled); }
+.ds-icon[data-tone='danger'] { --icon-color: var(--color-icon-danger); }

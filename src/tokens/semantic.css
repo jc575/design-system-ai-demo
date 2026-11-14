@@ -1,111 +1,198 @@
 /*
   LAYER 2: SEMANTIC TOKENS
-  Meaning, not value. This is the layer that changes per theme.
-  Names: --color-<role>-<variant>, --space-<size>, --radius-<size>
+  Meaning, not value. This is the only layer that changes per theme.
   Components read from here (through their own component tokens).
+
+  GRAMMAR (read left to right, general to specific, like a sentence):
+    --color-<property>-<role>[-<emphasis>][-<state>]
+    property : bg | text | border | icon
+    role     : what it is FOR (page, raised, primary, action, danger, severity-critical ...)
+    emphasis : subtle   (omitted means the strong default)
+    state    : hover | active
+  Other families:  --space-<size>  --radius-<role>  --type-<role>-<size>  --elevation-<level>  --icon-size-<size>
+
+  WORDS = semantic. NUMBERS = primitive. If a name here contains a number, something is wrong.
+  STATE LADDER: each interaction state moves one step along the ramp (700 > 800 > 900 in light, 400 > 300 > 200 in dark).
 */
+
 :root,
 [data-theme='light'] {
-  --color-surface-page: var(--ref-slate-25);
-  --color-surface-raised: var(--ref-slate-0);
-  --color-surface-sunken: var(--ref-slate-50);
+  /* ---------- BACKGROUND ---------- */
+  --color-bg-page: var(--ref-slate-50);
+  --color-bg-raised: var(--ref-slate-0);
+  --color-bg-sunken: var(--ref-slate-100);
+  --color-bg-overlay: var(--ref-slate-0);
+  --color-bg-disabled: var(--ref-slate-200);
 
-  --color-text-primary: var(--ref-slate-900);
-  --color-text-secondary: var(--ref-slate-600);
+  --color-bg-action: var(--ref-blue-700);
+  --color-bg-action-hover: var(--ref-blue-800);
+  --color-bg-action-active: var(--ref-blue-900);
+  --color-bg-action-subtle-hover: var(--ref-blue-100);
+  --color-bg-action-subtle-active: var(--ref-blue-200);
+
+  --color-bg-danger: var(--ref-red-700);
+  --color-bg-danger-hover: var(--ref-red-800);
+  --color-bg-danger-active: var(--ref-red-900);
+  --color-bg-danger-subtle-hover: var(--ref-red-100);
+  --color-bg-danger-subtle-active: var(--ref-red-200);
+
+  --color-bg-severity-critical: var(--ref-red-50);
+  --color-bg-severity-high: var(--ref-orange-50);
+  --color-bg-severity-medium: var(--ref-amber-50);
+  --color-bg-severity-low: var(--ref-blue-50);
+  --color-bg-severity-info: var(--ref-slate-100);
+
+  /* ---------- TEXT ---------- */
+  --color-text-primary: var(--ref-slate-950);
+  --color-text-secondary: var(--ref-slate-700);
   --color-text-disabled: var(--ref-slate-500);
-  --color-text-on-action: var(--ref-slate-0);
   --color-text-link: var(--ref-blue-700);
+  --color-text-on-action: var(--ref-slate-0);
+  --color-text-on-danger: var(--ref-slate-0);
+  --color-text-danger: var(--ref-red-700);
+  --color-text-severity-critical: var(--ref-red-800);
+  --color-text-severity-high: var(--ref-orange-800);
+  --color-text-severity-medium: var(--ref-amber-800);
+  --color-text-severity-low: var(--ref-blue-800);
+  --color-text-severity-info: var(--ref-slate-800);
 
-  --color-border-subtle: var(--ref-slate-100);
+  /* ---------- BORDER ---------- */
+  --color-border-subtle: var(--ref-slate-200);
   --color-border-strong: var(--ref-slate-500);
   --color-border-focus: var(--ref-blue-700);
+  --color-border-danger: var(--ref-red-700);
+  --color-border-severity-critical: var(--ref-red-300);
+  --color-border-severity-high: var(--ref-orange-300);
+  --color-border-severity-medium: var(--ref-amber-300);
+  --color-border-severity-low: var(--ref-blue-300);
+  --color-border-severity-info: var(--ref-slate-300);
 
-  --color-action-primary-bg: var(--ref-blue-700);
-  --color-action-primary-bg-hover: var(--ref-blue-800);
-  --color-action-primary-bg-active: var(--ref-blue-900);
-  --color-action-secondary-hover: var(--ref-blue-50);
-  --color-action-secondary-active: var(--ref-blue-100);
-  --color-action-disabled-bg: var(--ref-slate-100);
+  /* ---------- ICON ---------- */
+  --color-icon-primary: var(--ref-slate-800);
+  --color-icon-secondary: var(--ref-slate-600);
+  --color-icon-disabled: var(--ref-slate-400);
+  --color-icon-on-action: var(--ref-slate-0);
+  --color-icon-on-danger: var(--ref-slate-0);
+  --color-icon-danger: var(--ref-red-700);
 
-  --color-danger-bg: var(--ref-red-700);
-  --color-danger-bg-hover: var(--ref-red-800);
-  --color-danger-bg-active: var(--ref-red-900);
-  --color-danger-text: var(--ref-red-700);
-  --color-danger-border: var(--ref-red-700);
-  --color-danger-surface-hover: var(--ref-red-50);
-
-  --color-severity-critical-bg: var(--ref-red-50);
-  --color-severity-critical-fg: var(--ref-red-800);
-  --color-severity-critical-border: var(--ref-red-300);
-  --color-severity-high-bg: var(--ref-orange-50);
-  --color-severity-high-fg: var(--ref-orange-800);
-  --color-severity-high-border: var(--ref-orange-300);
-  --color-severity-medium-bg: var(--ref-amber-50);
-  --color-severity-medium-fg: var(--ref-amber-800);
-  --color-severity-medium-border: var(--ref-amber-300);
-  --color-severity-low-bg: var(--ref-blue-50);
-  --color-severity-low-fg: var(--ref-blue-800);
-  --color-severity-low-border: var(--ref-blue-300);
-  --color-severity-info-bg: var(--ref-slate-50);
-  --color-severity-info-fg: var(--ref-slate-700);
-  --color-severity-info-border: var(--ref-slate-200);
+  /* ---------- ELEVATION (shadow is theme dependent, so it lives here) ---------- */
+  --elevation-flat: none;
+  --elevation-resting: var(--ref-shadow-soft-1);
+  --elevation-raised: var(--ref-shadow-soft-2);
+  --elevation-overlay: var(--ref-shadow-soft-3);
+  --elevation-modal: var(--ref-shadow-soft-4);
 }
 
 [data-theme='dark'] {
-  --color-surface-page: var(--ref-slate-950);
-  --color-surface-raised: var(--ref-slate-850);
-  --color-surface-sunken: var(--ref-slate-900);
+  --color-bg-page: var(--ref-slate-950);
+  --color-bg-raised: var(--ref-slate-900);
+  --color-bg-sunken: var(--ref-slate-1000);
+  --color-bg-overlay: var(--ref-slate-800);
+  --color-bg-disabled: var(--ref-slate-800);
+
+  --color-bg-action: var(--ref-blue-400);
+  --color-bg-action-hover: var(--ref-blue-300);
+  --color-bg-action-active: var(--ref-blue-200);
+  --color-bg-action-subtle-hover: var(--ref-blue-950);
+  --color-bg-action-subtle-active: var(--ref-blue-900);
+
+  --color-bg-danger: var(--ref-red-400);
+  --color-bg-danger-hover: var(--ref-red-300);
+  --color-bg-danger-active: var(--ref-red-200);
+  --color-bg-danger-subtle-hover: var(--ref-red-950);
+  --color-bg-danger-subtle-active: var(--ref-red-900);
+
+  --color-bg-severity-critical: var(--ref-red-950);
+  --color-bg-severity-high: var(--ref-orange-950);
+  --color-bg-severity-medium: var(--ref-amber-950);
+  --color-bg-severity-low: var(--ref-blue-950);
+  --color-bg-severity-info: var(--ref-slate-800);
 
   --color-text-primary: var(--ref-slate-50);
   --color-text-secondary: var(--ref-slate-300);
   --color-text-disabled: var(--ref-slate-500);
-  --color-text-on-action: var(--ref-slate-950);
   --color-text-link: var(--ref-blue-300);
+  --color-text-on-action: var(--ref-slate-1000);
+  --color-text-on-danger: var(--ref-slate-1000);
+  --color-text-danger: var(--ref-red-300);
+  --color-text-severity-critical: var(--ref-red-300);
+  --color-text-severity-high: var(--ref-orange-300);
+  --color-text-severity-medium: var(--ref-amber-300);
+  --color-text-severity-low: var(--ref-blue-300);
+  --color-text-severity-info: var(--ref-slate-200);
 
   --color-border-subtle: var(--ref-slate-800);
-  --color-border-strong: var(--ref-slate-300);
+  --color-border-strong: var(--ref-slate-400);
   --color-border-focus: var(--ref-blue-300);
+  --color-border-danger: var(--ref-red-400);
+  --color-border-severity-critical: var(--ref-red-800);
+  --color-border-severity-high: var(--ref-orange-800);
+  --color-border-severity-medium: var(--ref-amber-800);
+  --color-border-severity-low: var(--ref-blue-800);
+  --color-border-severity-info: var(--ref-slate-600);
 
-  --color-action-primary-bg: var(--ref-blue-400);
-  --color-action-primary-bg-hover: var(--ref-blue-300);
-  --color-action-primary-bg-active: var(--ref-blue-200);
-  --color-action-secondary-hover: var(--ref-slate-800);
-  --color-action-secondary-active: var(--ref-slate-700);
-  --color-action-disabled-bg: var(--ref-slate-800);
+  --color-icon-primary: var(--ref-slate-100);
+  --color-icon-secondary: var(--ref-slate-300);
+  --color-icon-disabled: var(--ref-slate-600);
+  --color-icon-on-action: var(--ref-slate-1000);
+  --color-icon-on-danger: var(--ref-slate-1000);
+  --color-icon-danger: var(--ref-red-300);
 
-  --color-danger-bg: var(--ref-red-400);
-  --color-danger-bg-hover: var(--ref-red-300);
-  --color-danger-bg-active: var(--ref-red-300);
-  --color-danger-text: var(--ref-red-300);
-  --color-danger-border: var(--ref-red-400);
-  --color-danger-surface-hover: var(--ref-red-950);
-
-  --color-severity-critical-bg: var(--ref-red-950);
-  --color-severity-critical-fg: var(--ref-red-300);
-  --color-severity-critical-border: var(--ref-red-900);
-  --color-severity-high-bg: var(--ref-orange-950);
-  --color-severity-high-fg: var(--ref-orange-300);
-  --color-severity-high-border: var(--ref-orange-800);
-  --color-severity-medium-bg: var(--ref-amber-950);
-  --color-severity-medium-fg: var(--ref-amber-300);
-  --color-severity-medium-border: var(--ref-amber-800);
-  --color-severity-low-bg: var(--ref-blue-950);
-  --color-severity-low-fg: var(--ref-blue-300);
-  --color-severity-low-border: var(--ref-blue-800);
-  --color-severity-info-bg: var(--ref-slate-800);
-  --color-severity-info-fg: var(--ref-slate-200);
-  --color-severity-info-border: var(--ref-slate-600);
+  /* In dark mode shadows are hard to see, so surface lightness carries elevation too:
+     page (darkest) < raised < overlay (lightest). */
+  --elevation-flat: none;
+  --elevation-resting: var(--ref-shadow-deep-1);
+  --elevation-raised: var(--ref-shadow-deep-2);
+  --elevation-overlay: var(--ref-shadow-deep-3);
+  --elevation-modal: var(--ref-shadow-deep-4);
 }
 
-/* Theme independent semantic tokens */
+/* ---------- THEME INDEPENDENT SEMANTIC TOKENS ---------- */
 :root {
+  /* SPACE: t-shirt sizes. Not every primitive gets a word. Fewer choices on purpose. */
   --space-xs: var(--ref-space-1);
   --space-sm: var(--ref-space-2);
   --space-md: var(--ref-space-4);
   --space-lg: var(--ref-space-6);
   --space-xl: var(--ref-space-8);
-  --radius-control: var(--ref-radius-md);
-  --radius-badge: var(--ref-radius-pill);
-  --font-body: var(--ref-font-sans);
-  --font-code: var(--ref-font-mono);
+  --space-2xl: var(--ref-space-12);
+  --space-3xl: var(--ref-space-16);
+
+  /* RADIUS: named by what is being rounded */
+  --radius-control: var(--ref-radius-6);
+  --radius-surface: var(--ref-radius-12);
+  --radius-pill: var(--ref-radius-full);
+
+  /* BORDER AND FOCUS */
+  --border-width-default: var(--ref-stroke-1);
+  --border-width-emphasis: var(--ref-stroke-2);
+  --focus-ring-width: var(--ref-stroke-2);
+  --focus-ring-offset: var(--ref-stroke-2);
+
+  /* ICON SIZE */
+  --icon-size-sm: var(--ref-icon-size-16);
+  --icon-size-md: var(--ref-icon-size-20);
+  --icon-size-lg: var(--ref-icon-size-24);
+  --icon-size-xl: var(--ref-icon-size-32);
+
+  /* TYPE: families, then one composite token per role. Use it as:  font: var(--type-body-md);
+     Composite = weight, size / line height, family. */
+  --font-body: var(--ref-font-family-sans);
+  --font-code: var(--ref-font-family-mono);
+  --type-display: var(--ref-font-weight-bold) var(--ref-font-size-48) / var(--ref-line-height-tight) var(--font-body);
+  --type-heading-lg: var(--ref-font-weight-semibold) var(--ref-font-size-30) / var(--ref-line-height-snug) var(--font-body);
+  --type-heading-md: var(--ref-font-weight-semibold) var(--ref-font-size-24) / var(--ref-line-height-snug) var(--font-body);
+  --type-heading-sm: var(--ref-font-weight-semibold) var(--ref-font-size-20) / var(--ref-line-height-snug) var(--font-body);
+  --type-body-lg: var(--ref-font-weight-regular) var(--ref-font-size-18) / var(--ref-line-height-relaxed) var(--font-body);
+  --type-body-md: var(--ref-font-weight-regular) var(--ref-font-size-16) / var(--ref-line-height-normal) var(--font-body);
+  --type-body-sm: var(--ref-font-weight-regular) var(--ref-font-size-14) / var(--ref-line-height-normal) var(--font-body);
+  --type-label-lg: var(--ref-font-weight-semibold) var(--ref-font-size-16) / var(--ref-line-height-snug) var(--font-body);
+  --type-label-md: var(--ref-font-weight-semibold) var(--ref-font-size-14) / var(--ref-line-height-snug) var(--font-body);
+  --type-label-sm: var(--ref-font-weight-semibold) var(--ref-font-size-12) / var(--ref-line-height-snug) var(--font-body);
+  --type-caption: var(--ref-font-weight-regular) var(--ref-font-size-12) / var(--ref-line-height-normal) var(--font-body);
+  --type-code: var(--ref-font-weight-regular) var(--ref-font-size-14) / var(--ref-line-height-normal) var(--font-code);
+
+  /* MOTION */
+  --motion-duration-fast: var(--ref-duration-120);
+  --motion-duration-spin: var(--ref-duration-700);
 }

@@ -35,3 +35,24 @@ Five things went wrong on the way. All five were caught, and all five are fixed.
 - Three components, not forty. No tables, navigation, or data visualization.
 - No Figma file is attached. The parity mapping is a contract, not an automated check.
 - Automated tools find roughly a third to half of accessibility problems. Zero violations is a floor, not a finish line.
+
+---
+
+## Round 2: foundations and methodology
+
+The first version had tokens and three components. The feedback on it was fair: it showed *what* the tokens were but not *why*, and it only covered color. Round 2 added typography, iconography, space and radius, elevation, a full color wheel, a naming method with a decision log, and usage guidance. This is what went wrong, and what caught it.
+
+### What the assistant got wrong (or let slide)
+
+1. **The v0 rules were not enforced, and the code broke them.** `CLAUDE.md` said "components never use primitives." The Button, TextField and StatusBadge CSS all read `--ref-font-size-14` and `--ref-font-weight-semibold` directly. Nothing checked it, and neither the assistant nor the review noticed. Round 2 added a lint that fails on it, then moved type into semantic tokens (`--type-label-md`).
+2. **The token names were inconsistent.** `--color-action-primary-bg` had the property last. `--color-text-primary` had it first. Same file. Found by auditing our own names while writing the naming guide. Fixed with one grammar and a lint to hold it.
+3. **A lint that only checks the happy path is not a lint.** The first version of the "no raw lengths" rule skipped any line that also contained a `var()`, so `padding: 0.5rem var(--button-pad-x)` passed. Found by injecting that exact defect on purpose. Fixed, retested.
+4. **The checks were tested before they were trusted.** Same lesson as round 1. For this round, five defects were injected (a primitive in a component, a raw hex, a number in a semantic name, a missing dark value, a hard-coded padding) and the lint was confirmed to catch each. The contrast script was confirmed to fail when a text token was deliberately broken.
+5. **Palette choices were made by a rule, not by taste, and that has a cost.** Equal luminance per step makes the contrast promise exact, but yellow and amber look olive in the middle steps. That is written down as a trade-off in the Color page and ADR-005 instead of hidden.
+
+### What a person still decides
+
+- Whether `ref` stays or becomes `primitive` (ADR-003 lists the trigger).
+- Whether the olive yellow is acceptable for a real brand.
+- Whether the rules on the Button page match how the team actually works.
+- Everything the scripts cannot see: plain language, keyboard use, screen reader sense.

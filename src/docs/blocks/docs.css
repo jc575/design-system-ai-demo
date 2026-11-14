@@ -1,0 +1,42 @@
+/* Docs-only styles. Built from the system's own tokens so the docs dogfood the system. Not part of the system. */
+.dx { font: var(--type-body-md); color: var(--color-text-primary); }
+.dx *, .dx *::before, .dx *::after { box-sizing: border-box; }
+.dx-panel { background: var(--color-bg-page); color: var(--color-text-primary); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: var(--space-md) var(--space-lg); }
+.dx-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: var(--space-md); }
+.dx-h { margin: 0 0 var(--space-sm); font: var(--type-label-md); color: var(--color-text-secondary); text-transform: none; }
+.dx-code { font: var(--type-code); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: 0 var(--space-xs); border-radius: var(--radius-control); }
+.dx-callout { border-left: var(--space-xs) solid var(--color-border-focus); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: var(--space-md) var(--space-lg); border-radius: 0 var(--radius-control) var(--radius-control) 0; margin: var(--space-md) 0; }
+.dx-callout > strong:first-child { display: block; font: var(--type-label-md); margin-bottom: var(--space-xs); }
+.dx-callout p { margin: 0 0 var(--space-sm); font: var(--type-body-sm); }
+.dx-callout p:last-child { margin-bottom: 0; }
+.dx-table { width: 100%; border-collapse: collapse; font: var(--type-body-sm); }
+.dx-table th, .dx-table td { text-align: left; vertical-align: top; padding: var(--space-sm) var(--space-md); border-bottom: var(--border-width-default) solid var(--color-border-subtle); }
+.dx-table th { font: var(--type-label-sm); color: var(--color-text-secondary); }
+.dx-swatch { display: inline-block; width: 1.25rem; height: 1.25rem; border-radius: var(--radius-control); border: var(--border-width-default) solid var(--color-border-strong); vertical-align: middle; flex: none; }
+.dx-scroll { overflow-x: auto; }
+.dx-ramp { display: grid; grid-template-columns: 5.5rem repeat(11, minmax(3.4rem, 1fr)); gap: 2px; align-items: stretch; min-width: 48rem; }
+.dx-ramp-name { font: var(--type-label-sm); align-self: center; }
+.dx-cell { padding: var(--space-sm) var(--space-xs); font: var(--type-caption); text-align: center; border-radius: 2px; }
+.dx-cell b { display: block; font: var(--type-label-sm); }
+.dx-anatomy { display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: flex-start; font: var(--type-code); margin: var(--space-md) 0; }
+.dx-anatomy-part { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
+.dx-anatomy-tok { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-control); border: var(--border-width-emphasis) solid currentColor; font: var(--type-code); background: var(--color-bg-raised); }
+.dx-anatomy-cap { font: var(--type-caption); color: var(--color-text-secondary); max-width: 9rem; }
+.dx-flow { display: grid; gap: var(--space-sm); margin: var(--space-md) 0; }
+.dx-step { display: grid; grid-template-columns: 2rem 1fr; gap: var(--space-md); align-items: start; background: var(--color-bg-raised); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: var(--space-md); }
+.dx-step-n { width: 2rem; height: 2rem; display: grid; place-items: center; border-radius: var(--radius-pill); background: var(--color-bg-action); color: var(--color-text-on-action); font: var(--type-label-md); }
+.dx-step p { margin: 0; font: var(--type-body-sm); }
+.dx-step strong { font: var(--type-label-md); }
+.dx-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--space-md); margin: var(--space-md) 0; }
+.dx-card { background: var(--color-bg-raised); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: var(--space-md); display: flex; flex-direction: column; gap: var(--space-sm); }
+.dx-verdict { display: inline-flex; align-items: center; gap: var(--space-xs); font: var(--type-label-sm); }
+.dx-verdict[data-ok='true'] { color: var(--color-text-severity-low); }
+.dx-verdict[data-ok='false'] { color: var(--color-text-danger); }
+.dx-demo { background: var(--color-bg-page); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-control); padding: var(--space-md); display: flex; gap: var(--space-sm); flex-wrap: wrap; align-items: center; }
+.dx-bar { height: 1rem; background: var(--color-bg-action); border-radius: var(--radius-control); }
+.dx-fields { display: grid; gap: var(--space-sm); }
+.dx-fields label { font: var(--type-label-md); display: grid; gap: var(--space-xs); }
+.dx-fields select, .dx-fields input { font: var(--type-body-md); padding: var(--space-xs) var(--space-sm); border: var(--border-width-default) solid var(--color-border-strong); border-radius: var(--radius-control); background: var(--color-bg-raised); color: var(--color-text-primary); }
+.dx-fields select:focus-visible, .dx-fields input:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
+.dx-pre, pre.dx-pre { font: var(--type-code); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: var(--space-md); border-radius: var(--radius-control); overflow-x: auto; }
+.dx-code { white-space: nowrap; }

@@ -14,6 +14,20 @@ The rule is simple: **a property in Figma has a twin in code, with the same name
 - **Instance swap in Figma** becomes a **slot**. Examples: `iconStart`, `iconEnd`. Never one variant per icon.
 - **Variables in Figma** map to **semantic tokens** in code. Same names, same values, one source of truth.
 
+## Token parity: variables to tokens
+
+Figma variables and CSS tokens use the **same names**, just with slashes instead of hyphens.
+
+| Figma variable collection | Modes | Names | Matches |
+| --- | --- | --- | --- |
+| **Primitives** | One | `blue/700`, `space/4` | `--ref-blue-700`, `--ref-space-4` |
+| **Semantic** | **Light** and **Dark** | `color/bg/action/hover` | `--color-bg-action-hover` |
+| **Component** | One | `button/bg/hover` | `--button-bg-hover` |
+
+- The Semantic collection has the two modes. The Primitives collection does not.
+- Components in Figma bind to Semantic variables only, never to Primitives. Same rule as code.
+- The color primitives are generated, so they can be exported to Figma as variables from the same source (`ramps.json`).
+
 ## Why this matters
 
 - A designer can read the Storybook controls and know exactly what the Figma component offers.

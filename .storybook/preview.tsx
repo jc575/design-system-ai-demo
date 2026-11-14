@@ -1,6 +1,8 @@
 import React from 'react';
 import type { Preview } from '@storybook/react';
+import '@fontsource-variable/inter';
 import '../src/tokens/primitives.css';
+import '../src/tokens/primitives.color.css';
 import '../src/tokens/semantic.css';
 import '../src/tokens/base.css';
 
@@ -37,7 +39,18 @@ const preview: Preview = {
     backgrounds: { disable: true },
     a11y: { element: '#storybook-root' },
     options: {
-      storySort: { order: ['Introduction', 'Foundations', 'Components', 'Process'] },
+      storySort: {
+        order: [
+          'Introduction',
+          'Method',
+          ['Start here', 'How naming works', 'Which token do I use', 'Decision log', 'Scaling and contribution', 'Research and sources'],
+          'Foundations',
+          ['Token layers', 'Color', 'Semantic color', 'Typography', 'Iconography', 'Space and radius', 'Elevation, borders and motion', 'Figma to code parity'],
+          'Components',
+          'Guidance',
+          'Process',
+        ],
+      },
     },
   },
 };

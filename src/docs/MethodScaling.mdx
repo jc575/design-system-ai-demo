@@ -1,0 +1,92 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, Steps } from './blocks';
+
+<Meta title="Method/Scaling and contribution" />
+
+# Scaling and contribution
+
+A system scales when other people can add to it **without asking you first**, and when the checks catch what a reviewer would. This page is the contract for both.
+
+## The contribution path
+
+1. **Pick** something from the backlog, or propose a gap you hit.
+2. **Build** it against `CLAUDE.md`. An assistant can draft. A person decides.
+3. **Present** it to peers.
+4. **Pressure test** it: break it, resize it, theme it, tab through it.
+5. **Publish** it.
+
+A checklist, not a gate. People take ownership when the bar is visible and fair. The checklist makes the bar visible. Peers pressure testing makes it fair.
+
+## If you are a designer
+
+<Steps items={[
+  ['Find the token first', 'Open the Semantic color page or the Figma variables panel. Choose by job, not by looks. If you reach for a primitive, stop and ask why.'],
+  ['Name any new thing with the grammar', 'Say it out loud: category, property, role, emphasis, state. If it does not read cleanly, it is not ready.'],
+  ['Show light and dark', 'A proposal without both modes is half a proposal. Use the Semantic collection with Light and Dark modes in Figma.'],
+  ['Name the contrast pair', 'Write down which text or icon sits on this background, and the ratio it must hit. Use the Color page explorer to check your step math.'],
+  ['Match the prop names', 'A Figma property and a code prop have the same name. Boolean for two options, variant for more than two, slot for swappable content.']
+]} />
+
+## If you are a developer
+
+<Steps items={[
+  ['Read CLAUDE.md', 'It is the rules file. Assistants read it too, so human and tool follow the same rules.'],
+  ['Build with semantic tokens only', 'No hex, no primitives, no loose pixel values in component CSS. Component-specific measurements go in a component token.'],
+  ['Write one story per state, plus a Playground', 'Every prop gets a plain-language description in argTypes.'],
+  ['Run the checks', 'npm run lint:tokens, npm run contrast, npm run build-storybook, npm run axe. They run in under a minute.'],
+  ['Open the PR with the checklist', 'The reviewer ticks the boxes. The assistant never approves its own work.']
+]} />
+
+## What each script guards
+
+<Doc>
+
+| Script | What it guards | Fails when |
+| --- | --- | --- |
+| `npm run generate:ramps` | The color palette | You change the contrast targets or hues. It rewrites the file and re-verifies the 500 and 400 rules |
+| `npm run lint:tokens` | Names and layers | A name is off-grammar, a component uses a primitive or raw color, a dark value is missing, a token has no evidence |
+| `npm run contrast` | Every registered pairing, both themes | A pairing falls below its minimum |
+| `npm run axe` | Every story in both themes | axe-core finds a violation |
+| Human review | Everything the scripts cannot see | Plain language, keyboard use, screen reader sense, Figma parity |
+
+</Doc>
+
+Automated tools catch roughly a third to a half of accessibility problems. They are the floor.
+
+## How to add things
+
+### A new semantic token
+1. Name it with the grammar. 2. Add light and dark values in `semantic.css`. 3. Register its contrast pair in `contrast-pairs.mjs`, or write an exemption with a reason. 4. Run the checks. 5. Describe its job in one line.
+
+### A new component
+1. Start with its component tokens, pointed at semantic tokens. 2. Reuse an existing semantic token before proposing a new one. 3. Add stories and run the checks. 4. Add its prefix to the lint's component list.
+
+### A new hue
+Add one line to the `HUES` table in `generate-ramps.mjs` and regenerate. It inherits the contrast promise for free. Then decide whether it needs any semantic tokens, which is a separate proposal.
+
+### A new icon
+One line in `Icon/paths.ts`, drawn on the 24 grid. It appears in the gallery on its own.
+
+## Renames and deprecation
+
+- **New token:** minor version.
+- **Value changed, still passes contrast:** patch.
+- **Renamed or removed token:** major version.
+- When renaming, keep the old name as an alias for one release with a `/* deprecated: use --new-name */` comment, so products can migrate on their own schedule.
+
+## Who decides
+
+A token proposal needs two people: someone who owns design for the system and someone who owns the code. When they disagree, the decision log is the tiebreaker, and the outcome gets written down as a new entry. Nobody needs to attend a meeting to read the reasoning.
+
+## Onboarding in three days
+
+- **Day 1:** Read Start here, How naming works and Token layers. Switch the theme in the toolbar and watch the same component change.
+- **Day 2:** Fix something small. Change a token, run the checks, and read what they say.
+- **Day 3:** Add something small, like an icon or a story. Open the PR. Ask for a review.
+
+## Honest limits: what does not scale yet
+
+- One repo, one brand, two modes. Multi-brand needs a theme axis (see "What we did not decide yet" in the Decision log).
+- Tokens live in CSS. A larger system would move them to a source file and generate CSS, Figma variables and mobile formats from it.
+- The registry of contrast pairs is a flat list. At a few hundred tokens it needs grouping.
+- Review is by people. That is the goal, but it is also a throughput limit.
