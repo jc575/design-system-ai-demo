@@ -40,3 +40,16 @@
 .dx-fields select:focus-visible, .dx-fields input:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
 .dx-pre, pre.dx-pre { font: var(--type-code); background: var(--color-bg-sunken); color: var(--color-text-primary); padding: var(--space-md); border-radius: var(--radius-control); overflow-x: auto; }
 .dx-code { white-space: nowrap; }
+
+/* Token-styled radio and checkbox used by the interactive docs blocks */
+.dx-choice { position: relative; display: flex; gap: var(--space-sm); align-items: center; font: var(--type-body-sm); color: var(--color-text-primary); cursor: pointer; min-height: 1.75rem; }
+.dx-choice input { position: absolute; inset: 0 auto auto 0; width: 1.25rem; height: 1.25rem; margin: 0; opacity: 0; cursor: pointer; }
+.dx-choice__mark { flex: none; box-sizing: border-box; width: 1.25rem; height: 1.25rem; border: var(--border-width-default) solid var(--color-border-strong); background: var(--color-bg-page); display: grid; place-items: center; }
+.dx-choice[data-type='radio'] .dx-choice__mark { border-radius: 50%; }
+.dx-choice[data-type='checkbox'] .dx-choice__mark { border-radius: var(--radius-control); }
+.dx-choice[data-checked] .dx-choice__mark { border-color: var(--color-bg-action); background: var(--color-bg-action); }
+.dx-choice[data-type='radio'][data-checked] .dx-choice__mark::after { content: ''; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--color-text-on-action); }
+.dx-choice[data-type='checkbox'][data-checked] .dx-choice__mark::after { content: ''; width: 0.3rem; height: 0.6rem; margin-top: -0.1rem; border: solid var(--color-text-on-action); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.dx-choice input:focus-visible + .dx-choice__mark { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
+.dx-fields label.dx-choice { display: flex; gap: var(--space-sm); font: var(--type-body-sm); }
+.dx-fields .dx-choice input { padding: 0; border: 0; background: transparent; }

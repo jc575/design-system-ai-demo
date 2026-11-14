@@ -406,6 +406,15 @@ export const Steps = ({ items }: { items: [string, string][] }) => (
 
 /* ---------- BUTTON PICKER (interactive decision matrix) ---------- */
 type Intent = 'advance' | 'back' | 'minor' | 'remove' | 'navigate';
+type ChoiceProps = { type: 'radio' | 'checkbox'; name?: string; checked: boolean; onChange: () => void; children: React.ReactNode };
+/** Token-styled radio or checkbox. The filled look comes straight from React state, not from the browser's native control, so it always matches the real value. */
+const Choice = ({ type, name, checked, onChange, children }: ChoiceProps) => (
+  <label className="dx-choice" data-type={type} data-checked={checked || undefined}>
+    <input type={type} name={name} checked={checked} onChange={onChange} />
+    <span className="dx-choice__mark" aria-hidden="true" />
+    <span>{children}</span>
+  </label>
+);
 const INTENTS: [Intent, string][] = [
   ['advance', 'Move the main task forward (save, submit, continue)'],
   ['back', 'Back out, cancel, or choose the other path'],
@@ -434,20 +443,14 @@ export const ButtonPickerUI = () => {
       <fieldset style={{ border: 0, margin: 0, padding: 0 }} className="dx-fields">
         <legend className="dx-h">What is this action?</legend>
         {INTENTS.map(([v, l]) => (
-          <label key={v} style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center', font: 'var(--type-body-sm)' }}>
-            <input type="radio" name={groupName} checked={intent === v} onChange={() => setIntent(v)} />{l}
-          </label>
+          <Choice key={v} type="radio" name={groupName} checked={intent === v} onChange={() => setIntent(v)}>{l}</Choice>
         ))}
       </fieldset>
       {intent === 'remove' && (
-        <label style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center', font: 'var(--type-body-sm)', marginTop: 'var(--space-sm)' }}>
-          <input type="checkbox" checked={confirmStep} onChange={(e) => setConfirmStep(e.target.checked)} />This is the final confirm step inside a dialog
-        </label>
+        <Choice type="checkbox" checked={confirmStep} onChange={() => setConfirmStep((v) => !v)}>This is the final confirm step inside a dialog</Choice>
       )}
       {intent === 'back' && (
-        <label style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center', font: 'var(--type-body-sm)', marginTop: 'var(--space-sm)' }}>
-          <input type="checkbox" checked={alone} onChange={(e) => setAlone(e.target.checked)} />There is no primary button next to it
-        </label>
+        <Choice type="checkbox" checked={alone} onChange={() => setAlone((v) => !v)}>There is no primary button next to it</Choice>
       )}
       <div className="dx-demo" style={{ marginTop: 'var(--space-md)' }} aria-live="polite">
         {'link' in result ? (
