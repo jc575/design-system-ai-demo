@@ -1,0 +1,51 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, DoDont } from '../docs/blocks';
+import { Button } from '../components/Button/Button';
+import { Icon } from '../components/Icon/Icon';
+
+<Meta title="Patterns/Empty state" />
+
+# Empty state
+
+What a page shows when there is nothing to show yet. It is the first thing a new person sees, so it is a teaching moment, not an error.
+
+<div className="dx">
+<div style={{ background: 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-2xl) var(--space-lg)', display: 'grid', justifyItems: 'center', gap: 'var(--space-md)', textAlign: 'center' }}>
+<span style={{ color: 'var(--color-icon-secondary)' }}><Icon name="shield-check" size="xl" /></span>
+<div style={{ font: 'var(--type-heading-sm)' }}>No rules yet</div>
+<div style={{ font: 'var(--type-body-md)', color: 'var(--color-text-secondary)', maxWidth: '24rem' }}>Rules decide what gets blocked or allowed. Create one to start protecting your groups.</div>
+<div style={{ display: 'flex', gap: 'var(--space-sm)', flexWrap: 'wrap', justifyContent: 'center' }}>
+<Button label="Create your first rule" size="lg" />
+<Button label="Learn how rules work" emphasis="tertiary" size="lg" />
+</div>
+</div>
+</div>
+
+**Components used:** Button (primary, tertiary), Icon. **Surface tokens:** `--color-bg-raised`, `--color-icon-secondary`, `--radius-surface`, `--space-2xl`, `--type-heading-sm`, `--type-body-md`.
+
+## The rules
+
+1. **Say what belongs here and why it matters**, in one or two plain sentences.
+2. **One primary action.** The thing most people came to do.
+3. **One quiet helper.** A tertiary link to learn more. Not a second primary.
+4. **Do not blame.** "No rules yet" is friendlier than "No results found."
+5. **Different empties need different words.** "Nothing here yet" (first use), "No matches for your filters" (with a way to clear them) and "Nothing needs attention" (a good thing) are three states, not one.
+6. **The icon is decoration.** It is hidden from screen readers. The heading carries the meaning.
+
+## Do and don't
+
+<div className="dx-pair">
+<DoDont ok title="Explain, then offer the first step" why="A new person learns what the page is for and has an obvious next action.">
+<Button label="Create your first rule" />
+<Button label="Learn how rules work" emphasis="tertiary" />
+</DoDont>
+<DoDont ok={false} title="A blank table" why="An empty grid with column headers looks broken, and gives no next step.">
+<span style={{ font: 'var(--type-body-sm)', color: 'var(--color-text-secondary)' }}>Name | Status | Owner</span>
+</DoDont>
+</div>
+
+## Edge cases to design for
+
+- **First use** versus **filtered to nothing** versus **cleared everything.** Different copy, different action.
+- **No permission.** Say so, and say who can grant it.
+- **Load failed.** That is an error state, not an empty state.

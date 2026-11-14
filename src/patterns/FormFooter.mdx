@@ -1,0 +1,44 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, DoDont } from '../docs/blocks';
+import { Button } from '../components/Button/Button';
+
+<Meta title="Patterns/Form footer" />
+
+# Form footer
+
+The row of buttons at the end of a form. It looks trivial and is where most forms go wrong.
+
+<div className="dx"><div className="dx-demo">
+<Button label="Cancel" emphasis="secondary" />
+<Button label="Save policy" emphasis="primary" />
+</div></div>
+
+**Components used:** Button (primary, secondary). **Tokens:** inherited from Button. See its page for the full list.
+
+## The rules
+
+1. **One primary, and it names the outcome.** "Save policy," not "Submit."
+2. **Cancel is secondary, next to the primary.** It is a real choice, so it gets a border, but it does not outshine Save.
+3. **Same size, same row.** Do not mix sizes in a group.
+4. **Primary first or last? Pick one and keep it the same everywhere.** Carbon puts the primary on the left in full-page forms and on the right in dialogs, and we follow that.
+5. **Do not disable Save to hide a problem.** Leave it enabled and show a clear error on the field that needs fixing. A disabled button cannot be focused or explain itself. This is our rule, not a standard.
+6. **Saving shows progress.** Use the Button `loading` state. The label and width stay the same, and screen readers hear "Loading."
+
+## Do and don't
+
+<div className="dx-pair">
+<DoDont ok title="One primary, one way out" why="People can tell the main path at a glance.">
+<Button label="Cancel" emphasis="secondary" />
+<Button label="Save policy" />
+</DoDont>
+<DoDont ok={false} title="Two primaries, vague labels" why="'Save' and 'Submit' next to each other make people stop and read. Decide which one matters.">
+<Button label="Submit" />
+<Button label="Save" />
+</DoDont>
+</div>
+
+## Edge cases to design for
+
+- A long form: repeat the footer as a sticky bar so Save is always reachable.
+- A save that can fail: keep the person's input, say what happened in plain words, and let them retry.
+- Unsaved changes on Cancel: confirm with a dialog (see Destructive confirmation).

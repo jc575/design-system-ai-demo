@@ -11,7 +11,10 @@
     "axe": "node scripts/axe.mjs",
     "generate:ramps": "node scripts/generate-ramps.mjs",
     "lint:tokens": "node scripts/lint-tokens.mjs",
-    "check": "npm run lint:tokens && npm run contrast && npm run build-storybook && npm run axe"
+    "check": "npm run lint:tokens && npm run contrast && npm run build-storybook && npm run axe",
+    "generate:docs": "node scripts/component-tokens.mjs",
+    "prebuild-storybook": "node scripts/component-tokens.mjs",
+    "prestorybook": "node scripts/component-tokens.mjs"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

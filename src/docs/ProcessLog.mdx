@@ -4,55 +4,99 @@ import { Meta } from '@storybook/blocks';
 
 # Process log
 
-How this prototype was built, and what the checks found. Nothing here is tidied up after the fact.
+This page is about how the work was run, not just what came out. The short version: Jeremy set the direction and the standards, the assistant drafted fast, and scripts plus a human review decided what was allowed to stay. Nothing here is tidied up after the fact. Where the assistant got something wrong, it says so.
 
-## The loop
+## How the work is steered
 
-1. **Rules first.** `CLAUDE.md` holds the system's decisions: prop rules, token layers, accessibility floor, review checklist.
-2. **The assistant drafts** tokens, components, stories and docs against those rules.
-3. **Scripts check the work.** `npm run contrast` computes WCAG ratios for 16 token pairs in both themes. `npm run axe` runs axe-core on every story in both themes.
-4. **A person reviews** with the checklist. The assistant does not approve its own work.
+1. **Rules first.** `CLAUDE.md` holds the decisions the assistant must follow: token layers, naming grammar, accessibility floor, review checklist. Rules live in a file, not in anyone's head.
+2. **A person sets direction in plain language.** Each round started with Jeremy saying what was missing or confusing, not with a spec.
+3. **The assistant drafts.** Tokens, components, stories and docs, against the rules.
+4. **Scripts check what scripts can check.** Contrast, token lint, axe, build.
+5. **A person looks at everything the scripts cannot see.** Screenshots in light, dark and phone width, plus reading the pages as a newcomer would.
+6. **Every check gets tested before it is trusted.** A check that has never failed has never proven it can.
 
-## What the checks found
+## Phase 1: Foundation
 
-Five things went wrong on the way. All five were caught, and all five are fixed.
+**Jeremy's direction:** Prove that AI speed and design system rigor can coexist. Three components, two themes, tokens in layers, accessibility built in.
 
-1. **The contrast script reported "all pass" without reading the dark theme.** The first run printed identical numbers for light and dark. That was the tell. The script's CSS parser was matching the wrong blocks, then treated comments as part of selectors. Fixed, rerun, and all 32 checks (16 pairs, 2 themes) now pass on real dark values.
-2. **TypeScript could not find the CSS imports.** The assistant did not declare module types for the component stylesheets. One line in `vite-env.d.ts` fixed it.
-3. **The docs page claimed the toolbar theme would change the swatches. It does not.** Docs pages ignore the toolbar. Caught by looking at a screenshot in dark mode, not by a script. The page now shows both themes side by side.
-4. **A clean scan is not proof by itself.** Axe reported zero violations on the first run, so the scanner was tested with three known defects (low contrast, a missing image description, an unlabeled input). It caught all three, then the real stories were scanned again.
-5. **Token names in the dark docs panel were unreadable.** Storybook's docs styles put a pale background behind `code`, so light text sat on a light pill. Axe only scans stories, not docs pages, so it could not catch this. A screenshot did. Lesson: automated checks have a coverage boundary, and a human still has to look at everything the scripts do not reach.
+**What was built:** primitive and semantic tokens, Button, TextField, StatusBadge, stories, a contrast script and an axe scan.
 
-## What a person still has to do
+**How it was validated**
+- Contrast ratios computed for token pairs in both themes.
+- Axe scanned every story in light and dark.
 
-- Keyboard only walkthrough of every component.
-- Screen reader pass (axe cannot judge whether a label makes sense).
-- Plain language review of every label and message.
-- Confirm prop names against the real Figma file.
+**What went wrong**
+1. **The contrast script said "all pass" without reading the dark theme.** Identical numbers for light and dark were the tell. The parser was matching the wrong blocks. Fixed and rerun.
+2. **The docs page claimed the toolbar theme would change the swatches. It does not.** Caught by a screenshot in dark mode. The page now shows both themes.
+3. **A clean axe scan was not trusted on its own.** The scanner was tested with three known defects, and it caught all three before the real stories were rescanned.
+4. **Token names in the dark docs panel were unreadable.** Axe did not scan docs pages at the time. A screenshot caught it.
+
+## Phase 2: Foundations and method
+
+**Jeremy's direction:** Foundations are more than color. Add typography, iconography, space and radius, elevation. Define a full color wheel. Make the naming convention explain itself, including why `ref` is confusing and what the semantic layer is for. Add usage guidance with a decision matrix. Research Carbon, Material and others. Write it so a new designer can read it and a new developer can scale it.
+
+**What was built**
+- A generated color wheel where every step is defined by contrast against white, so the same step has the same luminance on every hue.
+- One naming grammar, with a Method section that shows the decisions behind it, a decision log, and a "which token do I use" page.
+- Typography, iconography, space and radius, and elevation foundations.
+- A lint that fails on grammar breaks, primitives in components, raw colors, literal lengths and missing dark values.
+- A rule that no color token ships without a registered contrast pair or a written exemption.
+
+**How it was validated**
+- Five defects were injected on purpose (a primitive in a component, a raw hex, a number in a semantic name, a missing dark value, a hard coded padding). The lint had to catch each one.
+- A text token was deliberately broken to confirm the contrast script fails.
+- Axe now scans docs pages as well as stories.
+- Claims were checked against the sources actually read (Nathan Curtis, Atlassian, Carbon, Material Web).
+
+**What went wrong**
+1. **The v0 rules were not enforced, and the code broke them.** Components read primitives directly. Nothing checked it. The lint now does.
+2. **Token names were inconsistent.** Property first in one name, last in another. Found while writing the naming guide.
+3. **The first lint skipped any line containing `var()`**, so `padding: 0.5rem var(--button-pad-x)` slipped through. Found by injecting it. Fixed.
+4. **The evidence rule flagged elevation tokens.** It was scoped too widely. Now it applies to color tokens only.
+5. **Docs problems:** markdown tables rendered as raw pipes, callouts did not render markdown, color wheel labels were clipped, links failed contrast, and one table overflowed on a phone. All found by looking, then fixed.
+6. **Two wrong claims were removed.** A WCAG criterion was cited for something it does not cover, and an attribution to Carbon was inaccurate. Both were caught on a read-through, not by a script.
+7. **A trade-off was hidden before it was written down.** Equal-luminance ramps make yellow and amber look olive in the middle steps. That cost is now stated in the Color page and the decision log.
+
+## Phase 3: Findability
+
+**Jeremy's direction:** Where should guidance live? Keep the do and don't pairs, but put them where people will find them. Show which tokens each component uses, the way Carbon does. Add examples that combine components. Scale it like atomic design without making it heavy for a four component system.
+
+**What changed**
+- Guidance moved off separate pages and into each component page: when to use it, props, tokens used, states, accessibility, and the do and don't pairs.
+- **Tokens used** is now generated from the component CSS on every build, with each token's semantic source and resolved value in both themes. It cannot go stale.
+- A **Patterns** section for work that spans components: form footer, destructive confirmation, empty state.
+- The sidebar reads as a ladder: Foundations, then Components, then Patterns. No atom and molecule vocabulary, because four components do not need it.
+
+**How it was validated**
+- Token lint: 199 primitives, 86 semantic tokens, 48 contrast pairs, 9 written exemptions, all passing.
+- Contrast: 96 checks (48 pairs in two themes), all passing.
+- Storybook build, then axe across 24 stories in two themes plus every docs page.
+
+**What went wrong**
+1. **The first axe pass on the new component pages found a real problem.** The generated tokens table scrolls on small screens, but keyboard users could not reach it. It is now a focusable labeled region.
+2. **The pattern pages called icons that do not exist.** The assistant wrote `trash` and `plus` from habit. The icon set has nine icons and neither is one. Caught by checking the examples against the actual set before trusting the build, and removed.
+3. **One source could not be read.** The Carbon Storybook page Jeremy linked renders with JavaScript, so its token tables were not read directly. The tokens used idea came from Jeremy's description, and the implementation is our own.
+4. **The deploy could not be confirmed from this environment.** The hosting domain is not reachable from here, so the live site needs a human look after each push.
+
+## What a person still decides
+
+- Whether `ref` stays or becomes `primitive`. ADR-003 lists the trigger to revisit.
+- Whether the olive yellow works for a real brand.
+- Whether the Button rules match how a real team works.
+- Plain language, keyboard use and screen reader sense. Axe cannot judge them.
+- Whether Patterns earns its place at four components, or should wait until a fifth shows up.
+
+## Hands-on edits by Jeremy
+
+*Three edits made directly in the codebase, with what he changed and why. To be filled in by Jeremy so this reads in his voice.*
+
+1. **Edit one:** FILL IN
+2. **Edit two:** FILL IN
+3. **Edit three:** FILL IN
 
 ## Honest limits
 
-- Three components, not forty. No tables, navigation, or data visualization.
-- No Figma file is attached. The parity mapping is a contract, not an automated check.
+- Four components, not forty. No tables, navigation, dialogs or data visualization. The destructive confirmation pattern shows the tokens a dialog would use. It does not ship a dialog.
+- No Figma file is attached. Figma to code parity is a written contract, not an automated check.
 - Automated tools find roughly a third to half of accessibility problems. Zero violations is a floor, not a finish line.
-
----
-
-## Round 2: foundations and methodology
-
-The first version had tokens and three components. The feedback on it was fair: it showed *what* the tokens were but not *why*, and it only covered color. Round 2 added typography, iconography, space and radius, elevation, a full color wheel, a naming method with a decision log, and usage guidance. This is what went wrong, and what caught it.
-
-### What the assistant got wrong (or let slide)
-
-1. **The v0 rules were not enforced, and the code broke them.** `CLAUDE.md` said "components never use primitives." The Button, TextField and StatusBadge CSS all read `--ref-font-size-14` and `--ref-font-weight-semibold` directly. Nothing checked it, and neither the assistant nor the review noticed. Round 2 added a lint that fails on it, then moved type into semantic tokens (`--type-label-md`).
-2. **The token names were inconsistent.** `--color-action-primary-bg` had the property last. `--color-text-primary` had it first. Same file. Found by auditing our own names while writing the naming guide. Fixed with one grammar and a lint to hold it.
-3. **A lint that only checks the happy path is not a lint.** The first version of the "no raw lengths" rule skipped any line that also contained a `var()`, so `padding: 0.5rem var(--button-pad-x)` passed. Found by injecting that exact defect on purpose. Fixed, retested.
-4. **The checks were tested before they were trusted.** Same lesson as round 1. For this round, five defects were injected (a primitive in a component, a raw hex, a number in a semantic name, a missing dark value, a hard-coded padding) and the lint was confirmed to catch each. The contrast script was confirmed to fail when a text token was deliberately broken.
-5. **Palette choices were made by a rule, not by taste, and that has a cost.** Equal luminance per step makes the contrast promise exact, but yellow and amber look olive in the middle steps. That is written down as a trade-off in the Color page and ADR-005 instead of hidden.
-
-### What a person still decides
-
-- Whether `ref` stays or becomes `primitive` (ADR-003 lists the trigger).
-- Whether the olive yellow is acceptable for a real brand.
-- Whether the rules on the Button page match how the team actually works.
-- Everything the scripts cannot see: plain language, keyboard use, screen reader sense.
+- The scripts prove the rules are followed. They cannot prove the rules are right. That is the human job.

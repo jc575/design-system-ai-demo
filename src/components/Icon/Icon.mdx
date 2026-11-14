@@ -1,0 +1,35 @@
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import { ComponentTokens, IconGallery } from '../../docs/blocks';
+import * as S from './Icon.stories';
+
+<Meta of={S} />
+
+# Icon
+
+One component for every icon in the system. Sized by token, colored by the text next to it unless you say otherwise, and hidden from screen readers unless it carries meaning on its own.
+
+<Canvas of={S.Playground} />
+
+## When to use it
+
+- **Beside a label** to help people scan. The word does the work. Default `tone="inherit"` and a size that matches the text.
+- **On its own** only when the meaning is universal and it has an accessible `label`. Icon-only buttons are not in v1.
+- **Never as the only signal.** Severity uses a different shape per level, plus a word.
+
+The size table, color rules, accessibility rules and the do and don't pair live on **Foundations, Iconography**. This page is the component: its props, tokens and states.
+
+## The set
+
+<IconGallery />
+
+## Tokens used
+
+<ComponentTokens name="Icon" />
+
+## Props
+
+<Controls of={S.Playground} />
+
+## Every state
+
+<Stories includePrimary={false} title="" />

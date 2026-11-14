@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button } from './Button';
 import { Icon } from '../Icon/Icon';
+import { ButtonPickerUI } from '../../docs/blocks';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
   component: Button,
-  tags: ['autodocs'],
   argTypes: {
     label: { description: 'Visible text. Required.', control: 'text' },
     emphasis: {
@@ -42,3 +42,6 @@ export const Sizes: Story = {
     </div>
   ),
 };
+
+/** Interactive decision aid. Lives here so it is scanned by the accessibility checks like any story. */
+export const WhichButton: Story = { render: () => <ButtonPickerUI />, parameters: { layout: 'padded' } };

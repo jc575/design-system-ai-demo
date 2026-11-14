@@ -5,7 +5,6 @@ import { ICON_NAMES } from './paths';
 const meta: Meta<typeof Icon> = {
   title: 'Components/Icon',
   component: Icon,
-  tags: ['autodocs'],
   argTypes: {
     name: { description: 'Which icon. A named union of every icon in the set.', control: 'select', options: ICON_NAMES },
     size: { description: 'Four sizes, so this is a variant. sm 16, md 20, lg 24, xl 32.', control: 'inline-radio', options: ['sm', 'md', 'lg', 'xl'] },

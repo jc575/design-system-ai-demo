@@ -5,6 +5,7 @@ import semanticCss from '../../tokens/semantic.css?raw';
 import { Icon } from '../../components/Icon/Icon';
 import { ICON_NAMES } from '../../components/Icon/paths';
 import { Button } from '../../components/Button/Button';
+import compTokens from './componentTokens.json';
 
 type Theme = 'light' | 'dark';
 
@@ -417,6 +418,47 @@ export const ButtonPickerUI = () => {
           <strong>{'link' in result ? 'Use a link' : `${result.emphasis}${result.destructive ? ' + destructive' : ''}`}.</strong> {result.why}
         </span>
       </div>
+    </div>
+  );
+};
+
+/* ---------- TOKENS USED BY A COMPONENT (generated from the component's CSS) ---------- */
+type TokenRow = { name: string; where: string; value: string; semantic: string | null; refLight: string | null; refDark: string | null; hexLight: string | null; hexDark: string | null };
+const Chip = ({ hex, text }: { hex: string | null; text: string }) => (
+  <span style={{ display: 'inline-flex', gap: 'var(--space-xs)', alignItems: 'center' }}>
+    {hex && hex.startsWith('#') && <span className="dx-swatch" style={{ background: hex }} aria-hidden="true" />}
+    <code className="dx-code">{text}</code>
+  </span>
+);
+export const ComponentTokens = ({ name }: { name: 'Button' | 'TextField' | 'StatusBadge' | 'Icon' }) => {
+  const data = (compTokens as Record<string, { tokens: TokenRow[]; direct: string[] }>)[name];
+  const rows = data.tokens.filter((r) => r.semantic || r.value);
+  return (
+    <div className="dx">
+      <p style={{ font: 'var(--type-body-sm)', margin: '0 0 var(--space-sm)' }}>
+        Generated from <code className="dx-code">{name}.css</code> on every build, so it cannot go stale. Read each row left to right: the component token, which variant sets it, the semantic token it points at, and what that resolves to in each theme.
+      </p>
+      <div className="dx-scroll" tabIndex={0} role="region" aria-label={`${name} tokens table, scrollable`}>
+        <table className="dx-table">
+          <thead><tr><th>Component token</th><th>Set when</th><th>Points at</th><th>Light</th><th>Dark</th></tr></thead>
+          <tbody>
+            {rows.map((r, i) => (
+              <tr key={r.name + r.where + i}>
+                <td><code className="dx-code">{r.name}</code></td>
+                <td>{r.where}</td>
+                <td>{r.semantic ? <code className="dx-code">{r.semantic}</code> : <span>{r.value}</span>}</td>
+                <td>{r.semantic ? <Chip hex={r.hexLight} text={r.refLight ? r.refLight.replace('--ref-', '') : r.hexLight ?? 'composite'} /> : 'n/a'}</td>
+                <td>{r.semantic ? <Chip hex={r.hexDark} text={r.refDark ? r.refDark.replace('--ref-', '') : r.hexDark ?? 'composite'} /> : 'n/a'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {data.direct.length > 0 && (
+        <p style={{ font: 'var(--type-body-sm)', marginTop: 'var(--space-sm)' }}>
+          <strong>Semantic tokens used directly:</strong> {data.direct.map((t) => <code key={t} className="dx-code" style={{ marginRight: 'var(--space-xs)' }}>{t}</code>)}
+        </p>
+      )}
     </div>
   );
 };

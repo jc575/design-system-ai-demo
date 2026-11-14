@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, DoDont } from '../docs/blocks';
+import { Button } from '../components/Button/Button';
+
+<Meta title="Patterns/Destructive confirmation" />
+
+# Destructive confirmation
+
+How to ask "are you sure?" without training people to click through it.
+
+<div className="dx">
+<div role="group" aria-label="Example dialog" style={{ background: 'var(--color-bg-overlay)', boxShadow: 'var(--elevation-modal)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-lg)', maxWidth: '28rem', display: 'grid', gap: 'var(--space-md)' }}>
+<div style={{ font: 'var(--type-heading-sm)' }}>Delete "Block risky downloads"?</div>
+<div style={{ font: 'var(--type-body-md)', color: 'var(--color-text-secondary)' }}>This rule protects 14 groups. You cannot undo this.</div>
+<div style={{ display: 'flex', gap: 'var(--space-sm)', justifyContent: 'flex-end' }}>
+<Button label="Cancel" emphasis="secondary" />
+<Button label="Delete rule" emphasis="primary" destructive />
+</div>
+</div>
+</div>
+
+**Components used:** Button (secondary, destructive primary). **Surface tokens:** `--color-bg-overlay`, `--elevation-modal`, `--radius-surface`, `--space-lg`, `--type-heading-sm`, `--type-body-md`.
+
+## The flow
+
+1. **The first click is quiet.** The trigger on the page is a secondary or tertiary destructive button. It should never be the loudest thing on the screen.
+2. **The dialog names the thing.** "Delete 'Block risky downloads'?" not "Are you sure?"
+3. **It says the consequence.** What is lost, who is affected, whether it can be undone.
+4. **The confirm button repeats the action.** "Delete rule," not "OK" or "Yes." It is the one place a destructive primary belongs.
+5. **Cancel is secondary, and it is the default focus.** On open, focus lands on the safe choice, so pressing Enter by reflex does not delete anything. (Check this in your implementation. Our Button does not manage dialog focus.)
+6. **Escape closes the dialog and does nothing.**
+
+## Do and don't
+
+<div className="dx-pair">
+<DoDont ok title="Name it, say the consequence, repeat the action" why="The dialog still makes sense if someone only reads the buttons.">
+<Button label="Cancel" emphasis="secondary" />
+<Button label="Delete rule" destructive />
+</DoDont>
+<DoDont ok={false} title="Generic question, generic buttons" why="'Are you sure?' with Yes and No makes people read the whole dialog to learn what Yes does.">
+<Button label="No" emphasis="secondary" />
+<Button label="Yes" destructive />
+</DoDont>
+</div>
+
+## When not to use a dialog
+
+If the action can be undone, skip the dialog and offer **Undo** for a few seconds. Confirmation dialogs get clicked through. Undo does not.
+
+## Honest limit
+
+v1 has no Dialog component. This page shows the pattern using the tokens a Dialog would use. Building it means focus trapping, return focus and scroll lock, which is its own accessibility review.

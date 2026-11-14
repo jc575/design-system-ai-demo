@@ -4,7 +4,6 @@ import { StatusBadge } from './StatusBadge';
 const meta: Meta<typeof StatusBadge> = {
   title: 'Components/StatusBadge',
   component: StatusBadge,
-  tags: ['autodocs'],
   argTypes: {
     severity: {
       description: 'Five levels, so this is a variant. Each level has its own word and icon shape.',

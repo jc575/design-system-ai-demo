@@ -1,19 +1,26 @@
-import { Meta } from '@storybook/blocks';
-import { Doc, Callout, DoDont, ButtonPickerUI } from './blocks';
-import { Button } from '../components/Button/Button';
-import { Icon } from '../components/Icon/Icon';
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import { Doc, Callout, DoDont, ButtonPickerUI, ComponentTokens } from '../../docs/blocks';
+import { Button } from './Button';
+import { Icon } from '../Icon/Icon';
+import * as ButtonStories from './Button.stories';
 
-<Meta title="Guidance/Button usage" />
+<Meta of={ButtonStories} />
 
-# Button usage
+# Button
 
 A button says **"do this."** The question is never "which button looks nice?" It is "how important is this action, and what happens if someone clicks it by mistake?"
 
-## Pick a button in a few questions
+<Canvas of={ButtonStories.Playground} />
+
+**On this page:** when to use it, real situations, do and don't, rules, tokens used, accessibility, props and every state.
+
+## When to use which
+
+### Pick a button in a few questions
 
 <ButtonPickerUI />
 
-## The decision matrix
+### The decision matrix
 
 <Doc>
 
@@ -122,13 +129,26 @@ An empty page has one job. One big primary, one quiet helper.
 8. **Disabled is a last resort.** A disabled button cannot be focused and cannot explain itself. Prefer leaving it enabled and showing a clear error on click. (This is our rule, not a standard. It trades a click for clarity.)
 9. **Order is a convention. Pick one and keep it.** Carbon puts the primary on the left in full-page layouts and on the bottom right in dialogs. We follow that, and what matters most is that it is the same across the product.
 
-## Accessibility notes
+## Tokens used
+
+<ComponentTokens name="Button" />
+
+## Accessibility
 
 - Every button has a **visible text label**. v1 has no icon-only button on purpose.
 - Focus ring: 2px, 3:1 against the surface, in both themes.
 - All button text and fills are registered contrast pairs, including hover and pressed.
 - Touch target: the medium button is 40px tall. WCAG 2.2 sets 24px as the AA minimum and recommends 44px, so use large for touch-first screens.
 - The loading state sets `aria-busy` and says "Loading" to assistive tech.
+
+
+## Props
+
+<Controls of={ButtonStories.Playground} />
+
+## Every state
+
+<Stories includePrimary={false} title="" />
 
 ## Where these rules come from
 

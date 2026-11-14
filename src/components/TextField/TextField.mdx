@@ -1,10 +1,15 @@
-import { Meta } from '@storybook/blocks';
-import { Doc, DoDont } from './blocks';
-import { TextField } from '../components/TextField/TextField';
+import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
+import { Doc, Callout, DoDont, ComponentTokens } from '../../docs/blocks';
+import { TextField } from './TextField';
+import * as S from './TextField.stories';
 
-<Meta title="Guidance/TextField usage" />
+<Meta of={S} />
 
-# TextField usage
+# TextField
+
+A text field is where someone tells you something. Most problems with forms are really problems with *labels and error messages*, not with the box.
+
+<Canvas of={S.Playground} />
 
 A text field is where someone tells you something. Most problems with forms are really problems with *labels and error messages*, not with the box.
 
@@ -54,10 +59,22 @@ Use this shape: **what happened, then how to fix it, in plain words.**
 
 </Doc>
 
-## Accessibility notes
+## Tokens used
+
+<ComponentTokens name="TextField" />
+
+## Accessibility
 
 - The label is tied to the input, so tapping it focuses the field and screen readers announce it.
 - "Required" is written in text, "(required)", and not only an asterisk.
 - Helper and error text are linked with `aria-describedby`. Errors are announced when they appear.
 - Input text is 16px, so mobile Safari does not zoom in.
 - The border meets 3:1 against the surface (`--color-border-strong`). Error state uses a thicker border, a different color and an icon with words.
+
+## Props
+
+<Controls of={S.Playground} />
+
+## Every state
+
+<Stories includePrimary={false} title="" />

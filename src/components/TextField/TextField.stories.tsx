@@ -6,7 +6,6 @@ import { Icon } from '../Icon/Icon';
 const meta: Meta<typeof TextField> = {
   title: 'Components/TextField',
   component: TextField,
-  tags: ['autodocs'],
   argTypes: {
     label: { description: 'Visible label. Required. Placeholder is never a label.', control: 'text' },
     helperText: { description: 'Short help under the field. Linked to the input for screen readers.', control: 'text' },
