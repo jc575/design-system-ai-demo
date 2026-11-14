@@ -1,6 +1,7 @@
 import { Meta } from '@storybook/blocks';
 import { Doc, Callout, DoDont } from '../docs/blocks';
 import { Button } from '../components/Button/Button';
+import { Icon } from '../components/Icon/Icon';
 
 <Meta title="Patterns/Destructive confirmation" />
 
@@ -14,12 +15,12 @@ How to ask "are you sure?" without training people to click through it.
 <div style={{ font: 'var(--type-body-md)', color: 'var(--color-text-secondary)' }}>This rule protects 14 groups. You cannot undo this.</div>
 <div style={{ display: 'flex', gap: 'var(--space-sm)', justifyContent: 'flex-end' }}>
 <Button label="Cancel" emphasis="secondary" />
-<Button label="Delete rule" emphasis="primary" destructive />
+<Button label="Delete rule" emphasis="primary" destructive iconStart={<Icon name="trash" size="sm" />} />
 </div>
 </div>
 </div>
 
-**Components used:** Button (secondary, destructive primary). **Surface tokens:** `--color-bg-overlay`, `--elevation-modal`, `--radius-surface`, `--space-lg`, `--type-heading-sm`, `--type-body-md`.
+**Components used:** Button (secondary, destructive primary), Icon. **Surface tokens:** `--color-bg-overlay`, `--elevation-modal`, `--radius-surface`, `--space-lg`, `--type-heading-sm`, `--type-body-md`.
 
 ## The flow
 

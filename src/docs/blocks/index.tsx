@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import './docs.css';
 import ramps from '../../tokens/ramps.json';
 import semanticCss from '../../tokens/semantic.css?raw';
@@ -272,18 +272,58 @@ export const TypeSpecimen = () => (
 );
 
 /* ---------- ICONOGRAPHY ---------- */
-export const IconGallery = () => (
-  <div className="dx">
-    <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(8.5rem, 1fr))', gap: 'var(--space-sm)' }}>
-      {ICON_NAMES.map((n) => (
-        <li key={n} className="dx-card" style={{ alignItems: 'center', textAlign: 'center' }}>
-          <Icon name={n} size="lg" tone="primary" />
-          <code className="dx-code" style={{ font: 'var(--type-caption)' }}>{n}</code>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+const ICON_KEYWORDS: Record<string, string> = {
+  check: 'done tick success confirm yes complete',
+  close: 'x dismiss cancel remove clear exit',
+  plus: 'add new create',
+  search: 'find magnifier lookup',
+  trash: 'delete remove bin discard',
+  'chevron-right': 'next forward expand caret',
+  'chevron-down': 'dropdown expand caret open',
+  'arrow-right': 'next continue forward go',
+  external: 'open new tab link leave',
+  download: 'save export get',
+  filter: 'refine narrow funnel sort',
+  bell: 'notification alert reminder',
+  'shield-check': 'secure security protected safe verified',
+  info: 'information help details note',
+  'circle-alert': 'warning error problem low severity',
+  'octagon-alert': 'stop critical error severity',
+  'triangle-alert': 'warning caution severity',
+  'diamond-alert': 'warning high severity',
+  'circle-down': 'low severity decrease',
+};
+export const IconGallery = () => {
+  const [q, setQ] = useState('');
+  const inputId = useId();
+  const term = q.trim().toLowerCase();
+  const shown = ICON_NAMES.filter((n) => !term || `${n.replace(/-/g, ' ')} ${ICON_KEYWORDS[n] ?? ''}`.toLowerCase().includes(term));
+  return (
+    <div className="dx">
+      <label htmlFor={inputId} className="dx-h" style={{ display: 'block', marginBottom: 'var(--space-xs)' }}>Search {ICON_NAMES.length} icons</label>
+      <input
+        id={inputId}
+        type="search"
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Try delete, warning, or arrow"
+        autoComplete="off"
+        style={{ width: '100%', maxWidth: '24rem', boxSizing: 'border-box', font: 'var(--type-body-md)', color: 'var(--color-text-primary)', background: 'var(--color-bg-page)', border: 'var(--border-width-default) solid var(--color-border-strong)', borderRadius: 'var(--radius-control)', padding: 'var(--space-sm) var(--space-md)', marginBottom: 'var(--space-md)' }}
+      />
+      <p role="status" aria-live="polite" style={{ font: 'var(--type-body-sm)', color: 'var(--color-text-secondary)', margin: '0 0 var(--space-sm)' }}>
+        {shown.length === 0 ? `No icons match "${q}". Try a different word, like the action it stands for.` : `Showing ${shown.length} of ${ICON_NAMES.length} icons`}
+      </p>
+      <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(8.5rem, 1fr))', gap: 'var(--space-sm)' }}>
+        {shown.map((n) => (
+          <li key={n} className="dx-card" style={{ alignItems: 'center', textAlign: 'center' }}>
+            <Icon name={n} size="lg" tone="primary" />
+            <code className="dx-code" style={{ font: 'var(--type-caption)' }}>{n}</code>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 export const IconSizes = () => (
   <div className="dx dx-demo" style={{ gap: 'var(--space-lg)' }}>
     {(['sm', 'md', 'lg', 'xl'] as const).map((s, i) => (
@@ -374,6 +414,7 @@ const INTENTS: [Intent, string][] = [
   ['navigate', 'Go to another page'],
 ];
 export const ButtonPickerUI = () => {
+  const groupName = useId();
   const [intent, setIntent] = useState<Intent>('advance');
   const [confirmStep, setConfirmStep] = useState(false);
   const [alone, setAlone] = useState(false);
@@ -394,7 +435,7 @@ export const ButtonPickerUI = () => {
         <legend className="dx-h">What is this action?</legend>
         {INTENTS.map(([v, l]) => (
           <label key={v} style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'center', font: 'var(--type-body-sm)' }}>
-            <input type="radio" name="bp-intent" checked={intent === v} onChange={() => setIntent(v)} />{l}
+            <input type="radio" name={groupName} checked={intent === v} onChange={() => setIntent(v)} />{l}
           </label>
         ))}
       </fieldset>

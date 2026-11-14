@@ -74,9 +74,10 @@ This page is about how the work was run, not just what came out. The short versi
 
 **What went wrong**
 1. **The first axe pass on the new component pages found a real problem.** The generated tokens table scrolls on small screens, but keyboard users could not reach it. It is now a focusable labeled region.
-2. **The pattern pages called icons that do not exist.** The assistant wrote `trash` and `plus` from habit. The icon set has nine icons and neither is one. Caught by checking the examples against the actual set before trusting the build, and removed.
-3. **One source could not be read.** The Carbon Storybook page Jeremy linked renders with JavaScript, so its token tables were not read directly. The tokens used idea came from Jeremy's description, and the implementation is our own.
-4. **The deploy could not be confirmed from this environment.** The hosting domain is not reachable from here, so the live site needs a human look after each push.
+2. **The assistant removed two icons it wrongly believed did not exist.** A quick search of the icon file missed unquoted names, so `trash` and `plus` were stripped from the pattern pages. Jeremy spotted them in the gallery, and they were put back. Lesson: a search that finds nothing is not proof of absence.
+3. **A radio group needed two clicks.** The picker appeared twice on the Button page and both copies shared one group name, so the browser fought React over which was checked. Found by Jeremy using the page, not by a script. Each copy now gets its own unique group.
+4. **One source could not be read.** The Carbon Storybook page Jeremy linked renders with JavaScript, so its token tables were not read directly. The tokens used idea came from Jeremy's description, and the implementation is our own.
+5. **The deploy could not be confirmed from this environment.** The hosting domain is not reachable from here, so the live site needs a human look after each push.
 
 ## What a person still decides
 
