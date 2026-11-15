@@ -57,3 +57,32 @@
 /* Action groups: right aligned, least to most important, primary last. Same DOM order at every width. */
 .dx-actions { display: flex; flex-wrap: wrap; gap: var(--space-sm); justify-content: flex-end; width: 100%; }
 @media (max-width: 30rem) { .dx-actions { flex-direction: column; align-items: stretch; } .dx-actions > * { width: 100%; } }
+
+/* Previous / Next footer. Tokens only. */
+.dx-pagenav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-3xl); padding-top: var(--space-lg); border-top: var(--border-width-default) solid var(--color-border-subtle); }
+.dx-pagenav__link { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-md); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); background: var(--color-bg-raised); color: var(--color-text-primary); text-decoration: none; }
+.dx-pagenav__link--next { grid-column: 2; text-align: right; }
+.dx-pagenav__link:hover { border-color: var(--color-border-strong); }
+.dx-pagenav__link:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
+.dx-pagenav__dir { font: var(--type-label-sm); color: var(--color-text-secondary); }
+.dx-pagenav__name { font: var(--type-label-lg); color: var(--color-text-link); }
+.dx-pagenav__where { font: var(--type-caption); color: var(--color-text-secondary); }
+@media (max-width: 30rem) { .dx-pagenav { grid-template-columns: 1fr; } .dx-pagenav__link--next { grid-column: 1; text-align: left; } }
+
+/* Click to copy */
+.dx-copy__hint { font: var(--type-body-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-sm); }
+.sbdocs .dx-copy__status { color: var(--color-text-primary); font: var(--type-label-sm); }
+.dx-copy__btn { background: none; border: 0; padding: 0; margin: 0; font: inherit; color: inherit; cursor: pointer; text-align: left; border-radius: var(--radius-control); }
+.dx-copy__btn:hover { text-decoration: underline; }
+.dx-copy__btn:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
+.dx-copy__btn--cell { width: 100%; height: 100%; text-align: center; }
+.dx-copy__btn--cell:focus-visible { outline-color: currentColor; outline-offset: calc(var(--focus-ring-width) * -2); }
+
+/* Code block */
+.sbdocs .dx-codeblock { margin: var(--space-md) 0; padding: var(--space-md); overflow-x: auto; background: var(--color-bg-inset); color: var(--color-text-primary); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-control); font: var(--type-code); white-space: pre; }
+.dx-codeblock:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
+
+/* Keep the "On this page" contents inside the preview at mid widths. Storybook centers the content, which pushes the contents off the right edge. */
+@media (min-width: 45rem) and (max-width: 1250px) {
+  .sbdocs-wrapper .sbdocs-content { margin-left: 0; max-width: min(1000px, calc(100vw - 15.5rem)); }
+}

@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/blocks';
-import { Doc, Callout } from './blocks';
+import { Doc, Callout, PageNav } from './blocks';
 
 <Meta title="Method/Decision log" />
 
@@ -240,6 +240,24 @@ To change a decision, add a new entry that supersedes the old one. Do not edit h
 
 ---
 
+## ADR-014: Learn from Tailwind's documentation habits, not from its utility model
+
+**Status:** Accepted. Direction from Jeremy, after a written competitive audit.
+
+**Context:** We compared our Storybook with Tailwind's core concepts docs (colors, theme variables, states, dark mode, custom styles, class detection). Tailwind is better at getting someone started. We are better at proving the system is correct.
+
+**Options considered:** Copy nothing. Copy the utility class model. Copy only the documentation habits that help people start, find things and trust the names.
+
+**Decision:** Copy the habits. Added: an "On this page" contents panel, Previous and Next links on every page, click to copy on token names and swatches, a Use it in code page, a table of token families and the CSS property each is for, and a lint rule that docs and stories may only use tokens that exist and must write token names out in full. Not copied: utility classes, one spacing multiplier, names that describe the look.
+
+**Why:** The first group is cheap, low risk and makes the existing content easier to use. The second group would break the match between code props and Figma properties, and would weaken names that say what a value is for.
+
+**Trade-offs:** More pages and scripts to keep current. The page order list and the sidebar order must stay identical, so `npm run check:pages` fails if they differ. Items that carry real risk are not done yet: following the system theme, forced colors and more contrast testing, container queries, cascade layers and a Tailwind adapter.
+
+**Revisit when:** After the interview. Light, dark and system, plus a state reference per component, are next.
+
+---
+
 ## What we did not decide yet
 
 - Multi-brand theming (a fourth layer or a theme axis separate from light and dark).
@@ -249,3 +267,5 @@ To change a decision, add a new entry that supersedes the old one. Do not edit h
 - Versioned releases of the token package.
 
 Naming them is part of the method. A system that pretends to be finished is harder to trust than one that shows its edges.
+
+<PageNav title="Method/Decision log" />

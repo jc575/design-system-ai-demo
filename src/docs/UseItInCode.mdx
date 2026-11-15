@@ -1,0 +1,98 @@
+import { Meta } from '@storybook/blocks';
+import { Doc, Callout, DoDont, PageNav, CodeBlock } from './blocks';
+import { Button } from '../components/Button/Button';
+
+<Meta title="Use it in code" />
+
+# Use it in code
+
+Five minutes from an empty page to a themed, accessible button. If you only want to know what a token means, skip to Foundations. This page is for the moment you want to build something.
+
+<Callout title="Honest note">
+
+This is a prototype. It is not published as a package. To try it, work in this repo, or copy the `src/tokens` folder and the components you need into your own project.
+
+</Callout>
+
+## Step 1: Import the tokens
+
+Import them in layer order: raw values first, then meanings.
+
+<CodeBlock label="TypeScript example" code={`import '@fontsource-variable/inter';
+import './tokens/primitives.css';
+import './tokens/primitives.color.css';
+import './tokens/semantic.css';`} />
+
+`primitives.color.css` is generated. Never edit it by hand. Change the recipe and run `npm run generate:ramps`.
+
+## Step 2: Pick a theme
+
+Light is the default. For dark, set one attribute on the root element.
+
+<CodeBlock label="HTML example" code={`<html data-theme="dark">`} />
+
+Nothing else changes. The components read meanings like `--color-bg-action`, and the theme decides what that meaning looks like.
+
+## Step 3: Use a component
+
+<CodeBlock label="React example" code={`import { Button } from './components/Button/Button';
+
+<Button label="Save policy" emphasis="primary" />`} />
+
+Prop names match the Figma component properties one to one. Every state, prop and rule is on the Button page.
+
+## Step 4: Use a token in your own CSS
+
+Pick the token by what the thing is for, not by how it looks.
+
+<CodeBlock label="CSS example" code={`.policy-card {
+  background: var(--color-bg-raised);
+  color: var(--color-text-primary);
+  padding: var(--space-md);
+  border-radius: var(--radius-surface);
+  font: var(--type-body-md);
+}`} />
+
+Never write `--ref-` tokens or a hex value in a component. Not sure which token to use? Read Which token do I use.
+
+## Step 5: Change the system
+
+There are four moves. They match what Tailwind's theme docs call [extend, override and remove](https://tailwindcss.com/docs/theme), with one addition: ours are protected by checks.
+
+<Doc>
+
+| Move | Use it when | How | What protects you |
+| --- | --- | --- | --- |
+| **Override at a scope** | One area of a product needs a different brand color | Redefine a semantic token on a wrapper element | Stay on the same step number of another hue. Every hue's step has the same contrast, so the registered pairs still hold |
+| **Add a token** | No existing meaning fits | Follow Scaling and contribution. Start at the component, promote at about three components | `npm run lint:tokens` needs a name in the grammar, a dark value and a contrast pair |
+| **Replace the palette** | The brand changes everywhere | Edit the hues or step contrast in `scripts/generate-ramps.mjs`, then `npm run generate:ramps` | `npm run contrast` re-checks every pair in both themes |
+| **Retire a token** | A name is wrong or unused | Deprecate first, then remove. See Scaling and contribution | The lint fails if anything still points at it |
+
+</Doc>
+
+### Try the first move
+
+Same Button, same code. The wrapper only redefines three action tokens, using indigo at the same steps.
+
+<div className="dx"><div className="dx-demo" style={{ '--color-bg-action': 'var(--ref-indigo-700)', '--color-bg-action-hover': 'var(--ref-indigo-800)', '--color-bg-action-active': 'var(--ref-indigo-900)' }}>
+<Button label="Save policy" emphasis="primary" />
+</div></div>
+
+<CodeBlock label="CSS example" code={`.brand-area {
+  --color-bg-action: var(--ref-indigo-700);
+  --color-bg-action-hover: var(--ref-indigo-800);
+  --color-bg-action-active: var(--ref-indigo-900);
+}`} />
+
+<DoDont ok={false} title="Switching steps, not just hue" why="Using indigo 400 for the action fill would break the pairing with white text. The promise is about the same step number, not about any step you like.">
+<code>--color-bg-action: var(--ref-indigo-400);</code>
+</DoDont>
+
+## What is not here yet
+
+- **No package.** You copy files today.
+- **No follow the operating system.** Dark mode only turns on when `data-theme="dark"` is set. We plan a fallback to the system setting.
+- **Reduced motion lives in `base.css`.** An app that skips that file also skips the reduced motion rule. Import it, or copy the rule.
+- **No Tailwind adapter.** The tokens work in plain CSS. A mapping file for Tailwind is proposed, not built.
+
+<PageNav title="Use it in code" />

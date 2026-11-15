@@ -1,5 +1,5 @@
 import { Meta, Canvas, Controls, Stories } from '@storybook/blocks';
-import { Doc, Callout, DoDont, ButtonPickerUI, ComponentTokens } from '../../docs/blocks';
+import { Doc, Callout, DoDont, ButtonPickerUI, ComponentTokens, PageNav } from '../../docs/blocks';
 import { Button } from './Button';
 import { Icon } from '../Icon/Icon';
 import * as ButtonStories from './Button.stories';
@@ -11,8 +11,6 @@ import * as ButtonStories from './Button.stories';
 A button says **"do this."** The question is never "which button looks nice?" It is "how important is this action, and what happens if someone clicks it by mistake?"
 
 <Canvas of={ButtonStories.Playground} />
-
-**On this page:** when to use it, real situations, do and don't, rules, tokens used, accessibility, props and every state.
 
 ## When to use which
 
@@ -156,3 +154,5 @@ An empty page has one job. One big primary, one quiet helper.
 ## Where these rules come from
 
 Rules 1, 2, 4, 5, 6 and 9 follow [Carbon's button usage guidance](https://carbondesignsystem.com/components/button/usage). Rule 3 adapts Carbon's danger guidance (primary danger for required workflow steps, lower emphasis otherwise). Rules 7 and 8 are ours, and the reasons are in the text. Full sources on the Research page.
+
+<PageNav title="Components/Button" />

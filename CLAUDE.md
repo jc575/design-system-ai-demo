@@ -65,6 +65,8 @@ Other families: `--space-<xs..3xl>`, `--radius-<control|surface|pill>`, `--type-
 - A `<Component>.mdx` page next to the component, with guidance (when to use, do and don't), a generated Tokens used table, props and every state.
 - Works in light and dark themes. Verify both.
 - Run the accessibility addon and the scripted axe check before asking for review.
+- Every docs page ends with `<PageNav title="..." />` and is listed in `src/docs/pageOrder.ts` (and in the same order in `.storybook/preview.tsx`). `npm run check:pages` fails if not.
+- Docs and stories may only use tokens that exist, and must write token names out in full (never `var(--space-${n})`). `npm run lint:tokens` checks it.
 
 ## 5. Human review checklist (the assistant never skips this, and never self approves)
 

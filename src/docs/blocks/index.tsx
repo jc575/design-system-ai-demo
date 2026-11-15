@@ -6,6 +6,7 @@ import { Icon } from '../../components/Icon/Icon';
 import { ICON_NAMES } from '../../components/Icon/paths';
 import { Button } from '../../components/Button/Button';
 import compTokens from './componentTokens.json';
+import { flattenOrder, docsId } from '../pageOrder';
 
 type Theme = 'light' | 'dark';
 
@@ -24,6 +25,38 @@ export const ratio = (a: string, b: string) => {
 };
 const readableOn = (hex: string) => (ratio(hex, '#ffffff') >= ratio(hex, '#000000') ? '#ffffff' : '#000000');
 const families = ramps.families as Record<string, Record<string, string>>;
+
+/* Token names written out in full, never built from pieces. A name built in code cannot be found or checked
+   by the lint (the same trap Tailwind warns about with class names). `npm run lint:tokens` checks each one exists. */
+const TYPE_VAR: Record<string, string> = {
+  display: 'var(--type-display)', 'heading-lg': 'var(--type-heading-lg)', 'heading-md': 'var(--type-heading-md)', 'heading-sm': 'var(--type-heading-sm)',
+  'body-lg': 'var(--type-body-lg)', 'body-md': 'var(--type-body-md)', 'body-sm': 'var(--type-body-sm)',
+  'label-lg': 'var(--type-label-lg)', 'label-md': 'var(--type-label-md)', 'label-sm': 'var(--type-label-sm)',
+  caption: 'var(--type-caption)', code: 'var(--type-code)',
+};
+const REF_SPACE: Record<number, string> = {
+  0: 'var(--ref-space-0)', 1: 'var(--ref-space-1)', 2: 'var(--ref-space-2)', 3: 'var(--ref-space-3)', 4: 'var(--ref-space-4)', 5: 'var(--ref-space-5)',
+  6: 'var(--ref-space-6)', 8: 'var(--ref-space-8)', 10: 'var(--ref-space-10)', 12: 'var(--ref-space-12)', 16: 'var(--ref-space-16)',
+};
+const SPACE_VAR: Record<string, string> = {
+  xs: 'var(--space-xs)', sm: 'var(--space-sm)', md: 'var(--space-md)', lg: 'var(--space-lg)', xl: 'var(--space-xl)', '2xl': 'var(--space-2xl)', '3xl': 'var(--space-3xl)',
+};
+const RADIUS_VAR: Record<string, string> = { control: 'var(--radius-control)', surface: 'var(--radius-surface)', pill: 'var(--radius-pill)' };
+const ELEVATION_VAR: Record<string, string> = {
+  flat: 'var(--elevation-flat)', resting: 'var(--elevation-resting)', raised: 'var(--elevation-raised)', overlay: 'var(--elevation-overlay)', modal: 'var(--elevation-modal)',
+};
+const REF_FONT_SIZE: Record<number, string> = {
+  12: 'var(--ref-font-size-12)', 14: 'var(--ref-font-size-14)', 16: 'var(--ref-font-size-16)', 18: 'var(--ref-font-size-18)', 20: 'var(--ref-font-size-20)',
+  24: 'var(--ref-font-size-24)', 30: 'var(--ref-font-size-30)', 36: 'var(--ref-font-size-36)', 48: 'var(--ref-font-size-48)',
+};
+const REF_RADIUS: Record<string, string> = {
+  '0': 'var(--ref-radius-0)', '2': 'var(--ref-radius-2)', '4': 'var(--ref-radius-4)', '6': 'var(--ref-radius-6)', '8': 'var(--ref-radius-8)',
+  '12': 'var(--ref-radius-12)', '16': 'var(--ref-radius-16)', full: 'var(--ref-radius-full)',
+};
+const REF_SHADOW: Record<string, string> = {
+  'soft-1': 'var(--ref-shadow-soft-1)', 'soft-2': 'var(--ref-shadow-soft-2)', 'soft-3': 'var(--ref-shadow-soft-3)', 'soft-4': 'var(--ref-shadow-soft-4)',
+  'deep-1': 'var(--ref-shadow-deep-1)', 'deep-2': 'var(--ref-shadow-deep-2)', 'deep-3': 'var(--ref-shadow-deep-3)', 'deep-4': 'var(--ref-shadow-deep-4)',
+};
 const STEPS = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900', '950'];
 
 export const Doc = ({ children, theme = 'light' }: { children: React.ReactNode; theme?: Theme }) => (
@@ -81,11 +114,38 @@ export const ColorWheel = () => {
   );
 };
 
+
+/* ---------- CLICK TO COPY ---------- */
+const useCopy = () => {
+  const [msg, setMsg] = useState('');
+  const timer = useRef<number | undefined>(undefined);
+  const copy = async (name: string, hex: string | undefined, e: React.MouseEvent) => {
+    const text = e.shiftKey && hex ? hex : `var(${name})`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setMsg(`Copied ${text}`);
+    } catch {
+      setMsg('Could not copy here. Select the name and copy it by hand.');
+    }
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setMsg(''), 2500);
+  };
+  return { msg, copy };
+};
+const CopyHint = ({ msg, what }: { msg: string; what: string }) => (
+  <p className="dx-copy__hint">
+    Click a name to copy it, ready to paste into CSS as a <code className="dx-code">var()</code> reference. Shift click, or Shift and Enter, copies {what}.{' '}
+    <span role="status" aria-live="polite" className="dx-copy__status">{msg}</span>
+  </p>
+);
+
 /* ---------- RAMP TABLE ---------- */
 export const RampTable = ({ only }: { only?: string[] }) => {
   const names = (only ?? [...ramps.hues.map((h) => h.name), 'slate']);
+  const { msg, copy } = useCopy();
   return (
     <div className="dx dx-scroll">
+      <CopyHint msg={msg} what="the hex value" />
       <div className="dx-ramp" role="table" aria-label="Color primitives by family and step">
         <div role="row" style={{ display: 'contents' }}>
           <span className="dx-ramp-name" role="columnheader">Family</span>
@@ -96,9 +156,12 @@ export const RampTable = ({ only }: { only?: string[] }) => {
             <span className="dx-ramp-name" role="rowheader">{n}</span>
             {STEPS.map((s) => {
               const hex = families[n][s];
+              const refName = `--ref-${n}-${s}`;
               return (
-                <span key={s} role="cell" className="dx-cell" style={{ background: hex, color: readableOn(hex) }} title={`--ref-${n}-${s}`}>
-                  {hex}
+                <span key={s} role="cell" className="dx-cell" style={{ background: hex, color: readableOn(hex) }}>
+                  <button type="button" className="dx-copy__btn dx-copy__btn--cell" onClick={(e) => copy(refName, hex, e)} aria-label={`${hex}, copy ${refName}`}>
+                    {hex}
+                  </button>
                 </span>
               );
             })}
@@ -203,14 +266,20 @@ const describe = (name: string) => {
 };
 export const SemanticTable = ({ property }: { property: 'bg' | 'text' | 'border' | 'icon' }) => {
   const names = Object.keys(LIGHT).filter((n) => n.startsWith(`--color-${property}-`));
+  const { msg, copy } = useCopy();
   return (
     <div className="dx dx-scroll">
+      <CopyHint msg={msg} what="the light theme hex value" />
       <table className="dx-table">
         <thead><tr><th>Token</th><th>Use it for</th><th>Light</th><th>Dark</th></tr></thead>
         <tbody>
           {names.map((n) => (
             <tr key={n}>
-              <td><code className="dx-code">{n}</code></td>
+              <td>
+                <button type="button" className="dx-copy__btn" onClick={(e) => copy(n, hexOf(LIGHT[n]), e)}>
+                  <code className="dx-code">{n}</code>
+                </button>
+              </td>
               <td>{describe(n)}</td>
               {[LIGHT[n], DARK[n]].map((ref, i) => (
                 <td key={i}><span style={{ display: 'inline-flex', gap: 'var(--space-sm)', alignItems: 'center' }}><span className="dx-swatch" style={{ background: hexOf(ref) }} aria-hidden="true" /><code className="dx-code">{ref.replace('--ref-', '')}</code></span></td>
@@ -248,7 +317,7 @@ const Probe = ({ role }: { role: string }) => {
   }, [role]);
   return (
     <>
-      <span ref={ref} style={{ font: `var(--type-${role})` }}>The quick brown fox, approved</span>
+      <span ref={ref} style={{ font: TYPE_VAR[role] }}>The quick brown fox, approved</span>
       <br />
       <span className="dx-code" style={{ font: 'var(--type-caption)' }}>{info}</span>
     </>
@@ -349,7 +418,7 @@ export const SpaceScale = () => (
           return (
             <tr key={n}>
               <td><code className="dx-code">--ref-space-{n}</code></td>
-              <td style={{ width: '60%' }}><div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}><div className="dx-bar" style={{ width: `var(--ref-space-${n})`, minWidth: 2 }} /><span>{n * 4}px</span></div></td>
+              <td style={{ width: '60%' }}><div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}><div className="dx-bar" style={{ width: REF_SPACE[n], minWidth: 2 }} /><span>{n * 4}px</span></div></td>
               <td>{word ? <code className="dx-code">--space-{word}</code> : <span style={{ color: 'var(--color-text-secondary)' }}>No word. On purpose.</span>}</td>
             </tr>
           );
@@ -362,7 +431,7 @@ export const RadiusScale = () => (
   <div className="dx dx-demo" style={{ gap: 'var(--space-lg)' }}>
     {([['control', 'Buttons, inputs, small controls'], ['surface', 'Cards, panels, dialogs'], ['pill', 'Badges, tags, toggles']] as const).map(([r, use]) => (
       <div key={r} style={{ display: 'grid', gap: 'var(--space-xs)', justifyItems: 'start' }}>
-        <div style={{ width: '7rem', height: '3.5rem', background: 'var(--color-bg-raised)', border: 'var(--border-width-emphasis) solid var(--color-border-strong)', borderRadius: `var(--radius-${r})` }} />
+        <div style={{ width: '7rem', height: '3.5rem', background: 'var(--color-bg-raised)', border: 'var(--border-width-emphasis) solid var(--color-border-strong)', borderRadius: RADIUS_VAR[r] }} />
         <code className="dx-code">--radius-{r}</code>
         <span style={{ font: 'var(--type-caption)', color: 'var(--color-text-secondary)', maxWidth: '10rem' }}>{use}</span>
       </div>
@@ -376,7 +445,7 @@ export const ElevationLevels = ({ theme }: { theme: Theme }) => (
   <ThemePanel theme={theme}>
     <div style={{ display: 'grid', gap: 'var(--space-lg)', padding: 'var(--space-md)' }}>
       {LEVELS.map(([l, use], i) => (
-        <div key={l} style={{ boxShadow: `var(--elevation-${l})`, background: i >= 3 ? 'var(--color-bg-overlay)' : 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-md)' }}>
+        <div key={l} style={{ boxShadow: ELEVATION_VAR[l], background: i >= 3 ? 'var(--color-bg-overlay)' : 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-md)' }}>
           <code className="dx-code">--elevation-{l}</code>
           <div style={{ font: 'var(--type-body-sm)', color: 'var(--color-text-secondary)', marginTop: 'var(--space-xs)' }}>{use}</div>
         </div>
@@ -398,7 +467,7 @@ export const TypePrimitives = () => (
         <thead><tr><th>Primitive</th><th>Size</th><th>Sample</th></tr></thead>
         <tbody>
           {FONT_SIZES.map((n) => (
-            <tr key={n}><td><code className="dx-code">--ref-font-size-{n}</code></td><td>{n}px</td><td><span style={{ fontFamily: 'var(--ref-font-family-sans)', fontSize: `var(--ref-font-size-${n})`, lineHeight: 1.2 }}>Clear words, calm screens</span></td></tr>
+            <tr key={n}><td><code className="dx-code">--ref-font-size-{n}</code></td><td>{n}px</td><td><span style={{ fontFamily: 'var(--ref-font-family-sans)', fontSize: REF_FONT_SIZE[n], lineHeight: 1.2 }}>Clear words, calm screens</span></td></tr>
           ))}
         </tbody>
       </table>
@@ -423,7 +492,7 @@ export const RadiusPrimitives = () => (
   <div className="dx dx-demo" style={{ gap: 'var(--space-lg)' }}>
     {RADII.map((r) => (
       <div key={r} style={{ display: 'grid', gap: 'var(--space-xs)', justifyItems: 'start' }}>
-        <div style={{ width: '5rem', height: '3rem', background: 'var(--color-bg-raised)', border: 'var(--border-width-emphasis) solid var(--color-border-strong)', borderRadius: `var(--ref-radius-${r})` }} />
+        <div style={{ width: '5rem', height: '3rem', background: 'var(--color-bg-raised)', border: 'var(--border-width-emphasis) solid var(--color-border-strong)', borderRadius: REF_RADIUS[r] }} />
         <code className="dx-code">--ref-radius-{r}</code>
         <span style={{ font: 'var(--type-caption)', color: 'var(--color-text-secondary)' }}>{r === 'full' ? 'fully round' : `${r}px`}</span>
       </div>
@@ -436,7 +505,7 @@ export const ShadowPrimitives = ({ theme }: { theme: Theme }) => {
     <ThemePanel theme={theme} title={`${kind} shadows, made for the ${theme} theme`}>
       <div style={{ display: 'grid', gap: 'var(--space-lg)', padding: 'var(--space-md)' }}>
         {[1, 2, 3, 4].map((n) => (
-          <div key={n} style={{ boxShadow: `var(--ref-shadow-${kind}-${n})`, background: 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-md)' }}>
+          <div key={n} style={{ boxShadow: REF_SHADOW[`${kind}-${n}`], background: 'var(--color-bg-raised)', border: 'var(--border-width-default) solid var(--color-border-subtle)', borderRadius: 'var(--radius-surface)', padding: 'var(--space-md)' }}>
             <code className="dx-code">--ref-shadow-{kind}-{n}</code>
           </div>
         ))}
@@ -452,7 +521,7 @@ export const SpaceWords = () => (
         {SPACE_SEM.map(([w, n]) => (
           <tr key={w}>
             <td><code className="dx-code">--space-{w}</code></td>
-            <td style={{ width: '50%' }}><div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}><div className="dx-bar" style={{ width: `var(--space-${w})`, minWidth: 2 }} /><span>{n * 4}px</span></div></td>
+            <td style={{ width: '50%' }}><div style={{ display: 'flex', gap: 'var(--space-md)', alignItems: 'center' }}><div className="dx-bar" style={{ width: SPACE_VAR[w], minWidth: 2 }} /><span>{n * 4}px</span></div></td>
             <td><code className="dx-code">--ref-space-{n}</code></td>
           </tr>
         ))}
@@ -576,9 +645,47 @@ export const ComponentTokens = ({ name }: { name: 'Button' | 'TextField' | 'Stat
       </div>
       {data.direct.length > 0 && (
         <p style={{ font: 'var(--type-body-sm)', marginTop: 'var(--space-sm)' }}>
-          <strong>Semantic tokens used directly:</strong> {data.direct.map((t) => <code key={t} className="dx-code" style={{ marginRight: 'var(--space-xs)' }}>{t}</code>)}
+          <strong>Semantic tokens used directly:</strong>{' '}
+          <span style={{ display: 'inline-flex', flexWrap: 'wrap', gap: 'var(--space-xs)', verticalAlign: 'top' }}>
+            {data.direct.map((t) => <code key={t} className="dx-code">{t}</code>)}
+          </span>
         </p>
       )}
     </div>
   );
 };
+
+
+/* ---------- PREVIOUS / NEXT (reading order comes from pageOrder.ts) ---------- */
+const pageName = (t: string) => t.split('/').slice(-1)[0];
+const pageWhere = (t: string) => t.split('/').slice(0, -1).join(', ');
+export const PageNav = ({ title }: { title: string }) => {
+  const pages = flattenOrder();
+  const i = pages.indexOf(title);
+  const prev = i > 0 ? pages[i - 1] : null;
+  const next = i >= 0 && i < pages.length - 1 ? pages[i + 1] : null;
+  const cell = (t: string | null, dir: 'prev' | 'next') =>
+    t ? (
+      <a className={`dx-pagenav__link dx-pagenav__link--${dir}`} href={`?path=/docs/${docsId(t)}`}>
+        <span className="dx-pagenav__dir">{dir === 'prev' ? 'Previous' : 'Next'}</span>
+        <span className="dx-pagenav__name">{pageName(t)}</span>
+        {pageWhere(t) && <span className="dx-pagenav__where">{pageWhere(t)}</span>}
+      </a>
+    ) : (
+      <span />
+    );
+  return (
+    <nav className="dx dx-pagenav" aria-label="Previous and next page">
+      {cell(prev, 'prev')}
+      {cell(next, 'next')}
+    </nav>
+  );
+};
+
+
+/* ---------- CODE BLOCK (plain, token colored, so contrast is ours to control) ---------- */
+export const CodeBlock = ({ code, label }: { code: string; label: string }) => (
+  <div className="dx-codeblock" tabIndex={0} role="region" aria-label={label}>
+    {code}
+  </div>
+);

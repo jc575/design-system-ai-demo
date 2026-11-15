@@ -1,5 +1,5 @@
 import { Meta } from '@storybook/blocks';
-import { Doc, Callout } from './blocks';
+import { Doc, Callout, PageNav } from './blocks';
 
 <Meta title="Foundations/Start here" />
 
@@ -42,6 +42,30 @@ We start with **raw values** (a blue, a size, a shadow). We give those values **
 **Component tokens** are not on this shelf. They live on each component page, under **Tokens used**, because they belong to that component.
 
 Two more pages sit beside these: [Iconography](?path=/docs/foundations-iconography--docs) (the icon set) and [Figma to code parity](?path=/docs/foundations-figma-to-code-parity--docs).
+
+## Token families: which prefix, for which CSS property
+
+Every semantic token starts with a family. The family tells you which CSS property it belongs to, so you never wonder if a color token goes on a background or on text.
+
+<Doc>
+
+| Prefix | What it is for | CSS property | Example |
+| --- | --- | --- | --- |
+| `--color-bg-*` | Fills and surfaces | `background` | `--color-bg-raised` |
+| `--color-text-*` | Text | `color` | `--color-text-secondary` |
+| `--color-border-*` | Borders, dividers, focus ring color | `border-color`, `outline-color` | `--color-border-focus` |
+| `--color-icon-*` | Icons | `color`, `fill`, `stroke` | `--color-icon-primary` |
+| `--space-*` | Distance between things | `padding`, `margin`, `gap` | `--space-md` |
+| `--radius-*` | Rounded corners, named by what is rounded | `border-radius` | `--radius-control` |
+| `--border-width-*` | Line thickness | `border-width` | `--border-width-default` |
+| `--focus-ring-*` | Focus ring size and gap | `outline-width`, `outline-offset` | `--focus-ring-width` |
+| `--type-*` | One role per token: size, weight and line height together | `font` | `--type-body-md` |
+| `--font-*` | The font family only | `font-family` | `--font-body` |
+| `--elevation-*` | How high something sits | `box-shadow` | `--elevation-raised` |
+| `--icon-size-*` | Icon dimensions | `width`, `height` | `--icon-size-md` |
+| `--motion-duration-*` | How long a change takes | `transition-duration`, `animation-duration` | `--motion-duration-fast` |
+
+</Doc>
 
 ## Find it fast
 
@@ -88,3 +112,5 @@ Small raw values build meaningful tokens. Meaningful tokens build components. Co
 "ref" is short for **reference**: the layer everything else refers back to. Material Design uses the same word. If it feels cryptic, you are not wrong. New people trip on it. We kept it on purpose and wrote down why, and what would make us change it, in the Decision log (ADR-003).
 
 </Callout>
+
+<PageNav title="Foundations/Start here" />

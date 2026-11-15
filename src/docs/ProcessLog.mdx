@@ -1,4 +1,5 @@
 import { Meta } from '@storybook/blocks';
+import { PageNav } from './blocks';
 
 <Meta title="Process/Process log" />
 
@@ -97,9 +98,26 @@ Three changes came straight from Jeremy reading the Storybook as a newcomer woul
 
 An earlier draft of the Button rules said Carbon puts the primary on the left in full page forms. That was not verified, so the claim was removed and replaced with Jeremy's rule, stated as ours.
 
+## Competitive audit against Tailwind (Nov 15)
+
+Jeremy asked for a competitive analysis of Tailwind's core concept docs, then approved the low risk changes. He chose to be conservative because the Storybook is a backup demo for an interview. The work was done on a separate branch, with the last good version tagged, and nothing was published until every check passed.
+
+What the checks caught on the way, which is the point of having them:
+
+1. **The build failed.** Storybook needs its sidebar order written inline, so a shared list could not be imported. The order now exists in two places, and a new check fails if they differ.
+2. **Axe found a label problem.** Copy buttons had an accessible name that did not start with their visible text (WCAG 2.5.3). Fixed.
+3. **Axe found low contrast code colors.** The default code highlighting on the new page failed. Replaced with a plain code block that uses our own tokens.
+4. **A browser test found sideways scrolling on the Button page.** It was already in the live version. Three long token names did not wrap. Fixed.
+5. **The new lint rule was tested on purpose.** A fake file with an undefined token and a built token name made it fail, then the file was removed. It catches the exact mistake behind the invisible radio dot.
+6. **A layout rule did not work on the first try.** The contents panel was clipped at mid widths. Measuring it showed why, and it was fixed with a more specific rule.
+
+Items that carry real risk were left for after the interview and are listed in ADR-014.
+
 ## Honest limits
 
 - Four components, not forty. No tables, navigation, dialogs or data visualization. The destructive confirmation pattern shows the tokens a dialog would use. It does not ship a dialog.
 - No Figma file is attached. Figma to code parity is a written contract, not an automated check.
 - Automated tools find roughly a third to half of accessibility problems. Zero violations is a floor, not a finish line.
 - The scripts prove the rules are followed. They cannot prove the rules are right. That is the human job.
+
+<PageNav title="Process/Process log" />

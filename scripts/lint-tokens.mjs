@@ -100,6 +100,33 @@ for (const [comp, prefix] of Object.entries(COMPONENTS)) {
   }
 }
 
+
+/* ---------- docs and stories: every token used must exist, and must be written out in full ---------- */
+// Why: a docs demo that points at a token that does not exist fails silently (the radio dot that was invisible).
+// A name built from pieces, like var(--space-${n}), cannot be found by this check or by a search. Tailwind teaches the same
+// lesson about class names. Write the name out in full.
+{
+  const walkAll = (d) => readdirSync(d).flatMap((f) => { const p = join(d, f); return statSync(p).isDirectory() ? walkAll(p) : [p]; });
+  const files = walkAll('src').filter((f) => /\.(css|tsx|ts|mdx)$/.test(f));
+  const known = new Set([...Object.keys(refs), ...Object.keys(allSemantic)]);
+  const texts = files.map((f) => [f, readFileSync(f, 'utf8')]);
+  for (const [, t] of texts) {
+    for (const m of t.matchAll(/(--[a-z0-9][\w-]*)\s*:/g)) known.add(m[1]); // declared in CSS
+    for (const m of t.matchAll(/['"](--[a-z0-9][\w-]*)['"]\s*:/g)) known.add(m[1]); // set in an inline style object
+  }
+  for (const [f, t] of texts) {
+    if (f.endsWith('.json')) continue;
+    if (/\.(tsx|mdx|ts)$/.test(f) && /var\(--[\w-]*\$\{/.test(t)) {
+      const line = t.split('\n').findIndex((l) => /var\(--[\w-]*\$\{/.test(l)) + 1;
+      fail(`${f}:${line}`, 'A token name is built from pieces inside var(...)', 'Write each token name out in full, for example in a lookup object, so it can be checked.');
+    }
+    for (const m of t.matchAll(/var\((--[a-z0-9][\w-]*)\s*([,)])/g)) {
+      if (m[2] === ',') continue; // has a fallback value on purpose
+      if (!known.has(m[1])) fail(`${f} ${m[1]}`, 'Token is used but not defined anywhere', 'Fix the name or add the token through the contribution path.');
+    }
+  }
+}
+
 /* ---------- report ---------- */
 const total = Object.keys(refs).length + Object.keys(allSemantic).length;
 if (errors.length) {
