@@ -6,7 +6,12 @@ import { Icon } from '../../components/Icon/Icon';
 import { ICON_NAMES } from '../../components/Icon/paths';
 import { Button } from '../../components/Button/Button';
 import compTokens from './componentTokens.json';
+import { AnchorMdx } from '@storybook/blocks';
 import { flattenOrder, docsId } from '../pageOrder';
+
+// AnchorMdx is what Storybook uses for links inside MDX. It asks the manager to change page,
+// so the address bar, sidebar and scroll all update. A plain <a> would load the bare preview frame instead.
+const DocsLink = AnchorMdx as unknown as React.FC<any>;
 
 type Theme = 'light' | 'dark';
 
@@ -183,7 +188,7 @@ export const ContrastExplorer = () => {
   const dist = Math.abs(Number(b) - Number(a));
   const predicted = dist >= 500 ? 'Rule says: 500 or more apart, so at least 4.5:1' : dist >= 400 ? 'Rule says: 400 or more apart, so at least 3:1' : 'Rule says: less than 400 apart, no promise';
   const sel = (id: string, label: string, v: string, set: (s: string) => void, opts: string[]) => (
-    <label htmlFor={id}>{label}<select id={id} value={v} onChange={(e) => set(e.target.value)}>{opts.map((o) => <option key={o}>{o}</option>)}</select></label>
+    <label htmlFor={id}>{label}<span className="dx-select"><select id={id} value={v} onChange={(e) => set(e.target.value)}>{opts.map((o) => <option key={o}>{o}</option>)}</select><span className="dx-select__chevron" aria-hidden="true"><Icon name="chevron-down" size="sm" /></span></span></label>
   );
   return (
     <div className="dx dx-panel">
@@ -666,11 +671,11 @@ export const PageNav = ({ title }: { title: string }) => {
   const next = i >= 0 && i < pages.length - 1 ? pages[i + 1] : null;
   const cell = (t: string | null, dir: 'prev' | 'next') =>
     t ? (
-      <a className={`dx-pagenav__link dx-pagenav__link--${dir}`} href={`?path=/docs/${docsId(t)}`}>
+      <DocsLink className={`dx-pagenav__link dx-pagenav__link--${dir}`} href={`?path=/docs/${docsId(t)}`} target="_self">
         <span className="dx-pagenav__dir">{dir === 'prev' ? 'Previous' : 'Next'}</span>
         <span className="dx-pagenav__name">{pageName(t)}</span>
         {pageWhere(t) && <span className="dx-pagenav__where">{pageWhere(t)}</span>}
-      </a>
+      </DocsLink>
     ) : (
       <span />
     );

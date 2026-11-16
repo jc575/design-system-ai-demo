@@ -60,14 +60,14 @@
 
 /* Previous / Next footer. Tokens only. */
 .dx-pagenav { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-3xl); padding-top: var(--space-lg); border-top: var(--border-width-default) solid var(--color-border-subtle); }
-.dx-pagenav__link { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-md); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); background: var(--color-bg-raised); color: var(--color-text-primary); text-decoration: none; }
-.dx-pagenav__link--next { grid-column: 2; text-align: right; }
-.dx-pagenav__link:hover { border-color: var(--color-border-strong); }
-.dx-pagenav__link:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
+.sbdocs .dx-pagenav a.dx-pagenav__link { display: flex; flex-direction: column; gap: var(--space-xs); padding: var(--space-md); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); background: var(--color-bg-raised); color: var(--color-text-primary); text-decoration: none; }
+.sbdocs .dx-pagenav a.dx-pagenav__link--next { grid-column: 2; text-align: right; }
+.sbdocs .dx-pagenav a.dx-pagenav__link:hover { border-color: var(--color-border-strong); background: var(--color-bg-action-subtle-hover); }
+.sbdocs .dx-pagenav a.dx-pagenav__link:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: var(--focus-ring-offset); }
 .dx-pagenav__dir { font: var(--type-label-sm); color: var(--color-text-secondary); }
 .dx-pagenav__name { font: var(--type-label-lg); color: var(--color-text-link); }
 .dx-pagenav__where { font: var(--type-caption); color: var(--color-text-secondary); }
-@media (max-width: 30rem) { .dx-pagenav { grid-template-columns: 1fr; } .dx-pagenav__link--next { grid-column: 1; text-align: left; } }
+@media (max-width: 30rem) { .dx-pagenav { grid-template-columns: 1fr; } .sbdocs .dx-pagenav a.dx-pagenav__link--next { grid-column: 1; text-align: left; } }
 
 /* Click to copy */
 .dx-copy__hint { font: var(--type-body-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-sm); }
@@ -85,4 +85,25 @@
 /* Keep the "On this page" contents inside the preview at mid widths. Storybook centers the content, which pushes the contents off the right edge. */
 @media (min-width: 45rem) and (max-width: 1250px) {
   .sbdocs-wrapper .sbdocs-content { margin-left: 0; max-width: min(1000px, calc(100vw - 15.5rem)); }
+}
+
+/* Select with our own chevron: native arrow has no inset, so we draw one and leave room for it. */
+.dx-select { position: relative; display: block; }
+.dx-select select { appearance: none; -webkit-appearance: none; width: 100%; padding-right: calc(var(--space-md) + var(--space-xl)); }
+.dx-select__chevron { position: absolute; right: var(--space-md); top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--color-icon-secondary); display: inline-flex; }
+
+/* On this page: readable, hoverable, scrolls when long. Storybook builds the list, we style it. */
+.sbdocs-wrapper .toc-wrapper { position: sticky; top: var(--space-lg); max-height: calc(100vh - var(--space-3xl)); overflow-y: auto; padding-right: var(--space-xs); }
+.sbdocs-wrapper .toc-wrapper > h3 { font: var(--type-label-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-sm); letter-spacing: 0.04em; text-transform: uppercase; }
+.sbdocs-wrapper .toc-wrapper ul.toc-list { list-style: none; margin: 0; padding: 0; }
+.sbdocs-wrapper .toc-wrapper ul.toc-list ul.toc-list { padding-left: var(--space-sm); }
+.sbdocs-wrapper .toc-wrapper a.toc-link { display: block; font: var(--type-body-sm); font-weight: 400; line-height: 1.4; color: var(--color-text-secondary); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-control); border-left: var(--border-width-emphasis) solid transparent; text-decoration: none; overflow-wrap: anywhere; }
+.sbdocs-wrapper .toc-wrapper a.toc-link:hover { color: var(--color-text-primary); background: var(--color-bg-action-subtle-hover); }
+.sbdocs-wrapper .toc-wrapper a.toc-link:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: calc(var(--focus-ring-offset) * -1); }
+.sbdocs-wrapper .toc-wrapper a.toc-link.is-active-link { color: var(--color-text-link); font-weight: 600; border-left-color: var(--color-text-link); background: var(--color-bg-action-subtle-hover); }
+
+/* Phones: wide tables scroll inside themselves instead of pushing the whole page sideways. */
+@media (max-width: 40rem) {
+  .sbdocs-wrapper .sbdocs-content table { display: block; max-width: 100%; overflow-x: auto; }
+  .sbdocs-wrapper .sbdocs-content code { display: inline; white-space: pre-wrap; overflow-wrap: anywhere; }
 }

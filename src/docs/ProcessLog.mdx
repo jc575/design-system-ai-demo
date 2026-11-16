@@ -113,6 +113,16 @@ What the checks caught on the way, which is the point of having them:
 
 Items that carry real risk were left for after the interview and are listed in ADR-014.
 
+## Review pass after Jeremy's feedback (Nov 15, evening)
+
+What the assistant got wrong, and what caught it:
+
+- **Previous and Next did not work.** The assistant's own test checked that the address "contained" the target page, and a broken link still passed. Jeremy clicked it and it failed. The links now go through Storybook's own link component, and the test clicks through all 33 hops and checks the real address, heading and scroll position.
+- **On this page was hard to read.** Small, bold, no hover, no room for long titles. It now has a quiet default, a clear hover, a marked current section, full titles, and it scrolls on long pages.
+- **Dropdown arrows touched the border.** The browser's arrow has no inset. We now draw our own with space around it.
+- **Phones.** Two pages pushed sideways because of wide tables and long token names. Tables now scroll inside themselves and long names wrap.
+- **One stale line** still said "three components". It now says four components and three patterns.
+
 ## Honest limits
 
 - Four components, not forty. No tables, navigation, dialogs or data visualization. The destructive confirmation pattern shows the tokens a dialog would use. It does not ship a dialog.
