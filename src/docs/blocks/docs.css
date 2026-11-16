@@ -20,7 +20,7 @@
 .dx-cell b { display: block; font: var(--type-label-sm); }
 .dx-anatomy { display: flex; flex-wrap: wrap; gap: var(--space-xs); align-items: flex-start; font: var(--type-code); margin: var(--space-md) 0; }
 .dx-anatomy-part { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-xs); }
-.dx-anatomy-tok { padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-control); border: var(--border-width-emphasis) solid currentColor; font: var(--type-code); background: var(--color-bg-raised); }
+.dx-anatomy-tok { padding: var(--space-xs) var(--space-sm); border-radius: 0 var(--radius-control) var(--radius-control) 0; border: var(--border-width-emphasis) solid currentColor; font: var(--type-code); background: var(--color-bg-raised); }
 .dx-anatomy-cap { font: var(--type-caption); color: var(--color-text-secondary); max-width: 9rem; }
 .dx-flow { display: grid; gap: var(--space-sm); margin: var(--space-md) 0; }
 .dx-step { display: grid; grid-template-columns: 2rem 1fr; gap: var(--space-md); align-items: start; background: var(--color-bg-raised); border: var(--border-width-default) solid var(--color-border-subtle); border-radius: var(--radius-surface); padding: var(--space-md); }
@@ -97,10 +97,12 @@
 .sbdocs-wrapper div:has(> .toc-wrapper) { width: 14rem; }
 .sbdocs-wrapper .toc-wrapper { width: 14rem; position: sticky; top: var(--space-lg); max-height: calc(100vh - var(--space-3xl)); overflow-y: auto; padding-right: var(--space-xs); }
 .sbdocs-wrapper .toc-wrapper > h3 { font: var(--type-label-sm); color: var(--color-text-secondary); margin: 0 0 var(--space-sm); letter-spacing: 0.04em; text-transform: uppercase; }
-.sbdocs-wrapper .toc-wrapper ul.toc-list { list-style: none; margin: 0; padding: 0; }
-.sbdocs-wrapper .toc-wrapper ul.toc-list ul.toc-list { margin: 0; padding-left: var(--space-md); }
+.sbdocs-wrapper .toc-wrapper ul.toc-list { list-style: none; margin: 0; padding: 0; border-left: var(--border-width-emphasis) solid var(--color-border-subtle); }
+/* One rail only. Storybook draws a rail on every list, which made a second, offset line for sub sections. Sub sections now indent through the link, so the current marker always sits on the one rail. */
+.sbdocs-wrapper .toc-wrapper ul.toc-list ul.toc-list { margin: 0; padding: 0; border-left: 0; }
+.sbdocs-wrapper .toc-wrapper ul.toc-list ul.toc-list a.toc-link { padding-left: calc(var(--space-sm) + var(--space-md)); }
 .sbdocs-wrapper .toc-wrapper ul.toc-list li.toc-list-item { margin: 0; padding: 0; }
-.sbdocs-wrapper .toc-wrapper a.toc-link { display: block; font: var(--type-body-sm); font-weight: 400; line-height: 1.4; color: var(--color-text-secondary); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-control); border-left: var(--border-width-emphasis) solid transparent; text-decoration: none; overflow-wrap: anywhere; }
+.sbdocs-wrapper .toc-wrapper a.toc-link { display: block; font: var(--type-body-sm); font-weight: 400; line-height: 1.4; color: var(--color-text-secondary); padding: var(--space-xs) var(--space-sm); border-radius: var(--radius-control); border-left: var(--border-width-emphasis) solid transparent; margin-left: calc(var(--border-width-emphasis) * -1); text-decoration: none; overflow-wrap: anywhere; }
 .sbdocs-wrapper .toc-wrapper a.toc-link:hover { color: var(--color-text-primary); background: var(--color-bg-action-subtle-hover); }
 .sbdocs-wrapper .toc-wrapper a.toc-link:focus-visible { outline: var(--focus-ring-width) solid var(--color-border-focus); outline-offset: calc(var(--focus-ring-offset) * -1); }
 .sbdocs-wrapper .toc-wrapper a.toc-link.is-active-link { color: var(--color-text-link); font-weight: 600; border-left-color: var(--color-text-link); background: var(--color-bg-action-subtle-hover); }
